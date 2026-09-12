@@ -1,0 +1,28 @@
+schema: spec-driven
+
+context: |
+  Language: zh-CN
+  All artifacts must be written in zh-CN.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+
+  项目：Tripo Agent，面向独立游戏开发者，为游戏原型生成静态道具。
+  技术基线：Go、CloudWeGo Eino ADK 单 Agent、DeepSeek V4 Pro（deepseek-v4-pro）、Tripo API、SQLite 和本地模型目录。
+  首版支持匿名多会话与并发访问；每个会话只承载一个资产请求，每个请求由一个 Agent 决策。
+  首条演示是文本需求到静态、自包含 GLB，包含澄清、计划、异步进度、技术检查、有限纠偏、模型预览下载、执行追踪与评测。
+  自动产物验证仅限文件有效性、总三角面数和文件体积；不进行视觉检查。生产次数、模型调用、时限及硬约束由 Go 执行层强制执行。
+  保持最小前端，不扩展为通用平台、多 Agent、RAG、Kubernetes、GPU 基础设施或 Tripo Studio 替代品。
+
+  编写变更前阅读仓库根目录 PROJECT_BRIEF.md、CONTEXT.md，以及 docs/adr/ 中与变更相关的决策。
+  PROJECT_BRIEF.md 保留项目原始目标；CONTEXT.md 保存已确认约束与术语；docs/adr/ 解释重大技术取舍。
+  OpenSpec 管理具体变更的提案、行为规格、设计和实现任务。详细预算、默认值、恢复、匿名归属、数据保留及评测门槛引用现有文档，避免维护互相矛盾的副本。
+
+rules:
+  proposal:
+    - 明确本次变更的目标、范围和非目标，并引用相关已确认约束。
+    - 若需要改变已有共识，明确列出差异及理由，不将新假设写成已确认决定。
+  specs:
+    - 每项行为要求提供可验证的场景，并区分 Agent 决策、Runtime 保证、工具执行和产物技术检查。
+    - API 调用成功不能替代产物验收或 Agent 评测通过；评测要求沿用已确认的案例集与系统回归边界。
+  tasks:
+    - 按可验证的结果拆分任务，关联相应规格和必要的验证步骤。
+    - 区分计划、已完成实现和真实验证证据；未执行的 API 接入或评测不得标记为通过。

@@ -26,8 +26,10 @@ Go 执行层管理最多 3 个生产阶段请求和最多 10 个按序等待请�
 
 使用思考模式并携带工具定义时，后续请求须保留全部历史助手消息的 `reasoning_content`，包括未发生工具调用的轮次。模型协议状态与工具调用关联信息必须随请求和检查点保留，不能只保存对话正文；页面仍按既定范围展示简短决策依据和执行证据。[DeepSeek 思考模式与工具调用要求](https://api-docs.deepseek.com/guides/thinking_mode/)。
 
-实现阶段锁定 Eino 与适配器的具体依赖版本，并验证多轮工具调用、历史字段完整续传、澄清中断与重启恢复；若采用流式模型响应，还须验证字段拼接。模型参数在首次运行与恢复时保持一致，预算与终止边界仍由 Go 执行层强制执行。当前未安装依赖、调用真实模型或运行案例集评测。
+实现阶段锁定 Eino 与适配器的具体依赖版本，并验证多轮工具调用、历史字段完整续传、澄清中断与重启恢复；若采用流式模型响应，还须验证字段拼接。模型参数在首次运行与恢复时保持一致，预算与终止边界仍由 Go 执行层强制执行。记录本决策时尚未安装依赖、调用真实模型或运行案例集评测；后续验证进展见下文。
 
 执行记录由 Agent 输出与 Go 执行层事实共同组成，明确区分计划、提议、放行或拦截和实际执行结果，保存所用模型、Prompt 与 Skill 版本；展示与导出范围见 [ADR 0017](0017-execution-timeline-and-evidence-export.md)。
 
-依据：[Eino 官方 Agent 实现](https://github.com/cloudwego/eino/blob/v0.9.19/adk/chatmodel.go)、[Runner 与中断恢复文档](https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_extension/)。这里只确认构件选择，尚未安装或锁定项目依赖版本。
+依据：[Eino 官方 Agent 实现](https://github.com/cloudwego/eino/blob/v0.9.19/adk/chatmodel.go)、[Runner 与中断恢复文档](https://www.cloudwego.io/docs/eino/core_modules/eino_adk/agent_extension/)。以上说明记录构件选择时的依据。
+
+2026-09-08 验证进展：项目已锁定 Eino v0.9.19 与 DeepSeek 适配器 v0.1.7，使用非流式模型响应。首条真实 DeepSeek V4 Pro / Tripo 木箱链路通过，包含 5 次模型调用、按需 Skill、真实工具反馈及生产中重启后续查同一任务。澄清中断与历史字段续传由独立受控集成和 SDK 协议测试覆盖；本次真实请求因需求明确未发起澄清，不能将其算作真实多轮澄清验证。60 次 Agent 案例评测尚未运行。证据见 [演示验证记录](../demo-verification.md)。

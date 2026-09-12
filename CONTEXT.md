@@ -143,7 +143,7 @@ Go 业务执行层负责约束校验、预算扣减、生产并发与队列调�
 
 Agent 的大语言模型采用 DeepSeek V4 Pro，API 型号为 `deepseek-v4-pro`，承担意图理解、需求澄清、计划与工具决策，以及结果解释。3D 生产由 Tripo 完成，产物技术检查由 Go 执行层完成。
 
-首版以该型号作为 Agent 演示和案例集评测的模型基线。Eino 适配器的接入路径及实现阶段验证事项见 [ADR 0008](docs/adr/0008-single-go-service-with-eino-adk.md)；当前完成模型选型，尚未完成真实接入或评测。
+首版以该型号作为 Agent 演示和案例集评测的模型基线。Eino 适配器的接入路径及验证事项见 [ADR 0008](docs/adr/0008-single-go-service-with-eino-adk.md)。2026-09-08 已完成首条真实木箱链路验证，证据见 [演示验证记录](docs/demo-verification.md)；固定案例集的 Agent 评测尚未完成。
 
 ## 执行停止规则
 
