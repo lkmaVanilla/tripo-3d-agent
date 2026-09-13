@@ -75,7 +75,7 @@ func (s *Store) Create(ctx context.Context, v Session) error {
 	if _, err = tx.ExecContext(ctx, "INSERT INTO sessions(id,owner,data) VALUES(?,?,?)", v.ID, v.Owner, b); err != nil {
 		return err
 	}
-	if err = insertEvent(ctx, tx, v.ID, "request", map[string]any{"text": v.Request, "model": v.Model, "source": v.Source, "prompt_version": PromptVersion, "tripo_model": "v3.1-20260211"}); err != nil {
+	if err = insertEvent(ctx, tx, v.ID, "request", map[string]any{"text": v.Request, "model": v.Model, "source": v.Source, "prompt_version": executionVersion(v), "tripo_model": "v3.1-20260211"}); err != nil {
 		return err
 	}
 	return tx.Commit()
@@ -139,6 +139,7 @@ func (s *Store) Edit(ctx context.Context, id string, fn func(*Session) error, ki
 	if err = json.Unmarshal(b, &v); err != nil {
 		return v, err
 	}
+	wasTerminal := v.Terminal()
 	if fn != nil {
 		if err = fn(&v); err != nil {
 			return v, err
@@ -152,6 +153,22 @@ func (s *Store) Edit(ctx context.Context, id string, fn func(*Session) error, ki
 		return v, err
 	}
 	if kind != "" {
+		// 新结果与终态同事务写入既有结束事件，原始说明保留在原字段中。
+		if !wasTerminal && v.Terminal() && v.Result != nil {
+			payload := map[string]any{}
+			encoded, e := json.Marshal(data)
+			if e != nil {
+				return v, e
+			}
+			if string(encoded) != "null" {
+				if e = json.Unmarshal(encoded, &payload); e != nil {
+					return v, e
+				}
+			}
+			payload["result"] = v.Result
+			payload["final"] = v.Final
+			data = payload
+		}
 		if err = insertEvent(ctx, tx, id, kind, data); err != nil {
 			return v, err
 		}
@@ -162,6 +179,26 @@ func (s *Store) Edit(ctx context.Context, id string, fn func(*Session) error, ki
 
 // insertEvent 使用调用方事务，保证事件只描述同次提交中已经生效的业务事实。
 func insertEvent(ctx context.Context, tx *sql.Tx, id, kind string, data any) error {
+	// 保留原始内容但注明来源，不把模型解释或外部错误正文认证成程序事实。
+	if kind == "agent_proposal" || kind == "agent_finished" || kind == "model_error" || kind == "tool_failed" {
+		b, err := json.Marshal(data)
+		if err != nil {
+			return err
+		}
+		payload := map[string]any{}
+		if string(b) != "null" {
+			if err = json.Unmarshal(b, &payload); err != nil {
+				return err
+			}
+		}
+		payload["raw_text_verification"] = "unverifiable"
+		if kind == "agent_proposal" || kind == "agent_finished" {
+			payload["raw_text_source"] = "agent"
+		} else {
+			payload["raw_text_source"] = "execution_error"
+		}
+		data = payload
+	}
 	b, err := json.Marshal(data)
 	if err != nil {
 		return err

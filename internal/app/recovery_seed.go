@@ -59,7 +59,14 @@ func validateProtocol(in []*schema.Message) error {
 
 // newReplaySeed 只接收一个工具调用的完整提议，使恢复时能唯一确定要重建的暂停。
 // 输入必须已闭合；最后的 Response 故意保留待执行调用，由恢复 Runner 再次进入该工具。
-func newReplaySeed(input []*schema.Message, response *schema.Message, modelName string) (*ReplaySeed, error) {
+func newReplaySeed(input []*schema.Message, response *schema.Message, modelName string, versions ...string) (*ReplaySeed, error) {
+	version := PromptVersion // 旧公开协议夹具默认 v1；运行入口必须显式传入会话版本。
+	if len(versions) > 0 {
+		version = versions[0]
+	}
+	if _, err := profileForVersion(version); err != nil {
+		return nil, err
+	}
 	if err := validateProtocol(input); err != nil {
 		return nil, err
 	}
@@ -74,7 +81,7 @@ func newReplaySeed(input []*schema.Message, response *schema.Message, modelName 
 	if err != nil {
 		return nil, err
 	}
-	seed := &ReplaySeed{Version: recoveryVersion, DecisionID: newID(), ToolCallID: call.ID, ToolName: call.Function.Name, ArgumentsHash: tokenHash(call.Function.Arguments), Model: modelName, PromptVersion: PromptVersion, Input: messages[:len(messages)-1], Response: messages[len(messages)-1]}
+	seed := &ReplaySeed{Version: recoveryVersion, DecisionID: newID(), ToolCallID: call.ID, ToolName: call.Function.Name, ArgumentsHash: tokenHash(call.Function.Arguments), Model: modelName, PromptVersion: version, Input: messages[:len(messages)-1], Response: messages[len(messages)-1]}
 	seed.InputHash = tokenHash(jsonString(seed.Input))
 	seed.ResponseHash = tokenHash(jsonString(seed.Response))
 	return seed, nil
@@ -82,9 +89,15 @@ func newReplaySeed(input []*schema.Message, response *schema.Message, modelName 
 
 // validateReplaySeed 验证版本、消息完整性以及调用身份与参数的一致性。
 // 此处通过仅说明种子自身有效；它与当前问题、资产及生产约束的对应关系由 validatePending 校验。
-func validateReplaySeed(seed *ReplaySeed) error {
-	if seed == nil || seed.Version != recoveryVersion || seed.DecisionID == "" || seed.Model == "" || seed.PromptVersion != PromptVersion || seed.Response == nil {
+func validateReplaySeed(seed *ReplaySeed, versions ...string) error {
+	if seed == nil || seed.Version != recoveryVersion || seed.DecisionID == "" || seed.Model == "" || seed.Response == nil {
 		return recoveryError("recovery_seed_invalid")
+	}
+	if _, err := profileForVersion(seed.PromptVersion); err != nil {
+		return err
+	}
+	if len(versions) > 0 && versions[0] != "" && versions[0] != seed.PromptVersion {
+		return recoveryError("execution_version_mismatch")
 	}
 	if seed.InputHash != tokenHash(jsonString(seed.Input)) || seed.ResponseHash != tokenHash(jsonString(seed.Response)) {
 		return recoveryError("recovery_seed_invalid")

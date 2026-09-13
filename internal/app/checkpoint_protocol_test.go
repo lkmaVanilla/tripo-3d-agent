@@ -74,10 +74,15 @@ func (s *protocolCheckpointStore) Get(_ context.Context, key string) ([]byte, bo
 // legacy 模式额外恢复旧版本的 Skill 中间件配置，供旧检查点夹具使用。
 func newProtocolRunner(t *testing.T, m model.BaseChatModel, store adk.CheckPointStore, tools []tool.BaseTool, legacy bool) *adk.Runner {
 	t.Helper()
+	profile, _ := profileForVersion(PromptVersion)
+	// 新会话故障夹具传入自己的固定配置；旧协议夹具永远默认冻结的 v1。
+	if counted, ok := m.(*countedModel); ok && counted.coordinator != nil && counted.coordinator.profile.Version != "" {
+		profile = counted.coordinator.profile
+	}
 	cfg := &adk.ChatModelAgentConfig{
 		Name:          "tripo_asset_agent",
-		Description:   "静态道具生产与技术纠偏",
-		Instruction:   instruction,
+		Description:   profile.Description,
+		Instruction:   profile.Instruction,
 		Model:         m,
 		MaxIterations: 20,
 		ToolsConfig: adk.ToolsConfig{
@@ -87,7 +92,7 @@ func newProtocolRunner(t *testing.T, m model.BaseChatModel, store adk.CheckPoint
 	}
 	if legacy {
 		// b91ab83 使用此中间件；列举 Skill 无副作用，夹具不会加载需要 Service 的 Skill。
-		handler, err := skill.NewMiddleware(context.Background(), &skill.Config{Backend: skillBackend{}, UseChinese: true})
+		handler, err := skill.NewMiddleware(context.Background(), &skill.Config{Backend: skillBackend{profile: profile}, UseChinese: true})
 		if err != nil {
 			t.Fatal(err)
 		}

@@ -24,10 +24,11 @@ import (
 
 // skillFiles 将版本化 Skill 随二进制发布，运行时无需读取可变的外部提示文件。
 //
-//go:embed skills/*.md
+//go:embed skills/*.md skills/v2/*.md
 var skillFiles embed.FS
 
-// PromptVersion 随执行轨迹记录，便于区分模型行为所依据的提示版本。
+// PromptVersion 与 instruction 冻结为 49a1364 的 v1，不能指向当前最新版本。
+// 新会话使用 CurrentPromptVersion；旧消息与旧协议夹具仍使用这些原字节。
 const PromptVersion = "asset-agent-v1"
 
 // instruction 约束模型如何决策；额度、状态迁移和产物验收仍由 Go 强制执行。
@@ -49,8 +50,19 @@ func (s *Service) deepSeekModel(ctx context.Context) (model.BaseChatModel, error
 // runner 为一次执行或恢复创建单 Agent：Eino 管理消息与工具循环，Go 管理业务事实。
 // 同一协调器注入模型、工具、Skill 和检查点存储，使恢复模式在各入口一致生效。
 func (s *Service) runner(ctx context.Context, id string, c *pauseCoordinator) (*adk.Runner, error) {
+	v, err := s.store.Get(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if err = s.validateExecutionVersion(ctx, v); err != nil {
+		return nil, err
+	}
+	profile, err := resolveExecutionProfile(v)
+	if err != nil {
+		return nil, err
+	}
+	c.profile = profile
 	var base model.BaseChatModel
-	var err error
 	// 校验或重建检查点时不创建真实模型客户端，避免恢复变成一次新的决策。
 	if c.mode == "normal" {
 		base, err = s.modelFactory(ctx)
@@ -62,12 +74,12 @@ func (s *Service) runner(ctx context.Context, id string, c *pauseCoordinator) (*
 	if err != nil {
 		return nil, err
 	}
-	backend := skillBackend{s: s, id: id, coordinator: c}
+	backend := skillBackend{s: s, id: id, coordinator: c, profile: profile}
 	skillHandler, err := skill.NewMiddleware(ctx, &skill.Config{Backend: backend, UseChinese: true})
 	if err != nil {
 		return nil, err
 	}
-	agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{Name: "tripo_asset_agent", Description: "静态道具生产与技术纠偏", Instruction: instruction, Model: &countedModel{BaseChatModel: base, s: s, id: id, coordinator: c}, MaxIterations: s.Config.MaxCalls, ToolsConfig: adk.ToolsConfig{ToolsNodeConfig: compose.ToolsNodeConfig{Tools: tools, ExecuteSequentially: true}, ReturnDirectly: map[string]bool{"finish_request": true}}, Handlers: []adk.ChatModelAgentMiddleware{skillHandler}})
+	agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{Name: "tripo_asset_agent", Description: profile.Description, Instruction: profile.Instruction, Model: &countedModel{BaseChatModel: base, s: s, id: id, coordinator: c}, MaxIterations: s.Config.MaxCalls, ToolsConfig: adk.ToolsConfig{ToolsNodeConfig: compose.ToolsNodeConfig{Tools: tools, ExecuteSequentially: true}, ReturnDirectly: map[string]bool{"finish_request": true}}, Handlers: []adk.ChatModelAgentMiddleware{skillHandler}})
 	if err != nil {
 		return nil, err
 	}
@@ -83,6 +95,13 @@ type countedModel struct {
 	coordinator *pauseCoordinator
 }
 
+// modelCallError 只标识实际提供方模型调用失败；原始原因仍可追踪或用 errors.Is 检查。
+// 预算、停止与恢复校验不使用此类型，避免把程序边界误写成供应商失败。
+type modelCallError struct{ cause error }
+
+func (e *modelCallError) Error() string { return e.cause.Error() }
+func (e *modelCallError) Unwrap() error { return e.cause }
+
 // Generate 正常模式调用模型，重建模式只返回一次已保存且输入匹配的完整响应。
 func (m *countedModel) Generate(ctx context.Context, in []*schema.Message, opts ...model.Option) (*schema.Message, error) {
 	c := m.coordinator
@@ -91,7 +110,7 @@ func (m *countedModel) Generate(ctx context.Context, in []*schema.Message, opts 
 		if c.mode != "rebuild" || c.replayed {
 			return nil, recoveryError("recovery_seed_invalid")
 		}
-		if err := validateReplaySeed(c.seed); err != nil {
+		if err := validateReplaySeed(c.seed, c.profile.Version); err != nil {
 			return nil, err
 		}
 		if tokenHash(jsonString(in)) != c.seed.InputHash {
@@ -103,6 +122,18 @@ func (m *countedModel) Generate(ctx context.Context, in []*schema.Message, opts 
 			return nil, err
 		}
 		return messages[0], nil
+	}
+	// 普通模型入口也从持久会话解析版本，测试或旧 Runner 不能隐式改用最新版本。
+	current, err := m.s.store.Get(ctx, m.id)
+	if err != nil {
+		return nil, err
+	}
+	profile, err := resolveExecutionProfile(current)
+	if err != nil {
+		return nil, err
+	}
+	if c != nil && c.profile.Version != "" && c.profile.Version != profile.Version {
+		return nil, recoveryError("execution_version_mismatch")
 	}
 	// 先持久化消耗再发网络请求，调用失败或进程退出也不会让预算“退回”。
 	v, err := m.s.store.Edit(ctx, m.id, func(v *Session) error {
@@ -118,7 +149,7 @@ func (m *countedModel) Generate(ctx context.Context, in []*schema.Message, opts 
 		v.ModelCalls++
 		v.History = in
 		return nil
-	}, "model_call", map[string]any{"model": "deepseek-v4-pro", "prompt_version": PromptVersion, "thinking": "enabled", "reasoning_effort": "high", "provider_revision": "unavailable"})
+	}, "model_call", map[string]any{"model": "deepseek-v4-pro", "prompt_version": profile.Version, "thinking": "enabled", "reasoning_effort": "high", "provider_revision": "unavailable"})
 	if err != nil {
 		return nil, err
 	}
@@ -143,7 +174,7 @@ func (m *countedModel) Generate(ctx context.Context, in []*schema.Message, opts 
 	msg, err := m.BaseChatModel.Generate(callCtx, messages, opts...)
 	if err != nil {
 		_ = m.s.event(m.id, "model_error", map[string]string{"error": m.s.redact(err.Error())})
-		return nil, err
+		return nil, &modelCallError{cause: err}
 	}
 	_, err = m.s.store.Edit(context.Background(), m.id, func(v *Session) error { v.History = append(append([]*schema.Message(nil), in...), msg); return nil }, "agent_proposal", map[string]any{"content": msg.Content, "tool_calls": msg.ToolCalls})
 	if err != nil {
@@ -156,7 +187,7 @@ func (m *countedModel) Generate(ctx context.Context, in []*schema.Message, opts 
 	}
 	// 将已接受提议冻结为种子；随后若工具需要暂停，可在首次检查点缺失时重建。
 	if c != nil && len(msg.ToolCalls) == 1 {
-		c.seed, err = newReplaySeed(in, msg, v.Model)
+		c.seed, err = newReplaySeed(in, msg, v.Model, profile.Version)
 		if err != nil {
 			return nil, err
 		}
@@ -178,15 +209,21 @@ type skillBackend struct {
 	s           *Service
 	id          string
 	coordinator *pauseCoordinator
+	profile     executionProfile
 }
 
 var skillDescriptions = map[string]string{"intent": "理解静态道具需求，澄清冲突并公开默认假设", "generation": "把已确认意图转为 Tripo 生成参数", "correction": "根据真实技术反馈与预算选择纠偏或停止"}
 
 // List 只提供名称和用途，让模型在需要时再加载完整内容。
 func (b skillBackend) List(ctx context.Context) ([]skill.FrontMatter, error) {
+	profile, err := b.executionProfile(ctx)
+	if err != nil {
+		return nil, err
+	}
 	out := []skill.FrontMatter{}
 	for _, name := range []string{"intent", "generation", "correction"} {
-		out = append(out, skill.FrontMatter{Name: name, Description: skillDescriptions[name]})
+		description, _ := profile.skillDescription(name)
+		out = append(out, skill.FrontMatter{Name: name, Description: description})
 	}
 	return out, nil
 }
@@ -196,19 +233,38 @@ func (b skillBackend) Get(ctx context.Context, name string) (skill.Skill, error)
 	if b.coordinator != nil && b.coordinator.mode != "normal" {
 		return skill.Skill{}, recoveryError("recovery_seed_invalid")
 	}
-	description, ok := skillDescriptions[name]
-	if !ok {
-		return skill.Skill{}, fmt.Errorf("未知 Skill")
-	}
-	content, err := skillFiles.ReadFile("skills/" + name + ".md")
+	profile, err := b.executionProfile(ctx)
 	if err != nil {
 		return skill.Skill{}, err
 	}
-	hash := sha256.Sum256(content)
-	if err = b.s.event(b.id, "skill_loaded", map[string]string{"name": name, "version": hex.EncodeToString(hash[:])}); err != nil {
+	description, ok := profile.skillDescription(name)
+	if !ok {
+		return skill.Skill{}, fmt.Errorf("未知 Skill")
+	}
+	content, err := profile.skillContent(name)
+	if err != nil {
 		return skill.Skill{}, err
 	}
-	return skill.Skill{FrontMatter: skill.FrontMatter{Name: name, Description: description}, Content: string(content), BaseDirectory: "embedded://skills/" + name}, nil
+	hash := sha256.Sum256([]byte(content))
+	if err = b.s.event(b.id, "skill_loaded", map[string]string{"name": name, "version": hex.EncodeToString(hash[:]), "prompt_version": profile.Version}); err != nil {
+		return skill.Skill{}, err
+	}
+	return skill.Skill{FrontMatter: skill.FrontMatter{Name: name, Description: description}, Content: content, BaseDirectory: "embedded://skills/" + name}, nil
+}
+
+// executionProfile 保留无 Service 的冻结协议夹具；实际运行由 Runner 显式传入已校验配置。
+func (b skillBackend) executionProfile(ctx context.Context) (executionProfile, error) {
+	if b.profile.Version != "" {
+		return profileForVersion(b.profile.Version)
+	}
+	if b.s != nil && b.s.store != nil && b.id != "" {
+		v, err := b.s.store.Get(ctx, b.id)
+		if err != nil {
+			return executionProfile{}, err
+		}
+		return resolveExecutionProfile(v)
+	}
+	return profileForVersion(PromptVersion)
 }
 
 // 以下输入类型同时生成工具参数 schema；它们表达模型提议，仍需执行前校验。
@@ -235,6 +291,11 @@ type finishInput struct {
 // tools 将模型可选动作收敛到固定入口，并在每个入口校验当前业务事实。
 // 模型负责选择澄清、生成、纠偏或停止，工具不允许绕过 Go 的执行边界。
 func (s *Service) tools(id string, c *pauseCoordinator) ([]tool.BaseTool, error) {
+	profile, err := (skillBackend{s: s, id: id, profile: c.profile}).executionProfile(context.Background())
+	if err != nil {
+		return nil, err
+	}
+	c.profile = profile
 	out := []tool.BaseTool{}
 	add := func(t tool.InvokableTool, err error) error {
 		if err != nil {
@@ -338,7 +399,7 @@ func (s *Service) tools(id string, c *pauseCoordinator) ([]tool.BaseTool, error)
 	})); err != nil {
 		return nil, err
 	}
-	if err := add(utils.InferTool("generate_asset", "生成或重新生成静态道具，程序管理异步任务并返回实测报告。首次和纠偏共用预算。", func(ctx context.Context, in *generationInput) (string, error) {
+	if err := add(utils.InferTool("generate_asset", profile.toolDescription("generate_asset", "生成或重新生成静态道具，程序管理异步任务并返回实测报告。首次和纠偏共用预算。"), func(ctx context.Context, in *generationInput) (string, error) {
 		return s.prepareProduction(ctx, id, c, "generate", tripo.Params{Prompt: in.Prompt, FaceLimit: in.TargetTriangles, TextureQuality: in.TextureQuality}, "", in.Reason)
 	})); err != nil {
 		return nil, err
@@ -348,39 +409,8 @@ func (s *Service) tools(id string, c *pauseCoordinator) ([]tool.BaseTool, error)
 	})); err != nil {
 		return nil, err
 	}
-	if err := add(utils.InferTool("finish_request", "交付有检查证据的模型或解释停止原因；结束当前资产请求。", func(ctx context.Context, in *finishInput) (string, error) {
-		if c.mode != "normal" {
-			return "", recoveryError("recovery_seed_invalid")
-		}
-		if strings.TrimSpace(in.Explanation) == "" {
-			return s.block(id, "invalid_explanation", "必须解释交付或停止依据")
-		}
-		v, err := s.store.Edit(ctx, id, func(v *Session) error {
-			if err := checkExecution(*v, time.Now()); err != nil {
-				return err
-			}
-			// 交付必须引用本请求已有且技术检查通过的产物，不能只接受模型的成功宣称。
-			if in.Deliver {
-				found := false
-				for _, a := range v.Artifacts {
-					if a.ID == in.ArtifactID && a.Report.Passed {
-						found = true
-					}
-				}
-				if !found {
-					return fmt.Errorf("没有可支持交付结论的技术检查证据")
-				}
-				v.SelectedArtifact = in.ArtifactID
-				v.Finish("completed", in.Explanation+"\n未进行视觉检查，技术通过不代表外观符合需求。")
-			} else {
-				v.Finish("failed", in.Explanation)
-			}
-			return nil
-		}, "agent_finished", in)
-		if err != nil {
-			return s.block(id, "false_validation", err.Error())
-		}
-		return jsonString(v.View()), nil
+	if err := add(utils.InferTool("finish_request", profile.toolDescription("finish_request", "交付有检查证据的模型或解释停止原因；结束当前资产请求。"), func(ctx context.Context, in *finishInput) (string, error) {
+		return s.finishRequest(ctx, id, c, in)
 	})); err != nil {
 		return nil, err
 	}

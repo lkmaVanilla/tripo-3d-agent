@@ -22,6 +22,7 @@ type pauseCoordinator struct {
 	s                             *Service
 	id, mode                      string
 	expected                      int64
+	profile                       executionProfile
 	seed                          *ReplaySeed
 	pause                         *PendingPause
 	resuming, replayed, committed bool
@@ -45,6 +46,9 @@ func draftHash(p *PendingPause) string {
 // validatePending 证明草案属于当前会话的下一代，并与已接受的模型提议相符。
 // 已验证暂停的再次编码允许没有 Seed；这种草案只能依靠原检查点恢复，不能凭空重建。
 func validatePending(v Session) error {
+	if _, err := resolveExecutionProfile(v); err != nil {
+		return err
+	}
 	p := v.PendingPause
 	if p == nil || p.Point.SessionID != v.ID || p.Point.Key != v.ID || p.Point.Generation != v.generation()+1 || p.ExpectedGeneration != v.generation() || p.Point.Version != recoveryVersion || p.Point.PauseID == "" || p.Point.RefID == "" || p.DraftHash != draftHash(p) {
 		return recoveryError("recovery_seed_invalid")
@@ -55,7 +59,7 @@ func validatePending(v Session) error {
 	if p.Existing && p.Seed == nil {
 		return nil
 	}
-	if err := validateReplaySeed(p.Seed); err != nil {
+	if err := validateReplaySeed(p.Seed, executionVersion(v)); err != nil {
 		return err
 	}
 	if p.Seed.Model != v.Model {

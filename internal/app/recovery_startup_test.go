@@ -131,9 +131,10 @@ func TestRecoveryStartupLegacyAnswerEvidence(t *testing.T) {
 				t.Fatal(err)
 			}
 			if evidence == "lost" || evidence == "ambiguous_history" || evidence == "answer_for_other_call" {
-				if !v.Terminal() || v.Status != "failed" || !strings.Contains(v.Final, "legacy_recovery_unavailable") {
+				if !v.Terminal() || v.Status != "failed" || v.Result == nil || v.Result.Reason != "recovery_failed" {
 					t.Fatalf("unprovable answer did not fail clearly: status=%s final=%q answers=%v", v.Status, v.Final, v.Answers)
 				}
+				assertRecoveryReasonRecorded(t, s, f.Key, "legacy_recovery_unavailable")
 			} else {
 				if v.Terminal() || v.ResumePoint == nil || v.Answers[f.PauseState].Text != "卡通" || v.Clarifications != f.Session.Clarifications || v.ModelCalls != f.Session.ModelCalls {
 					t.Fatalf("accepted answer was not migrated: %+v", v)
@@ -224,9 +225,10 @@ func TestRecoveryStartupUnknownSubmissionNeverResends(t *testing.T) {
 		s := startupService(t, f.Dir, p, &calls)
 		s.Start()
 		v, err := s.store.Get(context.Background(), f.Key)
-		if err != nil || !v.Terminal() || v.Status != "failed" || !strings.Contains(v.Final, "submission_outcome_unknown") || v.Production != f.Session.Production || v.ModelCalls != f.Session.ModelCalls || !v.Deadline.Equal(f.Session.Deadline) || v.Current.Stage != "submitting" || v.Current.TaskID != "" {
+		if err != nil || !v.Terminal() || v.Status != "failed" || v.Result == nil || v.Result.Reason != "submission_unknown" || v.Production != f.Session.Production || v.ModelCalls != f.Session.ModelCalls || !v.Deadline.Equal(f.Session.Deadline) || v.Current.Stage != "submitting" || v.Current.TaskID != "" {
 			t.Fatalf("unknown submission not preserved and stopped: %+v, %v", v, err)
 		}
+		assertRecoveryReasonRecorded(t, s, f.Key, "submission_outcome_unknown")
 		if err = s.Close(); err != nil {
 			t.Fatal(err)
 		}
@@ -234,6 +236,21 @@ func TestRecoveryStartupUnknownSubmissionNeverResends(t *testing.T) {
 	if calls.Load() != 0 || p.Count() != 0 || p.queries.Load() != 0 {
 		t.Fatalf("unknown submission replayed: model=%d submit=%d query=%d", calls.Load(), p.Count(), p.queries.Load())
 	}
+}
+
+// 程序恢复代码仍保留于审计事件，不再要求出现在面向用户的正式事实正文中。
+func assertRecoveryReasonRecorded(t *testing.T, s *Service, id, reason string) {
+	t.Helper()
+	events, err := s.store.Events(context.Background(), id, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, e := range events {
+		if e.Kind == "recovery_rejected" && strings.Contains(string(e.Data), reason) {
+			return
+		}
+	}
+	t.Fatalf("missing recovery evidence: %s", reason)
 }
 
 // TestRecoveryStartupLegacyCompleteSeedWithoutCheckpoint 删除旧检查点但保留完整已接受提议，

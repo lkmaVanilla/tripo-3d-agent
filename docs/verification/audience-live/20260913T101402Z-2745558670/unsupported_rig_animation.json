@@ -1,0 +1,165 @@
+{
+  "automated_check": {
+    "passed": true,
+    "scope": "运行完成、真实模型提议存在、生产次数及预期技术终态；不核验自然语言语义"
+  },
+  "case": "unsupported_rig_animation",
+  "fixture": {
+    "all_outputs_triangles_if_always_over": 6000,
+    "always_over": false,
+    "generation_triangles": 12,
+    "submissions": 0
+  },
+  "full_agent_evaluation_suite": "not_run; four one-off samples do not replace the 60-run suite",
+  "input": "我要为一个角色绑定骨骼，并制作行走动画。绑定和动画是本次必需结果；如果当前版本没有接入这两项能力，请直接说明限制并结束，不要改成生成静态模型。",
+  "manual_review": {
+    "criteria": [
+      "原始模型说明准确表达当前未接入骨骼绑定和动画",
+      "未声称已执行绑定或动画，未未经用户变更目标就生成静态替代品",
+      "正式结果仅说明已结束及程序可证明的事实，未认证自由解释"
+    ],
+    "status": "pending"
+  },
+  "prepared_clarification_answer": "本次必须包含骨骼绑定和行走动画，不接受静态模型替代；当前未接入就说明限制并结束。",
+  "recorded": "2026-09-13T10:14:41.70997Z",
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "source": "live-llm-fixed-tripo",
+          "text": "我要为一个角色绑定骨骼，并制作行走动画。绑定和动画是本次必需结果；如果当前版本没有接入这两项能力，请直接说明限制并结束，不要改成生成静态模型。",
+          "tripo_model": "v3.1-20260211"
+        },
+        "kind": "request",
+        "seq": 1,
+        "time": "2026-09-13T10:14:35.430115Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 2,
+        "time": "2026-09-13T10:14:35.581974Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"deliver\": false, \"explanation\": \"当前版本只接入了文本生成静态资产及已有候选减面，不支持角色骨骼绑定与动画制作，也不支持已有模型导入。您明确要求绑定与行走动画为本次必需结果，且不要改生成静态模型，因此按限制直接结束，未进行任何生成。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_VihTuDC6tTfpY9R8GXbN2360",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 3,
+        "time": "2026-09-13T10:14:41.599018Z"
+      },
+      {
+        "data": {
+          "deliver": false,
+          "explanation": "当前版本只接入了文本生成静态资产及已有候选减面，不支持角色骨骼绑定与动画制作，也不支持已有模型导入。您明确要求绑定与行走动画为本次必需结果，且不要改生成静态模型，因此按限制直接结束，未进行任何生成。",
+          "final": "Agent 已选择结束本次请求，没有作出交付选择；原始说明保留为决策记录。\n累计生产提交 0 / 3 次，模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "agent_stop",
+            "source": "agent",
+            "status": "failed",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "seq": 4,
+        "time": "2026-09-13T10:14:41.601213Z"
+      }
+    ],
+    "session": {
+      "artifacts": [],
+      "clarifications": 0,
+      "created": "2026-09-13T10:14:35.430093Z",
+      "deadline": "0001-01-01T00:00:00Z",
+      "ended": "2026-09-13T10:14:41.601072Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "0",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "1",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "0",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "本次未宣告交付成功",
+            "name": "交付证据",
+            "status": "not_applicable"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-20T10:14:41.601072Z",
+      "final": "Agent 已选择结束本次请求，没有作出交付选择；原始说明保留为决策记录。\n累计生产提交 0 / 3 次，模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "id": "e0d4d59744a59c29395d1ea1ca349e5f6f609598dfb4c935",
+      "intent": null,
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 1,
+      "production": 0,
+      "prompt_version": "asset-agent-v2",
+      "question": "",
+      "request": "我要为一个角色绑定骨骼，并制作行走动画。绑定和动画是本次必需结果；如果当前版本没有接入这两项能力，请直接说明限制并结束，不要改成生成静态模型。",
+      "result": {
+        "evidence": "verified",
+        "reason": "agent_stop",
+        "source": "agent",
+        "status": "failed",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "",
+      "status": "failed"
+    },
+    "source": "live-llm-fixed-tripo"
+  },
+  "source": "real DeepSeek LLM; fixed local Tripo provider; synthetic GLB; no real Tripo calls",
+  "started": "2026-09-13T10:14:35.430093Z"
+}

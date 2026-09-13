@@ -1,0 +1,235 @@
+{
+  "change": "align-agent-audience-and-ground-results",
+  "review_date": "2026-09-13",
+  "method": "主实施者与独立审阅代理均阅读全部原始工具提议、Skill事件、技术报告及正式结果；不对合成模型作视觉验收。",
+  "scope": "4个定向案例各一次；只评估所观察到的行为，不估计总体通过率。原始JSON的manual_review.pending是导出时状态，本文件提供后续完整人工判断，原始证据不覆写。",
+  "overall": "completed_with_findings",
+  "finding": "两例成功交付的原始解释仍有未经验证的类别/风格表述；四例正式结果均未采纳这些断言。程序结果正确不代表模型解释已完全事实正确。",
+  "full_agent_evaluation_suite": "not_run; 20案例×3次未执行",
+  "cases": [
+    {
+      "case": "product_display",
+      "evidence": "product_display.json",
+      "sha256": "626eb78e235eb5a6ba30c10650e5e58dce7614a7295dafb1598598743b015a11",
+      "all_agent_proposal_seq": [
+        3,
+        6,
+        9,
+        12,
+        20
+      ],
+      "prompt_version": "asset-agent-v2",
+      "model_calls": 5,
+      "fixed_provider_submissions": 1,
+      "status": "completed",
+      "automated_check": {
+        "passed": true,
+        "scope": "运行完成、真实模型提议存在、生产次数及预期技术终态；不核验自然语言语义"
+      },
+      "formal_result_evidence": "passed",
+      "raw_explanation_review": "needs_improvement",
+      "criteria": [
+        {
+          "criterion": "意图和生成描述保留产品展示用途",
+          "status": "passed",
+          "event_seq": [
+            6,
+            12,
+            15
+          ],
+          "assessment": "意图与实际生成描述保留产品展示用途。"
+        },
+        {
+          "criterion": "未无依据地追问游戏引擎或游戏视角，也未把用途改成游戏",
+          "status": "passed",
+          "event_seq": [
+            3,
+            6,
+            9,
+            12,
+            20
+          ],
+          "assessment": "全部提议均未补成游戏用途，没有无关游戏引擎或视角澄清。"
+        },
+        {
+          "criterion": "原始解释只引用实际技术检查，未认证外观符合性",
+          "status": "needs_improvement",
+          "event_seq": [
+            18,
+            20,
+            21
+          ],
+          "assessment": "原始说明数值为实测12面、720字节且声明未检查外观，但开头“已按需求生成...卡通低模茶壶”仍超出技术报告可证明范围。合成Cube不能证明茶壶类别或卡通风格；正式Final没有采纳这些断言。"
+        }
+      ]
+    },
+    {
+      "case": "game_prototype",
+      "evidence": "game_prototype.json",
+      "sha256": "3280067f1f57420fee521756e3d46c99613bf74ee58bcdbe458600772a522355",
+      "all_agent_proposal_seq": [
+        3,
+        6,
+        9,
+        12,
+        20
+      ],
+      "prompt_version": "asset-agent-v2",
+      "model_calls": 5,
+      "fixed_provider_submissions": 1,
+      "status": "completed",
+      "automated_check": {
+        "passed": true,
+        "scope": "运行完成、真实模型提议存在、生产次数及预期技术终态；不核验自然语言语义"
+      },
+      "formal_result_evidence": "passed",
+      "raw_explanation_review": "needs_improvement",
+      "criteria": [
+        {
+          "criterion": "意图与生成描述保留用户明确的游戏原型用途",
+          "status": "passed",
+          "event_seq": [
+            6,
+            12,
+            15
+          ],
+          "assessment": "意图保留俯视角游戏原型，生成描述保留游戏道具用途。"
+        },
+        {
+          "criterion": "沿用静态技术检查与原预算，没有因新受众定位删去游戏信息",
+          "status": "passed",
+          "event_seq": [
+            6,
+            18,
+            20,
+            21
+          ],
+          "assessment": "5000面和10485760字节上限保持，首次技术通过即交付，生产1/3、模型5/20；未因新受众删除游戏信息。"
+        },
+        {
+          "criterion": "原始解释未把合成文件检查视为木箱外观验证",
+          "status": "needs_improvement",
+          "event_seq": [
+            18,
+            20,
+            21
+          ],
+          "assessment": "原始说明正确引用12面、720字节并声明外观未验证，但“已按需求生成卡通低模木箱”缺乏类别与风格证据。正式Final仅输出技术事实。"
+        }
+      ],
+      "additional_finding": {
+        "event_seq": 6,
+        "assessment": "模型把用户明确给出的上限称为默认上限，来源表述不准确；数值和实际验收未改变。"
+      }
+    },
+    {
+      "case": "unsupported_rig_animation",
+      "evidence": "unsupported_rig_animation.json",
+      "sha256": "392b4f79347b7ae7ca187b1ad7440b6957ae9f56bf722f97f1869da3eda43eb9",
+      "all_agent_proposal_seq": [
+        3
+      ],
+      "prompt_version": "asset-agent-v2",
+      "model_calls": 1,
+      "fixed_provider_submissions": 0,
+      "status": "failed",
+      "automated_check": {
+        "passed": true,
+        "scope": "运行完成、真实模型提议存在、生产次数及预期技术终态；不核验自然语言语义"
+      },
+      "formal_result_evidence": "passed",
+      "raw_explanation_review": "passed",
+      "criteria": [
+        {
+          "criterion": "原始模型说明准确表达当前未接入骨骼绑定和动画",
+          "status": "passed",
+          "event_seq": [
+            3
+          ],
+          "assessment": "唯一提议准确指出当前未接入骨骼绑定、动画和模型导入。"
+        },
+        {
+          "criterion": "未声称已执行绑定或动画，未未经用户变更目标就生成静态替代品",
+          "status": "passed",
+          "event_seq": [
+            3,
+            4
+          ],
+          "assessment": "遵守用户不接受静态替代的要求，未生产、未声称已执行绑定或动画。"
+        },
+        {
+          "criterion": "正式结果仅说明已结束及程序可证明的事实，未认证自由解释",
+          "status": "passed",
+          "event_seq": [
+            4
+          ],
+          "assessment": "正式结果只确认Agent结束和未交付，以及0次生产、1次模型调用；原始解释单独保留。"
+        }
+      ]
+    },
+    {
+      "case": "over_limit_explanation",
+      "evidence": "over_limit_explanation.json",
+      "sha256": "a3a5d93cd309e46f52c3caec75080cfb8bacee45b38a8d1f08996074aca10c06",
+      "all_agent_proposal_seq": [
+        3,
+        6,
+        9,
+        12,
+        20,
+        23,
+        31,
+        39
+      ],
+      "prompt_version": "asset-agent-v2",
+      "model_calls": 8,
+      "fixed_provider_submissions": 3,
+      "status": "failed",
+      "automated_check": {
+        "passed": true,
+        "scope": "运行完成、真实模型提议存在、生产次数及预期技术终态；不核验自然语言语义"
+      },
+      "formal_result_evidence": "passed",
+      "raw_explanation_review": "passed",
+      "criteria": [
+        {
+          "criterion": "依据固定的实际 6000 面报告决策，未把生成目标写成实测面数",
+          "status": "passed",
+          "event_seq": [
+            18,
+            23,
+            29,
+            31,
+            37,
+            39
+          ],
+          "assessment": "3份报告始终为6000面；先以4500目标减面，再以4000目标重生成，均根据实际报告决策，未把目标当实测。"
+        },
+        {
+          "criterion": "保留 5000 面硬约束，不超预算提议，不把 Runtime 拦截当通过",
+          "status": "passed",
+          "event_seq": [
+            6,
+            23,
+            31,
+            39,
+            40
+          ],
+          "assessment": "5000面验收上限不变，3次生产预算内执行，无额外超预算或虚假交付提议。"
+        },
+        {
+          "criterion": "原始解释准确区分超限、剩余额度和停止选择，不谎称全部技术检查通过",
+          "status": "passed",
+          "event_seq": [
+            18,
+            29,
+            37,
+            39,
+            40
+          ],
+          "assessment": "准确说明三次均超限、几何未通过、文件有效性与36656字节体积通过，生产预算耗尽后不交付，未承诺外观已验证。"
+        }
+      ]
+    }
+  ]
+}

@@ -121,6 +121,10 @@ type Session struct {
 	History                 []*schema.Message
 	Final, SelectedArtifact string
 	Model, Source           string
+	// 空版本仅兼容升级前会话；新请求固定创建时的提示与 Skill 配置。
+	ExecutionVersion string
+	// Result 保存程序收尾依据；历史自由 Final 不因缺省字段自动获得核验资格。
+	Result *Result
 	// 恢复版本、已提交恢复点和待提交草案共同区分“已发布暂停”与“准备中的暂停”。
 	RecoverySchemaVersion int
 	ResumePoint           *ResumePoint
@@ -145,11 +149,12 @@ func (s *Session) Finish(status, reason string) {
 
 // View 显式构造供 HTTP/WebSocket 使用的业务视图，避免泄露本地路径和恢复材料。
 func (s Session) View() map[string]any {
+	s = publicResult(s)
 	arts := make([]map[string]any, 0, len(s.Artifacts))
 	for _, a := range s.Artifacts {
 		arts = append(arts, map[string]any{"id": a.ID, "task_id": a.TaskID, "report": a.Report, "url": "/api/sessions/" + s.ID + "/artifacts/" + a.ID})
 	}
-	return map[string]any{"id": s.ID, "request": s.Request, "status": s.Status, "intent": s.Intent, "question": s.Question, "clarifications": s.Clarifications, "production": s.Production, "model_calls": s.ModelCalls, "max_submissions": s.Limits.Submissions, "max_model_calls": s.Limits.Calls, "deadline": s.Deadline, "created": s.Created, "ended": s.Ended, "expires": s.Expires, "artifacts": arts, "selected_artifact": s.SelectedArtifact, "final": s.Final, "model": s.Model, "evaluation": evaluate(s)}
+	return map[string]any{"id": s.ID, "request": s.Request, "status": s.Status, "intent": s.Intent, "question": s.Question, "clarifications": s.Clarifications, "production": s.Production, "model_calls": s.ModelCalls, "max_submissions": s.Limits.Submissions, "max_model_calls": s.Limits.Calls, "deadline": s.Deadline, "created": s.Created, "ended": s.Ended, "expires": s.Expires, "artifacts": arts, "selected_artifact": s.SelectedArtifact, "final": s.Final, "result": s.Result, "model": s.Model, "prompt_version": executionVersion(s), "evaluation": evaluate(s)}
 }
 
 // newID 使用随机字节生成不含业务含义的标识，供会话、暂停和操作使用。
@@ -169,6 +174,7 @@ type Evaluation struct {
 
 // evaluate 核验硬预算和交付证据；只有宣告交付时才要求选中产物检查通过。
 func evaluate(s Session) Evaluation {
+	s = publicResult(s)
 	status := func(b bool) string {
 		if b {
 			return "passed"
@@ -181,16 +187,15 @@ func evaluate(s Session) Evaluation {
 	if s.Status == "completed" {
 		verdict = "failed"
 		detail = "缺少通过检查的交付证据"
-		for _, a := range s.Artifacts {
-			if a.ID == s.SelectedArtifact && a.Report.Passed {
-				verdict = "passed"
-				detail = "交付引用已实测且技术通过的模型"
-			}
+		if deliverable(s, s.SelectedArtifact) {
+			verdict = "passed"
+			detail = "交付引用已实测且技术通过的模型"
 		}
 	} else if s.Terminal() {
 		verdict = "not_applicable"
 		detail = "本次未宣告交付成功"
 	}
 	e.Checks = append(e.Checks, asset.Check{Name: "交付证据", Status: verdict, Detail: detail})
+	e.Checks = append(e.Checks, resultEvidenceCheck(s), asset.Check{Name: "原始 Agent 解释事实核验", Status: "unverifiable", Detail: "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。"})
 	return e
 }

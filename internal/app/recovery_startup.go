@@ -36,7 +36,7 @@ func (s *Service) reconcile() error {
 					x.RecoveryFailure = s.redact(err.Error())
 					x.Status, x.HasSlot = "running", true
 					return nil
-				}, "recovery_rejected", map[string]string{"reason": s.redact(err.Error()), "action": "query_known_task"})
+				}, "recovery_rejected", map[string]string{"reason": s.redact(err.Error()), "action": "query_known_task", "raw_text_source": "execution_error", "raw_text_verification": "unverifiable"})
 				if saveErr == nil {
 					continue
 				}
@@ -58,6 +58,9 @@ func (s *Service) reconcileSession(ctx context.Context, v Session) error {
 	if v.Current != nil && v.Current.Stage == "submitting" && v.Current.TaskID == "" {
 		// 本地事务无法与远端 POST 原子提交；缺少 TaskID 时不能区分未发送和已被受理。
 		return recoveryError("submission_outcome_unknown")
+	}
+	if err := s.validateExecutionVersion(ctx, v); err != nil {
+		return err
 	}
 	if v.PendingPause != nil {
 		// 草案通过验证后交给正常恢复执行重建，此处不覆盖它仍然依赖的上一代检查点。
@@ -150,10 +153,13 @@ func legacyAnswer(history []*schema.Message, question, toolCallID string) string
 // legacyPending 为缺少检查点的旧记录提取最后一个完整模型提议。
 // Existing 保留旧代码已经增加的计数与队列事实；生产仅接受尚未提交的 ready 操作。
 func legacyPending(v Session) (*PendingPause, error) {
+	if _, err := resolveExecutionProfile(v); err != nil {
+		return nil, err
+	}
 	if len(v.History) == 0 {
 		return nil, recoveryError("legacy_recovery_unavailable")
 	}
-	seed, err := newReplaySeed(v.History[:len(v.History)-1], v.History[len(v.History)-1], v.Model)
+	seed, err := newReplaySeed(v.History[:len(v.History)-1], v.History[len(v.History)-1], v.Model, executionVersion(v))
 	if err != nil {
 		return nil, recoveryError("legacy_recovery_unavailable")
 	}

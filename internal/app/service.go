@@ -105,7 +105,7 @@ func (s *Service) Create(ctx context.Context, owner, request string) (Session, e
 		return Session{}, fmt.Errorf("尚未配置 DeepSeek 和 Tripo 凭证")
 	}
 	now := time.Now().UTC()
-	v := Session{RecoverySchemaVersion: recoveryVersion, ID: newID(), Owner: owner, Request: request, Status: "understanding", Created: now, LastUser: now, Model: "deepseek-v4-pro", Limits: Limits{Calls: s.Config.MaxCalls, Submissions: s.Config.MaxSubmissions, Clarifications: s.Config.MaxClarifications, Duration: s.Config.MaxDuration, Idle: s.Config.IdleTTL, Retention: s.Config.Retention}}
+	v := Session{ExecutionVersion: CurrentPromptVersion, RecoverySchemaVersion: recoveryVersion, ID: newID(), Owner: owner, Request: request, Status: "understanding", Created: now, LastUser: now, Model: "deepseek-v4-pro", Limits: Limits{Calls: s.Config.MaxCalls, Submissions: s.Config.MaxSubmissions, Clarifications: s.Config.MaxClarifications, Duration: s.Config.MaxDuration, Idle: s.Config.IdleTTL, Retention: s.Config.Retention}}
 	v.Source = s.source
 	err := s.store.Create(ctx, v)
 	return v, err
@@ -155,11 +155,11 @@ func (s *Service) Answer(ctx context.Context, id, answer string) error {
 // 本地取消无法撤销已被 Tripo 接受的任务。
 func (s *Service) Stop(ctx context.Context, id string) error {
 	_, err := s.store.Edit(ctx, id, func(v *Session) error {
-		if !v.Terminal() {
-			v.Finish("stopped", "用户停止了本地执行；已提交的远端任务可能仍在运行。")
-		}
-		return nil
+		return v.finishVerified("stopped", "runtime", "user_stop")
 	}, "stopped", map[string]string{"reason": "user"})
+	if errors.Is(err, ErrClosed) {
+		err = nil
+	}
 	s.mu.Lock()
 	if cancel := s.active[id]; cancel != nil {
 		cancel()
@@ -315,17 +315,16 @@ func (s *Service) expireIfDue(ctx context.Context, id string) (Session, bool, er
 		now := time.Now()
 		reason := ""
 		if !x.Deadline.IsZero() && !now.Before(x.Deadline) {
-			reason = "生产执行超时，已停止本地执行。"
+			reason = "execution_deadline"
 		}
 		if x.Deadline.IsZero() && now.Sub(x.LastUser) >= x.Limits.Idle {
-			reason = "生产前连续无用户操作，等待已到期。"
+			reason = "idle_timeout"
 		}
 		if reason == "" {
 			return errNotExpired
 		}
-		x.Finish("failed", reason)
 		data["reason"] = reason
-		return nil
+		return x.finishVerified("failed", "runtime", reason)
 	}, "expired", data)
 	if errors.Is(err, errNotExpired) {
 		return v, false, nil
@@ -489,27 +488,27 @@ func (s *Service) finalize(id string, cause error) error {
 	if strings.Contains(cause.Error(), "recovery_") || strings.Contains(cause.Error(), "checkpoint_") || errors.Is(cause, ErrCheckpointMismatch) {
 		kind = "recovery_rejected"
 	}
-	data := map[string]string{"reason": s.redact(cause.Error())}
+	data := map[string]string{"reason": s.redact(cause.Error()), "raw_text_source": "execution_error", "raw_text_verification": "unverifiable"}
 	_, err := s.store.Edit(context.Background(), id, func(v *Session) error {
 		if v.Terminal() {
-			return nil
+			return ErrClosed
 		}
 		if boundary := checkExecution(*v, time.Now()); boundary != nil {
-			v.Finish("failed", s.redact(boundary.Error()))
 			data["reason"] = s.redact(boundary.Error())
-			return nil
+			return v.finishVerified("failed", "runtime", resultReason(*v, boundary))
 		}
 		if errors.Is(cause, ErrBudget) && len(v.Artifacts) > 0 {
 			a := v.Artifacts[len(v.Artifacts)-1]
-			if a.Report.Passed {
+			if deliverable(*v, a.ID) {
 				v.SelectedArtifact = a.ID
-				v.Finish("completed", "模型调用额度已耗尽；程序已依据实测技术报告交付结果。未进行视觉检查。")
-				return nil
+				return v.finishVerified("completed", "runtime", resultReason(*v, cause))
 			}
 		}
-		v.Finish("failed", s.redact(cause.Error()))
-		return nil
+		return v.finishVerified("failed", "runtime", resultReason(*v, cause))
 	}, kind, data)
+	if errors.Is(err, ErrClosed) {
+		return nil
+	}
 	if err != nil {
 		slog.Error("保存终止状态失败", "session", id, "error", err)
 	}

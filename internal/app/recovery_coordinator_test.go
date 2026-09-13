@@ -14,6 +14,8 @@ import (
 
 	"github.com/cloudwego/eino/components/tool"
 	"github.com/cloudwego/eino/schema"
+	"github.com/lkmaVanilla/tripo-3d-agent/internal/asset"
+	"github.com/lkmaVanilla/tripo-3d-agent/internal/testfixture"
 	"modernc.org/sqlite"
 )
 
@@ -27,7 +29,7 @@ func coordinatorFixture(t *testing.T) (*Service, *pauseCoordinator, Session) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	seed, err := newReplaySeed([]*schema.Message{schema.UserMessage(v.Request)}, protocolProposal("ask_user", "call", questionInput{Question: "采用什么风格？"}), v.Model)
+	seed, err := newReplaySeed([]*schema.Message{schema.UserMessage(v.Request)}, protocolProposal("ask_user", "call", questionInput{Question: "采用什么风格？"}), v.Model, executionVersion(v))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -193,22 +195,27 @@ func TestRecoveryStartupStorageFailureStopsAdmission(t *testing.T) {
 func TestRecoveryBudgetFinalizationCannotDeliverAfterDeadline(t *testing.T) {
 	s, c, v := coordinatorFixture(t)
 	_ = c
+	deadline := time.Now().Add(-time.Second)
 	_, err := s.store.Edit(context.Background(), v.ID, func(x *Session) error {
 		x.PendingPause = nil
 		x.ModelCalls = x.Limits.Calls
-		x.Deadline = time.Now().Add(-time.Second)
-		x.Artifacts = []Artifact{{ID: "result"}}
-		x.Artifacts[0].Report.Passed = true
+		x.Deadline = deadline
+		x.Intent = &Intent{Asset: "木箱", MaxTriangles: 5000, MaxBytes: 10 << 20}
+		x.Artifacts = []Artifact{{ID: "result", TaskID: "saved-task", Report: asset.Inspect(testfixture.Cube(12), 5000, 10<<20)}}
 		return nil
 	}, "", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
+	before, _ := s.store.Get(context.Background(), v.ID)
+	if !deliverable(before, "result") {
+		t.Fatal("fixture must have complete delivery evidence before applying the expired deadline")
+	}
 	if err = s.finalize(v.ID, ErrBudget); err != nil {
 		t.Fatal(err)
 	}
 	after, _ := s.store.Get(context.Background(), v.ID)
-	if after.Status != "failed" || after.SelectedArtifact != "" || !strings.Contains(after.Final, "deadline") {
+	if after.Status != "failed" || after.SelectedArtifact != "" || after.Result == nil || after.Result.Reason != "execution_deadline" || !after.Deadline.Equal(deadline) {
 		t.Fatalf("delivered expired result: %+v", after)
 	}
 }

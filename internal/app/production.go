@@ -332,21 +332,19 @@ func (s *Service) recoverKnownTask(ctx context.Context, id string) error {
 		// 只能依据原任务的实测报告交付；技术未通过时结束，不再自动追加纠偏。
 		for _, a := range x.Artifacts {
 			if a.ID == x.Current.ArtifactID && a.ID == opID && a.TaskID == x.Current.TaskID {
-				if a.Report.Valid && a.Report.Passed {
+				if deliverable(*x, a.ID) {
 					x.SelectedArtifact = a.ID
-					x.Finish("completed", "程序已恢复原 Tripo 任务，并依据实测技术报告交付结果。未进行视觉检查，技术通过不代表外观符合需求。")
+					return x.finishVerified("completed", "recovery", "known_task_recovery")
 				} else {
-					x.Finish("failed", "程序已恢复原 Tripo 任务，但产物未通过技术检查；未执行新的模型决策或纠偏。")
+					return x.finishVerified("failed", "recovery", "known_task_recovery")
 				}
-				return nil
 			}
 		}
-		reason := "原任务缺少可支持交付的产物与技术报告。"
+		reason := "evidence_unavailable"
 		if x.Current.Error != "" {
-			reason = "原任务未能交付：" + s.redact(x.Current.Error)
+			reason = "operation_failed"
 		}
-		x.Finish("failed", reason)
-		return nil
+		return x.finishVerified("failed", "recovery", reason)
 	}, "runtime_finished", map[string]string{"reason": "known_task_recovery", "operation_id": opID})
 	return err
 }
