@@ -15,6 +15,9 @@ import (
 // errOperationRecorded 从 Store.Edit 返回时同时回滚更新和事件，避免重复发布完成事实。
 var errOperationRecorded = errors.New("生产结果已保存")
 
+// errMissingModelOutput 只标识查询响应缺少地址这一观测，不诊断供应商或参数原因。
+var errMissingModelOutput = errors.New("成功任务缺少模型文件地址，无法检查产物")
+
 // checkOperation 同时校验最新执行边界和操作身份，防止旧工具回调推进另一操作。
 func checkOperation(v Session, opID string) error {
 	if err := checkExecution(v, time.Now()); err != nil {
@@ -62,6 +65,13 @@ func (s *Service) production(ctx context.Context, id, opID string) (string, erro
 	}
 	// 先扣生产次数并写 submitting，再访问提供方；失败和未知结果都保留这次消耗。
 	if op.Stage == "ready" {
+		if op.InputVersionID != "" {
+			params, e := s.prepareVersionInput(ctx, id, opID)
+			if e != nil {
+				return s.operationFailure(id, opID, e)
+			}
+			op.Params = params
+		}
 		v, err = s.store.Edit(ctx, id, func(x *Session) error {
 			if e := checkOperation(*x, opID); e != nil {
 				return e
@@ -81,6 +91,10 @@ func (s *Service) production(ctx context.Context, id, opID string) (string, erro
 				x.Deadline = time.Now().UTC().Add(x.Limits.Duration)
 			}
 			x.Current.Stage = "submitting"
+			if x.Current.InputVersionID != "" {
+				p := op.Params
+				x.Current.SubmissionParams = &p
+			}
 			return nil
 		}, "tool_submitting", map[string]any{"operation_id": op.ID, "kind": op.Kind, "params": op.Params})
 		if err != nil {
@@ -180,7 +194,7 @@ func (s *Service) production(ctx context.Context, id, opID string) (string, erro
 		case "success":
 			// 远端 success 只代表任务完成；下载并通过技术检查后才有交付依据。
 			if task.Output.ModelURL == "" {
-				return s.operationFailure(id, op.ID, fmt.Errorf("成功任务缺少模型文件地址，无法检查产物"))
+				return s.operationFailure(id, op.ID, errMissingModelOutput)
 			}
 			var data []byte
 			err = retry(opCtx, func() error {
@@ -279,6 +293,12 @@ func (s *Service) operationFailure(id, opID string, cause error) (string, error)
 		if x.Current.Stage == "done" {
 			return errOperationRecorded
 		}
+		if executionVersion(*x) == ConversationPromptVersion && x.Current.Stage == "ready" && x.Current.InputVersionID != "" {
+			x.Current.ErrorCode = "input_preparation_failed"
+		}
+		if executionVersion(*x) == ConversationPromptVersion && errors.Is(cause, errMissingModelOutput) {
+			x.Current.ErrorCode = "missing_model_output"
+		}
 		x.Current.Stage = "done"
 		x.Current.Error = s.redact(cause.Error())
 		return nil
@@ -301,7 +321,14 @@ func (s *Service) operationResult(v Session, op Operation) string {
 	if message == "" {
 		message = "操作缺少可验证的产物报告"
 	}
-	return jsonString(map[string]any{"error": message, "remaining_submissions": v.Limits.Submissions - v.Production})
+	result := map[string]any{"error": message, "remaining_submissions": v.Limits.Submissions - v.Production}
+	if executionVersion(v) == ConversationPromptVersion && op.ErrorCode != "" {
+		result["error_code"], result["input_version_id"] = op.ErrorCode, op.InputVersionID
+		if evidence := conversationFailureEvidence(op); evidence != nil {
+			result["failure_evidence"] = evidence
+		}
+	}
+	return jsonString(result)
 }
 
 // recoverKnownTask 在模型额度或检查点不可用时，直接查询并检查已知任务，不新增 Agent 决策。

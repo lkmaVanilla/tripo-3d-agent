@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 )
 
-// CurrentPromptVersion 仅用于新会话；空版本旧记录继续解释为已冻结的 v1。
+// CurrentPromptVersion 固定兼容单次创建入口；新聊天使用 v3，空版本旧记录仍解释为 v1。
 const CurrentPromptVersion = "asset-agent-v2"
 
 // executionProfile 是随程序发布的有限配置，不提供动态注册或在途版本切换。
@@ -38,6 +38,8 @@ func profileForVersion(version string) (executionProfile, error) {
 		return executionProfile{Version: PromptVersion, Instruction: instruction, Description: "静态道具生产与技术纠偏"}, nil
 	case CurrentPromptVersion:
 		return executionProfile{Version: CurrentPromptVersion, Instruction: instructionV2, Description: "面向 3D 创作者的静态资产制作与技术纠偏"}, nil
+	case ConversationPromptVersion:
+		return executionProfile{Version: ConversationPromptVersion, Instruction: instructionV3, Description: "同会话静态资产持续创作与结果解释"}, nil
 	default:
 		return executionProfile{}, recoveryError("execution_version_unknown")
 	}
@@ -92,6 +94,9 @@ func (s *Service) validateExecutionVersion(ctx context.Context, v Session) error
 }
 
 func (p executionProfile) skillDescription(name string) (string, bool) {
+	if p.Version == ConversationPromptVersion && name == "asset-editing" {
+		return "明确模型版本、判断加工条件并保持真实来源", true
+	}
 	description, ok := skillDescriptions[name]
 	if p.Version == CurrentPromptVersion && name == "intent" {
 		description = "理解创作者的实际资产用途，澄清冲突并公开默认假设"
@@ -104,6 +109,9 @@ func (p executionProfile) skillContent(name string) (string, error) {
 		return "", recoveryError("execution_version_mismatch")
 	}
 	path := "skills/" + name + ".md"
+	if p.Version == ConversationPromptVersion {
+		path = "skills/v3/" + name + ".md"
+	}
 	// 生成与纠偏指引没有受众冲突，v2 继续使用完全相同的版本化内容。
 	if p.Version == CurrentPromptVersion && name == "intent" {
 		path = "skills/v2/intent.md"
@@ -113,6 +121,14 @@ func (p executionProfile) skillContent(name string) (string, error) {
 }
 
 func (p executionProfile) toolDescription(name, original string) string {
+	if p.Version == ConversationPromptVersion {
+		switch name {
+		case "decimate_asset":
+			return "加工已明确引用的同会话历史版本，或本执行新候选；artifact_id填写真实版本ID。"
+		case "generate_asset":
+			return "按已保存生成或明确重新生成目标创建静态GLB；不冒充对旧几何加工。"
+		}
+	}
 	if p.Version == CurrentPromptVersion {
 		switch name {
 		case "generate_asset":

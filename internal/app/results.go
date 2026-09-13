@@ -135,6 +135,9 @@ func publicReport(s Session, a Artifact) asset.Report {
 // buildResult 只接受调用方给出的程序来源/原因代码，不读取 Final、原始模型说明或错误正文。
 // 调用方负责在同一事务中校验时间边界并保存终态；这里不读取当前时间或产生副作用。
 func buildResult(s Session, source, reason string) (*Result, string) {
+	if validAnswer(s) {
+		return buildAnswerResult(s)
+	}
 	r := &Result{Version: resultVersion, Status: s.Status, Source: source, Reason: reason, Evidence: "verified"}
 	switch source {
 	case "agent", "runtime", "recovery", "history":

@@ -26,6 +26,7 @@ const cookieName = "tripo_visitor"
 // 会话内容与控制接口还必须调用 owned；知道会话 ID 并不等于拥有访问权限。
 func (s *Service) Handler() http.Handler {
 	mux := http.NewServeMux()
+	s.conversationRoutes(mux)
 	mux.HandleFunc("GET /api/config", func(w http.ResponseWriter, r *http.Request) {
 		s.respond(w, 200, map[string]any{"ready": s.ready, "model": "deepseek-v4-pro", "mode": s.source, "message": "真实生成需要配置 DEEPSEEK_API_KEY 和 TRIPO_API_KEY。"})
 	})
@@ -38,7 +39,8 @@ func (s *Service) Handler() http.Handler {
 		sort.Slice(all, func(i, j int) bool { return all[i].Created.After(all[j].Created) })
 		out := []any{}
 		for _, v := range all {
-			if v.Expires.IsZero() || time.Now().Before(v.Expires) {
+			c, e := s.store.GetRunConversation(r.Context(), v.ID)
+			if e == nil && c.Available(time.Now()) {
 				out = append(out, v.View())
 			}
 		}
@@ -79,6 +81,10 @@ func (s *Service) Handler() http.Handler {
 		// HTTP 负责输入与归属；答案是否对应可恢复的等待点由 Service.Answer 校验。
 		v, ok := s.owned(w, r)
 		if !ok {
+			return
+		}
+		if executionVersion(v) == ConversationPromptVersion {
+			s.fail(w, 409, fmt.Errorf("聊天回答必须携带当前Run、问题和暂停代次，经会话消息入口提交"))
 			return
 		}
 		var in struct {
@@ -183,7 +189,8 @@ func (s *Service) Handler() http.Handler {
 // owned 将不存在、他人所有和数据已过期统一返回 404，不泄露他人会话是否存在。
 func (s *Service) owned(w http.ResponseWriter, r *http.Request) (Session, bool) {
 	v, err := s.store.Get(r.Context(), r.PathValue("id"))
-	if err != nil || v.Owner != r.Context().Value(visitorKey{}).(string) || (!v.Expires.IsZero() && !time.Now().Before(v.Expires)) {
+	c, ce := s.store.GetRunConversation(r.Context(), r.PathValue("id"))
+	if err != nil || ce != nil || v.Owner != r.Context().Value(visitorKey{}).(string) || !c.Available(time.Now()) {
 		s.fail(w, 404, fmt.Errorf("会话不存在或已到期"))
 		return Session{}, false
 	}
@@ -229,8 +236,14 @@ func (s *Service) sanitize(v any) any {
 	walk = func(v any) any {
 		switch x := v.(type) {
 		case map[string]any:
+			// 供应商输入可能是任意形状的token，不能依赖file_前缀识别凭证。
+			if _, params := x["face_limit"]; params {
+				if input, ok := x["input"].(string); ok && input != "" && !strings.HasPrefix(input, "version:") {
+					x["input"] = "[REDACTED_PROVIDER_INPUT]"
+				}
+			}
 			for k, v := range x {
-				if k == "owner" || k == "api_key" || k == "authorization" || k == "cookie" {
+				if k == "owner" || k == "api_key" || k == "authorization" || k == "cookie" || k == "file_token" || k == "token" || k == "path" || k == "source_url" {
 					x[k] = "[REDACTED]"
 				} else {
 					x[k] = walk(v)
@@ -244,6 +257,9 @@ func (s *Service) sanitize(v any) any {
 			return x
 		case string:
 			x = s.redact(x)
+			if strings.HasPrefix(x, "file_") {
+				return "[REDACTED_FILE_REFERENCE]"
+			}
 			if u, err := url.Parse(x); err == nil && (u.Scheme == "https" || u.Scheme == "http") && u.RawQuery != "" {
 				u.RawQuery = "REDACTED"
 				return u.String()
@@ -259,6 +275,9 @@ func (s *Service) sanitize(v any) any {
 // Runtime 拦截违规提议仍算行为证据，不能因为成功拦截就替 Agent 宣告通过。
 func (s *Service) snapshot(v Session, events []Event) map[string]any {
 	view := v.View()
+	if executionVersion(v) == ConversationPromptVersion {
+		view = conversationRunView(v)
+	}
 	e := evaluate(v)
 	violations := 0
 	for _, event := range events {
@@ -273,13 +292,17 @@ func (s *Service) snapshot(v Session, events []Event) map[string]any {
 			}
 		}
 	}
+	e.Checks = append(e.Checks, proposalViolationCheck(violations))
+	view["evaluation"] = e
+	return map[string]any{"session": view, "events": events, "source": v.Source}
+}
+
+func proposalViolationCheck(violations int) asset.Check {
 	status := "passed"
 	if violations > 0 {
 		status = "failed"
 	}
-	e.Checks = append(e.Checks, asset.Check{Name: "可核验的违规提议", Status: status, Detail: fmt.Sprintf("记录到 %d 次；Runtime 拦截不抵消 Agent 违规", violations)})
-	view["evaluation"] = e
-	return map[string]any{"session": view, "events": events, "source": v.Source}
+	return asset.Check{Name: "可核验的违规提议", Status: status, Detail: fmt.Sprintf("记录到 %d 次；Runtime 拦截不抵消 Agent 违规", violations)}
 }
 
 // eventsSocket 是单向进度通道；回答、停止和重试仍通过 HTTP 命令提交。
@@ -306,7 +329,8 @@ func (s *Service) eventsSocket(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		v, err = s.store.Get(ctx, v.ID)
-		if err != nil || (!v.Expires.IsZero() && time.Now().After(v.Expires)) {
+		c, ce := s.store.GetRunConversation(ctx, v.ID)
+		if err != nil || ce != nil || !c.Available(time.Now()) {
 			return
 		}
 		events, e := s.store.Events(ctx, v.ID, after)

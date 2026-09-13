@@ -1,0 +1,1013 @@
+{
+  "automated_checks": [
+    {
+      "Critical": false,
+      "Detail": "",
+      "Dimension": "strategy",
+      "Name": "terminal_and_model_available",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "actual=0 expected=0..0",
+      "Dimension": "strategy",
+      "Name": "allowed_submission_count",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "answered",
+      "Dimension": "strategy",
+      "Name": "expected_delivery",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=6 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=6 tool=ask_user",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=6 prior=0",
+      "Dimension": "intent",
+      "Name": "question_budget_proposal",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=12 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=12 tool=finish_request",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=12 outcome=answer",
+      "Dimension": "strategy",
+      "Name": "finish_outcome_contract",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=12 consumed=0",
+      "Dimension": "constraint",
+      "Name": "answer_hides_no_production",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "proposals=2",
+      "Dimension": "strategy",
+      "Name": "real_model_proposals_exist",
+      "Passed": true
+    }
+  ],
+  "automated_passed": true,
+  "case": {
+    "AllowedProduction": null,
+    "Answer": "我只想知道原来的未知提交能否继续，没有确认另开一次付费生产；不能自动重发。",
+    "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。",
+    "ID": "ambiguous_unknown_retry",
+    "InitialProduction": 0,
+    "IntentReview": "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+    "MaxBytes": 10485760,
+    "MaxSubmits": 0,
+    "MaxTriangles": 5000,
+    "MinSubmits": 0,
+    "NoDelivery": true,
+    "Provider": "normal",
+    "Request": "继续，再试一下。",
+    "RequireThreeQuestions": false,
+    "Seed": "unknown_history",
+    "StrategyReview": "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+    "Suite": "conversation-v3",
+    "WantAnswer": true,
+    "WantDelivery": false
+  },
+  "conversation": {
+    "conversation": {
+      "created": "2026-09-13T17:07:18.549274Z",
+      "expires": "2026-09-20T17:07:37.803562Z",
+      "id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+      "title": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。",
+      "updated": "2026-09-13T17:07:37.803562Z"
+    },
+    "cursor": 14,
+    "events": [
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "data": {
+          "client_message_id": "seed",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。"
+        },
+        "kind": "request",
+        "run_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "seq": 1,
+        "time": "2026-09-13T17:07:18.549424Z"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "data": {
+          "final": "生产提交结果未知，无法确认远端是否接受；不会自动重复提交。\n累计生产提交 1 / 3 次，模型调用 0 / 20 次。\n本地执行结束不表示远端任务已取消。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "reason": "submission_unknown",
+          "result": {
+            "evidence": "verified",
+            "operation_id": "2452daca4d8cee37e1bdaaadd7ef6d9a89d7cb87319238d1",
+            "reason": "submission_unknown",
+            "source": "runtime",
+            "status": "failed",
+            "version": 1
+          }
+        },
+        "kind": "evaluation_fixture_finished",
+        "run_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "seq": 2,
+        "time": "2026-09-13T17:07:18.550094Z"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "data": {
+          "expires": "2026-09-20T17:07:18.550057Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "seq": 3,
+        "time": "2026-09-13T17:07:18.550629Z"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "继续，再试一下。",
+          "version_id": ""
+        },
+        "kind": "request",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 4,
+        "time": "2026-09-13T17:07:18.55129Z"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "data": {
+          "eino_input_hash": "2e99e3242788d798d7332ed74cd1dca9b3f25e9dc63461edce159bb59e3154be",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 5,
+        "time": "2026-09-13T17:07:18.703681Z"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "data": {
+          "content": "上一轮的生产提交结果是**未知**状态，我无法取回、恢复或导入那个尚未保存的远端产物；本会话中也没有已保存的茶壶版本可供继续加工。\n\n按规则，“继续/再试”不能自动重复原制作，需要先确认你是否明确希望**另建一个新的生产目标**。",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 1901,
+              "prompt_token_details": {
+                "cached_tokens": 1536
+              },
+              "prompt_tokens": 4169,
+              "total_tokens": 6070
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"question\": \"你希望我作为一次新的生产目标，重新生成这个卡通低模茶壶（最多5000三角面、10MiB）吗？\"}",
+                "name": "ask_user"
+              },
+              "id": "call_00_BElmHIowPSRpGITNl1Li2928",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 1901,
+            "prompt_token_details": {
+              "cached_tokens": 1536
+            },
+            "prompt_tokens": 4169,
+            "total_tokens": 6070
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 6,
+        "time": "2026-09-13T17:07:33.8077Z"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "data": {
+          "question": "你希望我作为一次新的生产目标，重新生成这个卡通低模茶壶（最多5000三角面、10MiB）吗？"
+        },
+        "kind": "clarification",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 7,
+        "time": "2026-09-13T17:07:33.818084Z"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "data": {
+          "generation": 1,
+          "kind": "question",
+          "pause_id": "e165bc18c381a20f76d26b7dca83320182e516166b920518",
+          "ref_id": "62a775367c1eaaa8ef051eb26d0b25adf734e8d848c2dd6f"
+        },
+        "kind": "checkpoint_committed",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 8,
+        "time": "2026-09-13T17:07:33.818566Z"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "data": {
+          "client_message_id": "answer-62a775367c1eaaa8ef051eb26d0b25adf734e8d848c2dd6f",
+          "text": "我只想知道原来的未知提交能否继续，没有确认另开一次付费生产；不能自动重发。",
+          "version_id": "",
+          "wait_id": "62a775367c1eaaa8ef051eb26d0b25adf734e8d848c2dd6f"
+        },
+        "kind": "user_answer",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 9,
+        "time": "2026-09-13T17:07:33.84221Z"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "data": {
+          "wait_id": "62a775367c1eaaa8ef051eb26d0b25adf734e8d848c2dd6f"
+        },
+        "kind": "clarification_resumed",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 10,
+        "time": "2026-09-13T17:07:33.858183Z"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "data": {
+          "eino_input_hash": "5f394dc7bddbbac474771e16daa97737401c4b9958c164d813eaf9107c238097",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 11,
+        "time": "2026-09-13T17:07:33.859848Z"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 345,
+              "prompt_token_details": {
+                "cached_tokens": 1536
+              },
+              "prompt_tokens": 6136,
+              "total_tokens": 6481
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"outcome\": \"answer\", \"explanation\": \"关于原来的未知提交：当前无法取回、恢复或导入，也不能确认远端是否已接受或在继续；本地停止不代表远端任务已取消。我不会在未确认新生产目标的情况下自动重发。由于你没有确认另开新的付费生产，本次为零生产，未生成新版本。若之后想继续，请明确告知是否要建立一个新的生成目标（例如重新生成该卡通低模茶壶），我再据此操作。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_MyCIKqm6xoe2huorZzXQ6852",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 345,
+            "prompt_token_details": {
+              "cached_tokens": 1536
+            },
+            "prompt_tokens": 6136,
+            "total_tokens": 6481
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 12,
+        "time": "2026-09-13T17:07:37.800497Z"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "data": {
+          "explanation": "关于原来的未知提交：当前无法取回、恢复或导入，也不能确认远端是否已接受或在继续；本地停止不代表远端任务已取消。我不会在未确认新生产目标的情况下自动重发。由于你没有确认另开新的付费生产，本次为零生产，未生成新版本。若之后想继续，请明确告知是否要建立一个新的生成目标（例如重新生成该卡通低模茶壶），我再据此操作。",
+          "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 2 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "outcome": "answer",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 13,
+        "time": "2026-09-13T17:07:37.80372Z"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "data": {
+          "expires": "2026-09-20T17:07:37.803562Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 14,
+        "time": "2026-09-13T17:07:37.805315Z"
+      }
+    ],
+    "has_more": false,
+    "messages": [
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "created": "2026-09-13T17:07:18.549424Z",
+        "id": "042f72dd1a7792239b18af00269d7c513356facb772501c324b7e4eb60a6c473",
+        "kind": "user",
+        "run_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "seq": 1,
+        "text": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。",
+        "updated_seq": 1
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "created": "2026-09-13T17:07:18.550094Z",
+        "data": {
+          "outcome": {
+            "kind": "ended",
+            "source": "runtime"
+          },
+          "result": {
+            "evidence": "verified",
+            "operation_id": "2452daca4d8cee37e1bdaaadd7ef6d9a89d7cb87319238d1",
+            "reason": "submission_unknown",
+            "source": "runtime",
+            "status": "failed",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+          "source": "runtime"
+        },
+        "id": "5de783893f5c6c86a00251f23b2b5334f33fd81b87ac09921cc7832d4968a749",
+        "kind": "run_result",
+        "run_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "seq": 2,
+        "text": "生产提交结果未知，无法确认远端是否接受；不会自动重复提交。\n累计生产提交 1 / 3 次，模型调用 0 / 20 次。\n本地执行结束不表示远端任务已取消。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "updated_seq": 3
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "created": "2026-09-13T17:07:18.55129Z",
+        "id": "2a5cadd65bb3e5b0d441553f141ebccb8d796d7e4a9a5ab696e77146017c5c59",
+        "kind": "user",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 4,
+        "text": "继续，再试一下。",
+        "updated_seq": 4
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "created": "2026-09-13T17:07:33.818084Z",
+        "data": {
+          "generation": 1
+        },
+        "id": "f53b72b3e124063d057d929cac68290cc8e2fd42873d6ab84e6a518fccf37383",
+        "kind": "clarification",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 7,
+        "text": "你希望我作为一次新的生产目标，重新生成这个卡通低模茶壶（最多5000三角面、10MiB）吗？",
+        "updated_seq": 7,
+        "wait_id": "62a775367c1eaaa8ef051eb26d0b25adf734e8d848c2dd6f"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "created": "2026-09-13T17:07:33.84221Z",
+        "id": "a69ee122a2e530359af50501329de0cccbc521e6987e523d41db080a466d5048",
+        "kind": "user",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 9,
+        "text": "我只想知道原来的未知提交能否继续，没有确认另开一次付费生产；不能自动重发。",
+        "updated_seq": 9,
+        "wait_id": "62a775367c1eaaa8ef051eb26d0b25adf734e8d848c2dd6f"
+      },
+      {
+        "conversation_id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "created": "2026-09-13T17:07:37.80372Z",
+        "data": {
+          "outcome": {
+            "kind": "answer",
+            "source": "agent",
+            "text": "关于原来的未知提交：当前无法取回、恢复或导入，也不能确认远端是否已接受或在继续；本地停止不代表远端任务已取消。我不会在未确认新生产目标的情况下自动重发。由于你没有确认另开新的付费生产，本次为零生产，未生成新版本。若之后想继续，请明确告知是否要建立一个新的生成目标（例如重新生成该卡通低模茶壶），我再据此操作。"
+          },
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+          "source": "agent",
+          "verification": "unverifiable"
+        },
+        "id": "793420fa312527df1f55d15c6394dbd2677dadae84c5f614dad46c878d260392",
+        "kind": "answer",
+        "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "seq": 13,
+        "text": "关于原来的未知提交：当前无法取回、恢复或导入，也不能确认远端是否已接受或在继续；本地停止不代表远端任务已取消。我不会在未确认新生产目标的情况下自动重发。由于你没有确认另开新的付费生产，本次为零生产，未生成新版本。若之后想继续，请明确告知是否要建立一个新的生成目标（例如重新生成该卡通低模茶壶），我再据此操作。",
+        "updated_seq": 14
+      }
+    ],
+    "runs": [
+      {
+        "artifacts": [],
+        "clarifications": 0,
+        "created": "2026-09-13T17:07:18.549274Z",
+        "current_operation": {
+          "error": "",
+          "error_code": "",
+          "id": "2452daca4d8cee37e1bdaaadd7ef6d9a89d7cb87319238d1",
+          "input_version_id": "",
+          "kind": "generate",
+          "stage": "submitting",
+          "task_id": ""
+        },
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-13T17:07:18.550057Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "1",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "本次未宣告交付成功",
+              "name": "交付证据",
+              "status": "not_applicable"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            },
+            {
+              "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+              "name": "可核验的违规提议",
+              "status": "passed"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-20T17:07:18.550057Z",
+        "final": "生产提交结果未知，无法确认远端是否接受；不会自动重复提交。\n累计生产提交 1 / 3 次，模型调用 0 / 20 次。\n本地执行结束不表示远端任务已取消。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 0,
+        "id": "05c8b0d94a50afd376d4dbcfd4c1529616afa63d315ff284",
+        "input_assessment": null,
+        "intent": null,
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 0,
+        "outcome": {
+          "kind": "ended",
+          "source": "runtime"
+        },
+        "production": 1,
+        "prompt_version": "asset-agent-v3",
+        "question": "",
+        "request": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。",
+        "result": {
+          "evidence": "verified",
+          "operation_id": "2452daca4d8cee37e1bdaaadd7ef6d9a89d7cb87319238d1",
+          "reason": "submission_unknown",
+          "source": "runtime",
+          "status": "failed",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "",
+        "status": "failed",
+        "wait_id": ""
+      },
+      {
+        "artifacts": [],
+        "clarifications": 1,
+        "created": "2026-09-13T17:07:18.551198Z",
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-13T17:07:37.803562Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "0",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "2",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "1",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "本次未宣告交付成功",
+              "name": "交付证据",
+              "status": "not_applicable"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            },
+            {
+              "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+              "name": "可核验的违规提议",
+              "status": "passed"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-20T17:07:37.803562Z",
+        "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 2 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 1,
+        "id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+        "input_assessment": null,
+        "intent": null,
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 2,
+        "outcome": {
+          "kind": "answer",
+          "source": "agent",
+          "text": "关于原来的未知提交：当前无法取回、恢复或导入，也不能确认远端是否已接受或在继续；本地停止不代表远端任务已取消。我不会在未确认新生产目标的情况下自动重发。由于你没有确认另开新的付费生产，本次为零生产，未生成新版本。若之后想继续，请明确告知是否要建立一个新的生成目标（例如重新生成该卡通低模茶壶），我再据此操作。"
+        },
+        "production": 0,
+        "prompt_version": "asset-agent-v3",
+        "question": "",
+        "request": "继续，再试一下。",
+        "result": {
+          "evidence": "verified",
+          "reason": "answered",
+          "source": "agent",
+          "status": "answered",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "",
+        "status": "answered",
+        "wait_id": "62a775367c1eaaa8ef051eb26d0b25adf734e8d848c2dd6f"
+      }
+    ],
+    "versions": []
+  },
+  "critical_errors_automated": 0,
+  "ended": "2026-09-13T17:07:37.873556Z",
+  "repeat": 1,
+  "response_metadata": [
+    {
+      "content_length": 323,
+      "event_seq": 6,
+      "message_index": 0,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 1901,
+          "prompt_token_details": {
+            "cached_tokens": 1536
+          },
+          "prompt_tokens": 4169,
+          "total_tokens": 6070
+        }
+      },
+      "tool_argument_lengths": [
+        136
+      ],
+      "tool_count": 1
+    },
+    {
+      "content_length": 0,
+      "event_seq": 12,
+      "message_index": 1,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 345,
+          "prompt_token_details": {
+            "cached_tokens": 1536
+          },
+          "prompt_tokens": 6136,
+          "total_tokens": 6481
+        }
+      },
+      "tool_argument_lengths": [
+        502
+      ],
+      "tool_count": 1
+    }
+  ],
+  "response_metadata_source": "agent_proposal_events",
+  "run_id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+  "semantic_review": {
+    "instructions": [
+      "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+      "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+      "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。"
+    ],
+    "proposals": [
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "上一轮的生产提交结果是**未知**状态，我无法取回、恢复或导入那个尚未保存的远端产物；本会话中也没有已保存的茶壶版本可供继续加工。\n\n按规则，“继续/再试”不能自动重复原制作，需要先确认你是否明确希望**另建一个新的生产目标**。",
+        "seq": 6,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"question\": \"你希望我作为一次新的生产目标，重新生成这个卡通低模茶壶（最多5000三角面、10MiB）吗？\"}",
+              "name": "ask_user"
+            },
+            "id": "call_00_BElmHIowPSRpGITNl1Li2928",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 12,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"outcome\": \"answer\", \"explanation\": \"关于原来的未知提交：当前无法取回、恢复或导入，也不能确认远端是否已接受或在继续；本地停止不代表远端任务已取消。我不会在未确认新生产目标的情况下自动重发。由于你没有确认另开新的付费生产，本次为零生产，未生成新版本。若之后想继续，请明确告知是否要建立一个新的生成目标（例如重新生成该卡通低模茶壶），我再据此操作。\"}",
+              "name": "finish_request"
+            },
+            "id": "call_00_MyCIKqm6xoe2huorZzXQ6852",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    ],
+    "status": "pending"
+  },
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "继续，再试一下。",
+          "version_id": ""
+        },
+        "kind": "request",
+        "seq": 4,
+        "time": "2026-09-13T17:07:18.55129Z"
+      },
+      {
+        "data": {
+          "eino_input_hash": "2e99e3242788d798d7332ed74cd1dca9b3f25e9dc63461edce159bb59e3154be",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 5,
+        "time": "2026-09-13T17:07:18.703681Z"
+      },
+      {
+        "data": {
+          "content": "上一轮的生产提交结果是**未知**状态，我无法取回、恢复或导入那个尚未保存的远端产物；本会话中也没有已保存的茶壶版本可供继续加工。\n\n按规则，“继续/再试”不能自动重复原制作，需要先确认你是否明确希望**另建一个新的生产目标**。",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 1901,
+              "prompt_token_details": {
+                "cached_tokens": 1536
+              },
+              "prompt_tokens": 4169,
+              "total_tokens": 6070
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"question\": \"你希望我作为一次新的生产目标，重新生成这个卡通低模茶壶（最多5000三角面、10MiB）吗？\"}",
+                "name": "ask_user"
+              },
+              "id": "call_00_BElmHIowPSRpGITNl1Li2928",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 1901,
+            "prompt_token_details": {
+              "cached_tokens": 1536
+            },
+            "prompt_tokens": 4169,
+            "total_tokens": 6070
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 6,
+        "time": "2026-09-13T17:07:33.8077Z"
+      },
+      {
+        "data": {
+          "question": "你希望我作为一次新的生产目标，重新生成这个卡通低模茶壶（最多5000三角面、10MiB）吗？"
+        },
+        "kind": "clarification",
+        "seq": 7,
+        "time": "2026-09-13T17:07:33.818084Z"
+      },
+      {
+        "data": {
+          "generation": 1,
+          "kind": "question",
+          "pause_id": "e165bc18c381a20f76d26b7dca83320182e516166b920518",
+          "ref_id": "62a775367c1eaaa8ef051eb26d0b25adf734e8d848c2dd6f"
+        },
+        "kind": "checkpoint_committed",
+        "seq": 8,
+        "time": "2026-09-13T17:07:33.818566Z"
+      },
+      {
+        "data": {
+          "client_message_id": "answer-62a775367c1eaaa8ef051eb26d0b25adf734e8d848c2dd6f",
+          "text": "我只想知道原来的未知提交能否继续，没有确认另开一次付费生产；不能自动重发。",
+          "version_id": "",
+          "wait_id": "62a775367c1eaaa8ef051eb26d0b25adf734e8d848c2dd6f"
+        },
+        "kind": "user_answer",
+        "seq": 9,
+        "time": "2026-09-13T17:07:33.84221Z"
+      },
+      {
+        "data": {
+          "wait_id": "62a775367c1eaaa8ef051eb26d0b25adf734e8d848c2dd6f"
+        },
+        "kind": "clarification_resumed",
+        "seq": 10,
+        "time": "2026-09-13T17:07:33.858183Z"
+      },
+      {
+        "data": {
+          "eino_input_hash": "5f394dc7bddbbac474771e16daa97737401c4b9958c164d813eaf9107c238097",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 11,
+        "time": "2026-09-13T17:07:33.859848Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 345,
+              "prompt_token_details": {
+                "cached_tokens": 1536
+              },
+              "prompt_tokens": 6136,
+              "total_tokens": 6481
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"outcome\": \"answer\", \"explanation\": \"关于原来的未知提交：当前无法取回、恢复或导入，也不能确认远端是否已接受或在继续；本地停止不代表远端任务已取消。我不会在未确认新生产目标的情况下自动重发。由于你没有确认另开新的付费生产，本次为零生产，未生成新版本。若之后想继续，请明确告知是否要建立一个新的生成目标（例如重新生成该卡通低模茶壶），我再据此操作。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_MyCIKqm6xoe2huorZzXQ6852",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 345,
+            "prompt_token_details": {
+              "cached_tokens": 1536
+            },
+            "prompt_tokens": 6136,
+            "total_tokens": 6481
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 12,
+        "time": "2026-09-13T17:07:37.800497Z"
+      },
+      {
+        "data": {
+          "explanation": "关于原来的未知提交：当前无法取回、恢复或导入，也不能确认远端是否已接受或在继续；本地停止不代表远端任务已取消。我不会在未确认新生产目标的情况下自动重发。由于你没有确认另开新的付费生产，本次为零生产，未生成新版本。若之后想继续，请明确告知是否要建立一个新的生成目标（例如重新生成该卡通低模茶壶），我再据此操作。",
+          "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 2 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "outcome": "answer",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "seq": 13,
+        "time": "2026-09-13T17:07:37.80372Z"
+      },
+      {
+        "data": {
+          "expires": "2026-09-20T17:07:37.803562Z"
+        },
+        "kind": "conversation_idle",
+        "seq": 14,
+        "time": "2026-09-13T17:07:37.805315Z"
+      }
+    ],
+    "session": {
+      "artifacts": [],
+      "clarifications": 1,
+      "created": "2026-09-13T17:07:18.551198Z",
+      "deadline": "0001-01-01T00:00:00Z",
+      "ended": "2026-09-13T17:07:37.803562Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "0",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "2",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "1",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "本次未宣告交付成功",
+            "name": "交付证据",
+            "status": "not_applicable"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-20T17:07:37.803562Z",
+      "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 2 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "generation": 1,
+      "id": "c37ebc22a75cc31f2692e061f08d1a10cdad0428ff4d1b20",
+      "input_assessment": null,
+      "intent": null,
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 2,
+      "outcome": {
+        "kind": "answer",
+        "source": "agent",
+        "text": "关于原来的未知提交：当前无法取回、恢复或导入，也不能确认远端是否已接受或在继续；本地停止不代表远端任务已取消。我不会在未确认新生产目标的情况下自动重发。由于你没有确认另开新的付费生产，本次为零生产，未生成新版本。若之后想继续，请明确告知是否要建立一个新的生成目标（例如重新生成该卡通低模茶壶），我再据此操作。"
+      },
+      "production": 0,
+      "prompt_version": "asset-agent-v3",
+      "question": "",
+      "request": "继续，再试一下。",
+      "result": {
+        "evidence": "verified",
+        "reason": "answered",
+        "source": "agent",
+        "status": "answered",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "",
+      "status": "answered",
+      "wait_id": "62a775367c1eaaa8ef051eb26d0b25adf734e8d848c2dd6f"
+    },
+    "source": "real-llm-fixed-provider-evaluation"
+  },
+  "source": "real DeepSeek; fixed Provider; synthetic GLB; no real Tripo",
+  "started": "2026-09-13T17:07:18.549273Z",
+  "suite_acceptance": "pending_semantic_review"
+}

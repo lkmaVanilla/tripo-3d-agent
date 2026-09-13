@@ -19,12 +19,13 @@ import (
 	"github.com/cloudwego/eino/components/tool/utils"
 	"github.com/cloudwego/eino/compose"
 	"github.com/cloudwego/eino/schema"
+	"github.com/lkmaVanilla/tripo-3d-agent/internal/asset"
 	"github.com/lkmaVanilla/tripo-3d-agent/internal/tripo"
 )
 
 // skillFiles 将版本化 Skill 随二进制发布，运行时无需读取可变的外部提示文件。
 //
-//go:embed skills/*.md skills/v2/*.md
+//go:embed skills/*.md skills/v2/*.md skills/v3/*.md
 var skillFiles embed.FS
 
 // PromptVersion 与 instruction 冻结为 49a1364 的 v1，不能指向当前最新版本。
@@ -95,7 +96,7 @@ type countedModel struct {
 	coordinator *pauseCoordinator
 }
 
-// modelCallError 只标识实际提供方模型调用失败；原始原因仍可追踪或用 errors.Is 检查。
+// modelCallError 标识模型调用失败或响应无法形成合法动作；原始原因仍可追踪或用 errors.Is 检查。
 // 预算、停止与恢复校验不使用此类型，避免把程序边界误写成供应商失败。
 type modelCallError struct{ cause error }
 
@@ -135,7 +136,62 @@ func (m *countedModel) Generate(ctx context.Context, in []*schema.Message, opts 
 	if c != nil && c.profile.Version != "" && c.profile.Version != profile.Version {
 		return nil, recoveryError("execution_version_mismatch")
 	}
+	// 协议纠正只存在于提供方请求副本中；Eino与暂停种子仍只接收原输入和最终合法提议。
+	providerInput := in
+	for attempt := 0; ; attempt++ {
+		msg, v, err := m.generateAttempt(ctx, in, providerInput, profile, attempt, opts...)
+		if err != nil {
+			return nil, err
+		}
+		code, reason := "", ""
+		if profile.Version == ConversationPromptVersion && len(msg.ToolCalls) == 0 {
+			code, reason = "invalid_action", "模型没有通过工具提出问题或正式收尾，本次决策无法继续"
+		} else if len(msg.ToolCalls) > 1 {
+			code, reason = "tool_batch", "每轮只能执行一个工具；本轮未执行任何工具"
+		}
+		if code != "" {
+			if err = m.s.event(m.id, "runtime_blocked", map[string]string{"code": code, "reason": reason}); err != nil {
+				return nil, err
+			}
+			if profile.Version != ConversationPromptVersion {
+				return nil, fmt.Errorf("模型在同一轮提议多个工具，已停止本地执行")
+			}
+			if attempt != 0 {
+				return nil, &modelCallError{cause: fmt.Errorf("模型协议纠正后仍无合法单工具动作：%s", reason)}
+			}
+			providerInput, err = protocolCorrectionInput(in, msg, code)
+			if err != nil {
+				return nil, &modelCallError{cause: fmt.Errorf("无法安全构造模型协议纠正：%w", err)}
+			}
+			if err = m.s.event(m.id, "model_protocol_retry", map[string]any{"code": code, "retry": 1, "eino_input_hash": tokenHash(jsonString(in)), "rejected_tool_count": len(msg.ToolCalls)}); err != nil {
+				return nil, err
+			}
+			continue
+		}
+		// 原始无效提议只留在审计中，不作为已经执行的工具进入Eino历史或恢复种子。
+		if c != nil && len(msg.ToolCalls) == 1 {
+			c.seed, err = newReplaySeed(in, msg, v.Model, profile.Version)
+			if err != nil {
+				return nil, err
+			}
+		}
+		return msg, nil
+	}
+}
+
+// generateAttempt 每次真实模型请求都重新检查停止、期限与跨重启预算，先记消耗后发请求。
+// originalInput用于Eino历史；providerInput可以额外携带本次被拒绝且未执行的模型提议。
+func (m *countedModel) generateAttempt(ctx context.Context, originalInput, providerInput []*schema.Message, profile executionProfile, attempt int, opts ...model.Option) (*schema.Message, Session, error) {
 	// 先持久化消耗再发网络请求，调用失败或进程退出也不会让预算“退回”。
+	if err := ctx.Err(); err != nil {
+		return nil, Session{}, err
+	}
+	callEvidence := map[string]any{"model": "deepseek-v4-pro", "prompt_version": profile.Version, "thinking": "enabled", "reasoning_effort": "high", "provider_revision": "unavailable"}
+	if profile.Version == ConversationPromptVersion {
+		callEvidence["protocol_attempt"] = attempt + 1
+		callEvidence["eino_input_hash"] = tokenHash(jsonString(originalInput))
+		callEvidence["max_completion_tokens"] = 8192
+	}
 	v, err := m.s.store.Edit(ctx, m.id, func(v *Session) error {
 		if err := checkExecution(*v, time.Now()); err != nil {
 			return err
@@ -147,11 +203,11 @@ func (m *countedModel) Generate(ctx context.Context, in []*schema.Message, opts 
 			return context.DeadlineExceeded
 		}
 		v.ModelCalls++
-		v.History = in
+		v.History = originalInput
 		return nil
-	}, "model_call", map[string]any{"model": "deepseek-v4-pro", "prompt_version": profile.Version, "thinking": "enabled", "reasoning_effort": "high", "provider_revision": "unavailable"})
+	}, "model_call", callEvidence)
 	if err != nil {
-		return nil, err
+		return nil, Session{}, err
 	}
 	callCtx, cancel := context.WithTimeout(ctx, 90*time.Second)
 	defer cancel()
@@ -161,8 +217,18 @@ func (m *countedModel) Generate(ctx context.Context, in []*schema.Message, opts 
 		defer c()
 	}
 	// 只修改发给提供方的消息副本；恢复种子仍匹配 Eino 原始输入协议。
-	messages := append([]*schema.Message(nil), in...)
-	state := jsonString(v.View())
+	messages := append([]*schema.Message(nil), providerInput...)
+	if profile.Version == ConversationPromptVersion {
+		messages, err = cloneMessages(providerInput)
+		if err != nil {
+			return nil, Session{}, err
+		}
+	}
+	stateView := v.View()
+	if executionVersion(v) == ConversationPromptVersion {
+		stateView = conversationModelView(v)
+	}
+	state := jsonString(stateView)
 	if len(messages) > 0 && messages[0].Role == schema.System {
 		copy := *messages[0]
 		copy.Content += "\n<runtime_state>" + state + "</runtime_state>"
@@ -171,28 +237,64 @@ func (m *countedModel) Generate(ctx context.Context, in []*schema.Message, opts 
 		messages = append([]*schema.Message{schema.SystemMessage("<runtime_state>" + state + "</runtime_state>")}, messages...)
 	}
 	opts = append(opts, deepseek.WithExtraFields(map[string]any{"reasoning_effort": "high"}))
+	// v3 实测存在4096输出预算用尽却没有最终动作的响应；独立提高上限，旧profile不变。
+	if profile.Version == ConversationPromptVersion {
+		opts = append(opts, model.WithMaxTokens(8192))
+	}
 	msg, err := m.BaseChatModel.Generate(callCtx, messages, opts...)
 	if err != nil {
 		_ = m.s.event(m.id, "model_error", map[string]string{"error": m.s.redact(err.Error())})
-		return nil, &modelCallError{cause: err}
+		return nil, Session{}, &modelCallError{cause: err}
 	}
-	_, err = m.s.store.Edit(context.Background(), m.id, func(v *Session) error { v.History = append(append([]*schema.Message(nil), in...), msg); return nil }, "agent_proposal", map[string]any{"content": msg.Content, "tool_calls": msg.ToolCalls})
+	if msg == nil {
+		err := fmt.Errorf("模型未返回响应")
+		_ = m.s.event(m.id, "model_error", map[string]string{"error": err.Error()})
+		return nil, Session{}, &modelCallError{cause: err}
+	}
+	evidence := map[string]any{"content": msg.Content, "tool_calls": msg.ToolCalls}
+	if msg.ResponseMeta != nil {
+		evidence["finish_reason"] = msg.ResponseMeta.FinishReason
+		evidence["usage"] = msg.ResponseMeta.Usage
+		evidence["response_meta"] = msg.ResponseMeta
+	}
+	_, err = m.s.store.Edit(context.Background(), m.id, func(v *Session) error {
+		v.History = append(append([]*schema.Message(nil), originalInput...), msg)
+		return nil
+	}, "agent_proposal", evidence)
+	if err != nil {
+		return nil, Session{}, err
+	}
+	if strings.TrimSpace(msg.Content) == "" && len(msg.ToolCalls) == 0 {
+		err := fmt.Errorf("模型返回空内容且没有工具调用，无法继续本次决策")
+		_ = m.s.event(m.id, "model_error", map[string]string{"error": err.Error()})
+		return nil, Session{}, &modelCallError{cause: err}
+	}
+	return msg, v, nil
+}
+
+// protocolCorrectionInput闭合被拒绝的工具调用，明确它们没有执行；不猜测用户问题或最终答案。
+// 完整复制assistant的reasoning_content与扩展字段，避免破坏DeepSeek多轮工具协议。
+func protocolCorrectionInput(original []*schema.Message, rejected *schema.Message, code string) ([]*schema.Message, error) {
+	if rejected == nil || rejected.Role != schema.Assistant {
+		return nil, fmt.Errorf("被拒绝的消息不是assistant响应")
+	}
+	for _, call := range rejected.ToolCalls {
+		if call.Function.Name == "" || !json.Valid([]byte(call.Function.Arguments)) {
+			return nil, fmt.Errorf("被拒绝的工具调用缺少合法名称或JSON参数")
+		}
+	}
+	messages, err := cloneMessages(append(append([]*schema.Message(nil), original...), rejected))
 	if err != nil {
 		return nil, err
 	}
-	// 即使底层支持顺序执行多个工具，这里也拒绝批量提议，确保每轮先观察反馈。
-	if len(msg.ToolCalls) > 1 {
-		_ = m.s.event(m.id, "runtime_blocked", map[string]string{"code": "tool_batch", "reason": "每轮只能执行一个工具；本轮未执行任何工具"})
-		return nil, fmt.Errorf("模型在同一轮提议多个工具，已停止本地执行")
+	for _, call := range rejected.ToolCalls {
+		messages = append(messages, &schema.Message{Role: schema.Tool, ToolCallID: call.ID, Name: call.Function.Name, Content: jsonString(map[string]any{"status": "not_executed", "code": code, "message": "本响应同时提出多个工具，运行时拒绝了整个批次；此工具未执行，没有产生任何业务结果。"})})
 	}
-	// 将已接受提议冻结为种子；随后若工具需要暂停，可在首次检查点缺失时重建。
-	if c != nil && len(msg.ToolCalls) == 1 {
-		c.seed, err = newReplaySeed(in, msg, v.Model, profile.Version)
-		if err != nil {
-			return nil, err
-		}
+	messages = append(messages, schema.UserMessage("[运行时协议纠正] 上一响应未形成合法动作，其中所有工具都没有执行。这是同一目标的一次协议纠正，不是用户的新需求或新授权。请根据原始需求与最新runtime_state只调用一个工具：需要用户澄清时使用ask_user，具备依据时选择一个合法动作，结束时使用finish_request。不能只输出正文，不能在同一响应调用多个工具，也不能声称被拒绝的工具已经执行。原预算、硬约束和已接受目标不变。"))
+	if err = validateProtocol(messages); err != nil {
+		return nil, err
 	}
-	return msg, nil
+	return messages, nil
 }
 
 // Stream 复用完整响应路径，保持计数与恢复语义一致；当前 Runner 未启用流式输出。
@@ -221,7 +323,11 @@ func (b skillBackend) List(ctx context.Context) ([]skill.FrontMatter, error) {
 		return nil, err
 	}
 	out := []skill.FrontMatter{}
-	for _, name := range []string{"intent", "generation", "correction"} {
+	names := []string{"intent", "generation", "correction"}
+	if profile.Version == ConversationPromptVersion {
+		names = append(names, "asset-editing")
+	}
+	for _, name := range names {
 		description, _ := profile.skillDescription(name)
 		out = append(out, skill.FrontMatter{Name: name, Description: description})
 	}
@@ -297,6 +403,9 @@ func (s *Service) tools(id string, c *pauseCoordinator) ([]tool.BaseTool, error)
 	}
 	c.profile = profile
 	out := []tool.BaseTool{}
+	proposedGoal := ""
+	proposedDraftID := ""
+	var proposedAssessment *asset.Report
 	add := func(t tool.InvokableTool, err error) error {
 		if err != nil {
 			return err
@@ -343,6 +452,13 @@ func (s *Service) tools(id string, c *pauseCoordinator) ([]tool.BaseTool, error)
 				return fmt.Errorf("意图已保存，不能重新定义验收上限")
 			}
 			v.Intent = in
+			if profile.Version == ConversationPromptVersion {
+				if proposedDraftID != "" && (v.IntentDraft == nil || v.IntentDraft.ID != proposedDraftID) {
+					return fmt.Errorf("需求差异草案已改变，不能接受过期意图")
+				}
+				v.GoalKind = proposedGoal
+				v.InputAssessment = proposedAssessment
+			}
 			return nil
 		}, "intent_and_plan", in)
 		if err != nil {
@@ -404,7 +520,7 @@ func (s *Service) tools(id string, c *pauseCoordinator) ([]tool.BaseTool, error)
 	})); err != nil {
 		return nil, err
 	}
-	if err := add(utils.InferTool("decimate_asset", "对当前请求已有有效候选模型减面，返回新的实测报告。", func(ctx context.Context, in *decimationInput) (string, error) {
+	if err := add(utils.InferTool("decimate_asset", profile.toolDescription("decimate_asset", "对当前请求已有有效候选模型减面，返回新的实测报告。"), func(ctx context.Context, in *decimationInput) (string, error) {
 		return s.prepareProduction(ctx, id, c, "decimate", tripo.Params{FaceLimit: in.TargetTriangles}, in.ArtifactID, in.Reason)
 	})); err != nil {
 		return nil, err
@@ -413,6 +529,9 @@ func (s *Service) tools(id string, c *pauseCoordinator) ([]tool.BaseTool, error)
 		return s.finishRequest(ctx, id, c, in)
 	})); err != nil {
 		return nil, err
+	}
+	if profile.Version == ConversationPromptVersion {
+		return s.conversationTools(id, c, out, &proposedGoal, &proposedAssessment, &proposedDraftID)
 	}
 	return out, nil
 }
@@ -477,6 +596,9 @@ func (s *Service) prepareProduction(ctx context.Context, id string, c *pauseCoor
 		return s.block(id, "unnecessary_production", "当前候选已通过检查，应直接交付")
 	}
 	if kind == "generate" {
+		if executionVersion(v) == ConversationPromptVersion && v.GoalKind != "generate" && v.GoalKind != "regenerate" {
+			return s.block(id, "constraint", "当前目标没有授权文本生成，不能用生成代替加工")
+		}
 		if strings.TrimSpace(p.Prompt) == "" {
 			return s.block(id, "invalid_parameter", "生成描述不能为空")
 		}
@@ -490,8 +612,22 @@ func (s *Service) prepareProduction(ctx context.Context, id string, c *pauseCoor
 	} else {
 		// 减面只能消费当前请求的有效模型，并且必须严格降低实测面数。
 		found := false
+		if executionVersion(v) == ConversationPromptVersion {
+			if v.GoalKind != "decimate" && len(v.Artifacts) == 0 {
+				return s.block(id, "constraint", "当前目标未接受减面")
+			}
+			if v.InputAssessment != nil && v.InputAssessment.Passed && len(v.Artifacts) == 0 {
+				return s.block(id, "unnecessary_production", "已有输入满足本次技术目标，应解释无需加工")
+			}
+			version, e := s.productionVersion(ctx, v, artifactID)
+			if e != nil || !version.Report.Valid || p.FaceLimit >= version.Report.Triangles {
+				return s.block(id, "invalid_artifact", "减面需要锁定初始版本或本Run新产物，且严格降低面数")
+			}
+			p.Input = "version:" + version.ID
+			found = true
+		}
 		for _, a := range v.Artifacts {
-			if a.ID == artifactID && a.Report.Valid && p.FaceLimit < a.Report.Triangles {
+			if executionVersion(v) != ConversationPromptVersion && a.ID == artifactID && a.Report.Valid && p.FaceLimit < a.Report.Triangles {
 				p.Input = a.SourceURL
 				found = true
 			}
@@ -503,6 +639,18 @@ func (s *Service) prepareProduction(ctx context.Context, id string, c *pauseCoor
 	// 不提前替换 Current：旧检查点仍可能需要重放上一操作的确定结果。
 	opID := newID()
 	draft := &PendingPause{Point: ResumePoint{Kind: "production", RefID: opID}, Operation: &Operation{ID: opID, Kind: kind, Params: p, Stage: "ready"}, Reason: reason}
+	if executionVersion(v) == ConversationPromptVersion {
+		if kind == "decimate" {
+			version, e := s.productionVersion(ctx, v, artifactID)
+			if e != nil {
+				return "", e
+			}
+			draft.Operation.InputVersionID = version.ID
+			draft.Operation.InputSHA256 = version.SHA256
+		} else if v.InputVersion != nil {
+			draft.Operation.ContextReferenceID = v.InputVersion.ID
+		}
+	}
 	if err = c.prepare(ctx, draft); err != nil {
 		return "", err
 	}

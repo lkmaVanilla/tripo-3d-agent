@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 
 	_ "modernc.org/sqlite"
@@ -17,7 +18,11 @@ import (
 
 // Store 用 SQLite 持久化业务会话、执行事件、Eino 检查点及匿名访客凭证。
 // Session 的 JSON 是业务事实来源；检查点只记录框架执行位置，不能替代业务状态。
-type Store struct{ db *sql.DB }
+type Store struct {
+	db             *sql.DB
+	versionCheckMu sync.Mutex
+	versionChecks  map[string]versionFileCheck
+}
 
 // Event 是持久化的执行事件，前端用 Seq 游标断线续读。
 // Seq 在整张表中递增，因此同一会话的序号有空隙是正常情况。
@@ -55,6 +60,10 @@ CREATE TABLE IF NOT EXISTS visitors(hash TEXT PRIMARY KEY, expires INTEGER NOT N
 		db.Close()
 		return nil, err
 	}
+	if err = migrateConversations(db); err != nil {
+		db.Close()
+		return nil, err
+	}
 	return &Store{db: db}, nil
 }
 
@@ -73,6 +82,9 @@ func (s *Store) Create(ctx context.Context, v Session) error {
 	}
 	defer tx.Rollback()
 	if _, err = tx.ExecContext(ctx, "INSERT INTO sessions(id,owner,data) VALUES(?,?,?)", v.ID, v.Owner, b); err != nil {
+		return err
+	}
+	if err = bindLegacyConversation(ctx, tx, v); err != nil {
 		return err
 	}
 	if err = insertEvent(ctx, tx, v.ID, "request", map[string]any{"text": v.Request, "model": v.Model, "source": v.Source, "prompt_version": executionVersion(v), "tripo_model": "v3.1-20260211"}); err != nil {
@@ -172,6 +184,15 @@ func (s *Store) Edit(ctx context.Context, id string, fn func(*Session) error, ki
 		if err = insertEvent(ctx, tx, id, kind, data); err != nil {
 			return v, err
 		}
+	} else {
+		// 无公开事件的内部状态修改仍刷新该执行的缓存，不扫描其他历史执行。
+		var seq int64
+		if err = tx.QueryRowContext(ctx, "SELECT COALESCE(MAX(seq),0) FROM events WHERE session_id=?", id).Scan(&seq); err != nil {
+			return v, err
+		}
+		if err = cacheConversationRun(ctx, tx, v, seq); err != nil {
+			return v, err
+		}
 	}
 	err = tx.Commit()
 	return v, err
@@ -203,8 +224,17 @@ func insertEvent(ctx context.Context, tx *sql.Tx, id, kind string, data any) err
 	if err != nil {
 		return err
 	}
-	_, err = tx.ExecContext(ctx, "INSERT INTO events(session_id,kind,at,data) VALUES(?,?,?,?)", id, kind, time.Now().UTC().Format(time.RFC3339Nano), b)
-	return err
+	at := time.Now().UTC()
+	result, err := tx.ExecContext(ctx, "INSERT INTO events(session_id,kind,at,data) VALUES(?,?,?,?)", id, kind, at.Format(time.RFC3339Nano), b)
+	if err != nil {
+		return err
+	}
+	seq, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+	// 此处也覆盖 CommitCheckpoint，让问题与已发布恢复点在同一事务中可见。
+	return conversationEventHook(ctx, tx, id, Event{Seq: seq, Kind: kind, Time: at, Data: b})
 }
 
 // Events 按序返回指定会话中严格晚于 after 的事件，用于 WebSocket 增量推送和重连补发。
@@ -258,8 +288,34 @@ func (s *Store) ValidVisitor(ctx context.Context, hash string) bool {
 
 // Delete 删除会话，并通过外键级联删除事件和检查点；磁盘资产文件由上层清理。
 func (s *Store) Delete(ctx context.Context, id string) error {
-	_, err := s.db.ExecContext(ctx, "DELETE FROM sessions WHERE id=?", id)
-	return err
+	tx, err := s.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+	var conversationID string
+	err = tx.QueryRowContext(ctx, "SELECT conversation_id FROM conversation_runs WHERE run_id=?", id).Scan(&conversationID)
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+		return err
+	}
+	if conversationID != "" {
+		var count int
+		if err = tx.QueryRowContext(ctx, "SELECT COUNT(*) FROM conversation_runs WHERE conversation_id=?", conversationID).Scan(&count); err != nil {
+			return err
+		}
+		if count > 1 {
+			return fmt.Errorf("持续会话必须整体清理，不能独立删除历史执行")
+		}
+	}
+	if _, err = tx.ExecContext(ctx, "DELETE FROM sessions WHERE id=?", id); err != nil {
+		return err
+	}
+	if conversationID != "" {
+		if _, err = tx.ExecContext(ctx, "DELETE FROM conversations WHERE id=?", conversationID); err != nil {
+			return err
+		}
+	}
+	return tx.Commit()
 }
 
 // checkpointStore 保留旧协议的读写适配能力，新协议由 pauseCoordinator 原子提交。

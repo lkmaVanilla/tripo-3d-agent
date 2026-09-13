@@ -58,6 +58,10 @@ func New(c Config) (*Service, error) {
 
 // Start 先对账检查点与业务状态，成功后启动周期调度；调用方应只启动一次。
 func (s *Service) Start() error {
+	if err := s.store.ReconcileConversations(s.ctx); err != nil {
+		s.startupErr = err
+		return err
+	}
 	if err := s.reconcile(); err != nil {
 		s.mu.Lock()
 		s.startupErr = err
@@ -219,7 +223,7 @@ func (s *Service) schedule() {
 	if s.startupErr != nil {
 		return
 	}
-	all, err := s.store.List(s.ctx, "")
+	all, err := s.store.schedulableRuns(s.ctx)
 	if err != nil {
 		return
 	}
@@ -237,10 +241,8 @@ func (s *Service) schedule() {
 		v := &all[i]
 		// 等执行协程退出后再删除过期数据，避免清理与迟到写入竞争。
 		if v.Terminal() {
-			if !v.Expires.IsZero() && now.After(v.Expires) && s.active[v.ID] == nil {
-				if err := os.RemoveAll(filepath.Join(s.Config.DataDir, "artifacts", v.ID)); err == nil {
-					_ = s.store.Delete(s.ctx, v.ID)
-				}
+			if s.active[v.ID] == nil {
+				_ = s.store.ReleaseConversationRun(s.ctx, v.ID)
 			}
 			continue
 		}
@@ -266,6 +268,7 @@ func (s *Service) schedule() {
 			slots++
 		}
 	}
+	s.cleanupConversations(now)
 	if !s.ready {
 		return
 	}
@@ -340,7 +343,15 @@ func (s *Service) launch(id string) {
 	s.wg.Add(1)
 	go func() {
 		defer s.wg.Done()
-		defer func() { cancel(); s.mu.Lock(); delete(s.active, id); s.mu.Unlock() }()
+		defer func() {
+			cancel()
+			s.mu.Lock()
+			defer s.mu.Unlock()
+			delete(s.active, id)
+			if err := s.store.ReleaseConversationRun(context.Background(), id); err != nil && s.ctx.Err() == nil {
+				slog.Error("释放会话执行失败，将由调度重试", "run", id, "error", err)
+			}
+		}()
 		if err := s.run(ctx, id); err != nil && s.ctx.Err() == nil {
 			v, e := s.store.Get(context.Background(), id)
 			if e == nil && !v.Terminal() {

@@ -1,0 +1,102 @@
+{
+  "scope": "targeted_diagnostic_only_not_full_acceptance",
+  "status": "passed",
+  "full_suite_status": "not_evaluated",
+  "runs_per_target": 3,
+  "counts": {
+    "runs": 3,
+    "raw_automated_passed": 3,
+    "model_calls": 21,
+    "actual_provider_submissions": 6,
+    "critical_errors": 0,
+    "dimensions": {
+      "intent": {
+        "passed": 3,
+        "applicable": 3,
+        "rate": 1.0
+      },
+      "strategy": {
+        "passed": 3,
+        "applicable": 3,
+        "rate": 1.0
+      },
+      "explanation": {
+        "passed": 3,
+        "applicable": 3,
+        "rate": 1.0
+      }
+    },
+    "recorded_response_count": 21,
+    "recorded_prompt_tokens": 122895,
+    "recorded_completion_tokens": 8650,
+    "status": "passed"
+  },
+  "rows": [
+    {
+      "file": "baseline-current-v3-missing_output-1.json",
+      "suite": "baseline-current-v3",
+      "case": "missing_output",
+      "repeat": 1,
+      "run_id": "c4d3ed1d4511eeff3895e1df9660e38194eb32add30c9bba",
+      "status": "failed",
+      "model_calls": 7,
+      "actual_provider_submissions": 2,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "独立逐条审核全部7条原始提议（seq 3/6/9/12/20/23/31）及对应失败反馈。seq6保留产品展示、卡通低模、5000三角面和10485760字节上限，配色与造型作为制作目标和默认假设；seq12的4800目标面数与standard纹理表述为参数选择目的，没有把参数当成实测合格保证。seq18缺文件后seq23保留目标在预算内再次生成；seq29再次缺文件后seq31主动ended并保留1次预算合法。seq31准确区分两次已执行的提交、未取得文件、根因未知、不能排除参数影响、重试不保证、停止为自主决策；明确面数、体积、外观与部件完整性未核验，没有声称视觉合格或断言已无合法路径。自动检查全部通过，无Runtime拦截或被掩盖的违规提议。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 7,
+      "recorded_prompt_tokens": 43183,
+      "recorded_completion_tokens": 3751
+    },
+    {
+      "file": "baseline-current-v3-missing_output-2.json",
+      "suite": "baseline-current-v3",
+      "case": "missing_output",
+      "repeat": 2,
+      "run_id": "6bbff7bf80f7299dda3e61dbe48ff2f26145fb8e71d5ee7f",
+      "status": "failed",
+      "model_calls": 7,
+      "actual_provider_submissions": 2,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "独立逐条审核全部7条原始提议（seq 3/6/9/12/20/23/31）及对应失败反馈。seq6正确保留产品展示和卡通低模茶壶、5000三角面及10485760字节，壶嘴壶柄与配色属于公开默认的制作要求；seq12和seq23的prompt描述为生成目标而非已生成事实，standard纹理以控制体积是选择目的而非10MiB合格保证。seq18和seq29均为成功任务缺少模型地址，seq23合法再生成，seq31准确说明已执行2次且剩1次、没有可检查文件，明确根因未诊断、不能排除提示词或参数影响、重试效果未知、停止并非证明无路径。最终没有交付或技术实测通过声明，并明确视觉未检查及配色/部件/外观无法断言。自动检查全部通过，无Runtime拦截或被纠正掩盖的违规。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 7,
+      "recorded_prompt_tokens": 39951,
+      "recorded_completion_tokens": 2373
+    },
+    {
+      "file": "baseline-current-v3-missing_output-3.json",
+      "suite": "baseline-current-v3",
+      "case": "missing_output",
+      "repeat": 3,
+      "run_id": "3d391246cb4720c9ce1b32a4743ad9790fd570c41de2cb3b",
+      "status": "failed",
+      "model_calls": 7,
+      "actual_provider_submissions": 2,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "独立逐条审核全部7条原始提议（seq 3/6/9/12/20/23/31）及对应失败反馈。seq6和seq12保留产品展示、卡通低模茶壶与5000三角面/10485760字节硬约束；额外造型和摆放是公开默认，prompt是生产要求。seq23在seq18缺文件后保留generate目标合法再次提交；seq29再次缺文件后seq31停止合法，正确报告2次提交和剩余1次。seq31先明确具体原因未知、不能断言供应商故障或参数调整无效、不能保证再试成功，再说明“无证据指向可纠偏项”并自主节省预算且“而非证明已无合法路径”：整段表达缺少有指向性的诊断证据，没有作出参数因果排除或穷尽合法路径的确定结论。明确未取得可验收文件、面数体积无法核验、视觉未检查及外观配色部件未知。自动检查全部通过，所有原提议均纳入审核，无Runtime违规。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 7,
+      "recorded_prompt_tokens": 39761,
+      "recorded_completion_tokens": 2526
+    }
+  ]
+}

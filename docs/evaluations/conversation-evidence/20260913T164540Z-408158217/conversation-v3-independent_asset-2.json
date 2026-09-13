@@ -1,0 +1,895 @@
+{
+  "automated_checks": [
+    {
+      "Critical": false,
+      "Detail": "",
+      "Dimension": "strategy",
+      "Name": "terminal_and_model_available",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "actual=0 expected=0..0",
+      "Dimension": "strategy",
+      "Name": "allowed_submission_count",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "answered",
+      "Dimension": "strategy",
+      "Name": "expected_delivery",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=7 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=7 tool=finish_request",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=7 outcome=answer",
+      "Dimension": "strategy",
+      "Name": "finish_outcome_contract",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=7 consumed=0",
+      "Dimension": "constraint",
+      "Name": "answer_hides_no_production",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "proposals=1",
+      "Dimension": "strategy",
+      "Name": "real_model_proposals_exist",
+      "Passed": true
+    }
+  ],
+  "automated_passed": true,
+  "case": {
+    "AllowedProduction": null,
+    "Answer": "在这个茶壶会话中，我想改做一个完全独立的汽车资产。若建议另开会话，请先说明，不要在本会话直接制作。 其他外观细节可合理默认并公开，不改变硬约束。",
+    "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。",
+    "ID": "independent_asset",
+    "InitialProduction": 0,
+    "IntentReview": "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+    "MaxBytes": 10485760,
+    "MaxSubmits": 0,
+    "MaxTriangles": 5000,
+    "MinSubmits": 0,
+    "NoDelivery": true,
+    "Provider": "normal",
+    "Request": "在这个茶壶会话中，我想改做一个完全独立的汽车资产。若建议另开会话，请先说明，不要在本会话直接制作。",
+    "RequireThreeQuestions": false,
+    "Seed": "unselected_version",
+    "StrategyReview": "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+    "Suite": "conversation-v3",
+    "WantAnswer": true,
+    "WantDelivery": false
+  },
+  "conversation": {
+    "conversation": {
+      "created": "2026-09-13T16:51:47.304796Z",
+      "expires": "2026-09-20T16:51:52.375049Z",
+      "id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+      "title": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。",
+      "updated": "2026-09-13T16:51:52.375049Z"
+    },
+    "cursor": 9,
+    "events": [
+      {
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "data": {
+          "client_message_id": "seed",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。"
+        },
+        "kind": "request",
+        "run_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "seq": 1,
+        "time": "2026-09-13T16:51:47.304924Z"
+      },
+      {
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "data": {
+          "artifact_id": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86",
+          "operation_id": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86",
+          "report": {
+            "bytes": 27656,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 4500 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 27656 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 4500,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "declared-seed-task"
+        },
+        "kind": "technical_report",
+        "run_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "seq": 2,
+        "time": "2026-09-13T16:51:47.31236Z"
+      },
+      {
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "data": {
+          "final": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n程序已根据本请求的实测技术证据完成收尾。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 0 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "result": {
+            "artifact_id": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86",
+            "evidence": "verified",
+            "operation_id": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86",
+            "reason": "delivered",
+            "source": "runtime",
+            "status": "completed",
+            "version": 1
+          }
+        },
+        "kind": "evaluation_fixture_finished",
+        "run_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "seq": 3,
+        "time": "2026-09-13T16:51:47.313631Z"
+      },
+      {
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "data": {
+          "expires": "2026-09-20T16:51:47.313574Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "seq": 4,
+        "time": "2026-09-13T16:51:47.314409Z"
+      },
+      {
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "在这个茶壶会话中，我想改做一个完全独立的汽车资产。若建议另开会话，请先说明，不要在本会话直接制作。",
+          "version_id": ""
+        },
+        "kind": "request",
+        "run_id": "5588161d3996b919266358dc9072944b2afa2740ef09b650",
+        "seq": 5,
+        "time": "2026-09-13T16:51:47.31542Z"
+      },
+      {
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "data": {
+          "eino_input_hash": "153c488aebddc0927b8bba3cef283b2f5e8bfa89ef6b7d1c86c97a11a58a0fb2",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "5588161d3996b919266358dc9072944b2afa2740ef09b650",
+        "seq": 6,
+        "time": "2026-09-13T16:51:47.468067Z"
+      },
+      {
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 429,
+              "prompt_token_details": {
+                "cached_tokens": 1536
+              },
+              "prompt_tokens": 4184,
+              "total_tokens": 4613
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"outcome\": \"answer\", \"explanation\": \"汽车是独立于茶壶的新资产，建议另开会话制作，不在本会话直接制作。\\n\\n本会话围绕同一资产「茶壶」运作，会话状态中已保存茶壶的意图目标（产品展示、卡通低模、≤5000 三角面、≤10MiB）以及已交付的版本 bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86。改做汽车会破坏本会话围绕单一资产的原则，因此请新建一个会话，并在新会话中说明汽车的需求，例如：用途、风格、面数上限、体积上限等。\\n\\n另请注意：当前能力仅支持文本生成静态自包含 GLB、减面以及解释已有结果；图片输入、外部导入、绑定、动画尚未接入。若汽车需求超出这些能力范围，也需在新会话中提前说明。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_a4QoV4gT0GP9205GF3Xu2461",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 429,
+            "prompt_token_details": {
+              "cached_tokens": 1536
+            },
+            "prompt_tokens": 4184,
+            "total_tokens": 4613
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "5588161d3996b919266358dc9072944b2afa2740ef09b650",
+        "seq": 7,
+        "time": "2026-09-13T16:51:52.372145Z"
+      },
+      {
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "data": {
+          "explanation": "汽车是独立于茶壶的新资产，建议另开会话制作，不在本会话直接制作。\n\n本会话围绕同一资产「茶壶」运作，会话状态中已保存茶壶的意图目标（产品展示、卡通低模、≤5000 三角面、≤10MiB）以及已交付的版本 bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86。改做汽车会破坏本会话围绕单一资产的原则，因此请新建一个会话，并在新会话中说明汽车的需求，例如：用途、风格、面数上限、体积上限等。\n\n另请注意：当前能力仅支持文本生成静态自包含 GLB、减面以及解释已有结果；图片输入、外部导入、绑定、动画尚未接入。若汽车需求超出这些能力范围，也需在新会话中提前说明。",
+          "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "outcome": "answer",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "run_id": "5588161d3996b919266358dc9072944b2afa2740ef09b650",
+        "seq": 8,
+        "time": "2026-09-13T16:51:52.375283Z"
+      },
+      {
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "data": {
+          "expires": "2026-09-20T16:51:52.375049Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "5588161d3996b919266358dc9072944b2afa2740ef09b650",
+        "seq": 9,
+        "time": "2026-09-13T16:51:52.377529Z"
+      }
+    ],
+    "has_more": false,
+    "messages": [
+      {
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "created": "2026-09-13T16:51:47.304924Z",
+        "id": "4c1d2605c1c27f8dd780244b42e155b347dcf452d9112ae560175d7e0180d2c0",
+        "kind": "user",
+        "run_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "seq": 1,
+        "text": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。",
+        "updated_seq": 1
+      },
+      {
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "created": "2026-09-13T16:51:47.31236Z",
+        "data": {
+          "operation_id": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86",
+          "operation_kind": "generate",
+          "report": {
+            "bytes": 27656,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 4500 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 27656 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 4500,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "stage": "done",
+          "status": "checked",
+          "task_id": "declared-seed-task"
+        },
+        "id": "7bce632137d44d8039c6f48e79ce7db2048b9882117cb1b4e85b8afdba754034",
+        "kind": "operation_card",
+        "run_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "seq": 2,
+        "updated_seq": 2,
+        "version_id": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86"
+      },
+      {
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "created": "2026-09-13T16:51:47.313631Z",
+        "data": {
+          "outcome": {
+            "kind": "delivery",
+            "source": "runtime"
+          },
+          "result": {
+            "artifact_id": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86",
+            "evidence": "verified",
+            "operation_id": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86",
+            "reason": "delivered",
+            "source": "runtime",
+            "status": "completed",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+          "source": "runtime"
+        },
+        "id": "bdf631031f72c748f00e25993fba4aafeedafe753b8ec8107df4cc179fa8fb0d",
+        "kind": "run_result",
+        "run_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "seq": 3,
+        "text": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n程序已根据本请求的实测技术证据完成收尾。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 0 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "updated_seq": 4
+      },
+      {
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "created": "2026-09-13T16:51:47.31542Z",
+        "id": "d8deef8c6689a3339f57c5bf9085c466b001f2ab849936dbe0280efc97db5174",
+        "kind": "user",
+        "run_id": "5588161d3996b919266358dc9072944b2afa2740ef09b650",
+        "seq": 5,
+        "text": "在这个茶壶会话中，我想改做一个完全独立的汽车资产。若建议另开会话，请先说明，不要在本会话直接制作。",
+        "updated_seq": 5
+      },
+      {
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "created": "2026-09-13T16:51:52.375283Z",
+        "data": {
+          "outcome": {
+            "kind": "answer",
+            "source": "agent",
+            "text": "汽车是独立于茶壶的新资产，建议另开会话制作，不在本会话直接制作。\n\n本会话围绕同一资产「茶壶」运作，会话状态中已保存茶壶的意图目标（产品展示、卡通低模、≤5000 三角面、≤10MiB）以及已交付的版本 bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86。改做汽车会破坏本会话围绕单一资产的原则，因此请新建一个会话，并在新会话中说明汽车的需求，例如：用途、风格、面数上限、体积上限等。\n\n另请注意：当前能力仅支持文本生成静态自包含 GLB、减面以及解释已有结果；图片输入、外部导入、绑定、动画尚未接入。若汽车需求超出这些能力范围，也需在新会话中提前说明。"
+          },
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "5588161d3996b919266358dc9072944b2afa2740ef09b650",
+          "source": "agent",
+          "verification": "unverifiable"
+        },
+        "id": "318a78d9e08ef37e96cbe4e484a3c603abd6fda717adb4b3c3d8d8d304a61492",
+        "kind": "answer",
+        "run_id": "5588161d3996b919266358dc9072944b2afa2740ef09b650",
+        "seq": 8,
+        "text": "汽车是独立于茶壶的新资产，建议另开会话制作，不在本会话直接制作。\n\n本会话围绕同一资产「茶壶」运作，会话状态中已保存茶壶的意图目标（产品展示、卡通低模、≤5000 三角面、≤10MiB）以及已交付的版本 bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86。改做汽车会破坏本会话围绕单一资产的原则，因此请新建一个会话，并在新会话中说明汽车的需求，例如：用途、风格、面数上限、体积上限等。\n\n另请注意：当前能力仅支持文本生成静态自包含 GLB、减面以及解释已有结果；图片输入、外部导入、绑定、动画尚未接入。若汽车需求超出这些能力范围，也需在新会话中提前说明。",
+        "updated_seq": 9
+      }
+    ],
+    "runs": [
+      {
+        "artifacts": [
+          {
+            "id": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86",
+            "report": {
+              "bytes": 27656,
+              "checks": [
+                {
+                  "detail": "静态、自包含、非空三角面 GLB",
+                  "name": "文件有效性",
+                  "status": "passed"
+                },
+                {
+                  "detail": "实测 4500 / 上限 5000 个三角面",
+                  "name": "几何规模",
+                  "status": "passed"
+                },
+                {
+                  "detail": "实测 27656 / 上限 10485760 字节",
+                  "name": "文件体积",
+                  "status": "passed"
+                }
+              ],
+              "max_bytes": 10485760,
+              "max_triangles": 5000,
+              "passed": true,
+              "triangles": 4500,
+              "valid": true,
+              "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+            },
+            "task_id": "declared-seed-task",
+            "url": "/api/sessions/9228d220a027b429d46ec0fae39e43186a29231ea350d90f/artifacts/bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86"
+          }
+        ],
+        "clarifications": 0,
+        "created": "2026-09-13T16:51:47.304796Z",
+        "current_operation": {
+          "error": "",
+          "error_code": "",
+          "id": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86",
+          "input_version_id": "",
+          "kind": "generate",
+          "stage": "done",
+          "task_id": "declared-seed-task"
+        },
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-13T16:51:47.313574Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "1",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "交付引用已实测且技术通过的模型",
+              "name": "交付证据",
+              "status": "passed"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            },
+            {
+              "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+              "name": "可核验的违规提议",
+              "status": "passed"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-20T16:51:47.313574Z",
+        "final": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n程序已根据本请求的实测技术证据完成收尾。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 0 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 0,
+        "id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "input_assessment": null,
+        "intent": {
+          "asset": "茶壶",
+          "assumptions": null,
+          "constraints": null,
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "plan": [
+            "已完成的受控历史"
+          ],
+          "style": "卡通低模",
+          "use": "产品展示"
+        },
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 0,
+        "outcome": {
+          "kind": "delivery",
+          "source": "runtime"
+        },
+        "production": 1,
+        "prompt_version": "asset-agent-v3",
+        "question": "",
+        "request": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。",
+        "result": {
+          "artifact_id": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86",
+          "evidence": "verified",
+          "operation_id": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86",
+          "reason": "delivered",
+          "source": "runtime",
+          "status": "completed",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86",
+        "status": "completed",
+        "wait_id": ""
+      },
+      {
+        "artifacts": [],
+        "clarifications": 0,
+        "created": "2026-09-13T16:51:47.315312Z",
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-13T16:51:52.375049Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "0",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "1",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "本次未宣告交付成功",
+              "name": "交付证据",
+              "status": "not_applicable"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            },
+            {
+              "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+              "name": "可核验的违规提议",
+              "status": "passed"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-20T16:51:52.375049Z",
+        "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 0,
+        "id": "5588161d3996b919266358dc9072944b2afa2740ef09b650",
+        "input_assessment": null,
+        "intent": null,
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 1,
+        "outcome": {
+          "kind": "answer",
+          "source": "agent",
+          "text": "汽车是独立于茶壶的新资产，建议另开会话制作，不在本会话直接制作。\n\n本会话围绕同一资产「茶壶」运作，会话状态中已保存茶壶的意图目标（产品展示、卡通低模、≤5000 三角面、≤10MiB）以及已交付的版本 bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86。改做汽车会破坏本会话围绕单一资产的原则，因此请新建一个会话，并在新会话中说明汽车的需求，例如：用途、风格、面数上限、体积上限等。\n\n另请注意：当前能力仅支持文本生成静态自包含 GLB、减面以及解释已有结果；图片输入、外部导入、绑定、动画尚未接入。若汽车需求超出这些能力范围，也需在新会话中提前说明。"
+        },
+        "production": 0,
+        "prompt_version": "asset-agent-v3",
+        "question": "",
+        "request": "在这个茶壶会话中，我想改做一个完全独立的汽车资产。若建议另开会话，请先说明，不要在本会话直接制作。",
+        "result": {
+          "evidence": "verified",
+          "reason": "answered",
+          "source": "agent",
+          "status": "answered",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "",
+        "status": "answered",
+        "wait_id": ""
+      }
+    ],
+    "versions": [
+      {
+        "bytes": 27656,
+        "conversation_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "created": "2026-09-13T16:51:47.31236Z",
+        "format": "glb",
+        "id": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86",
+        "operation_kind": "generate",
+        "processable": true,
+        "provenance_status": "verified",
+        "report": {
+          "bytes": 27656,
+          "checks": [
+            {
+              "detail": "静态、自包含、非空三角面 GLB",
+              "name": "文件有效性",
+              "status": "passed"
+            },
+            {
+              "detail": "实测 4500 / 上限 5000 个三角面",
+              "name": "几何规模",
+              "status": "passed"
+            },
+            {
+              "detail": "实测 27656 / 上限 10485760 字节",
+              "name": "文件体积",
+              "status": "passed"
+            }
+          ],
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "passed": true,
+          "triangles": 4500,
+          "valid": true,
+          "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+        },
+        "sha256": "cc288615089c9e9ba7828ef8636e3ceaf42c68a5f64a38e053d417b85f1e03c5",
+        "source_operation_id": "bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86",
+        "source_run_id": "9228d220a027b429d46ec0fae39e43186a29231ea350d90f",
+        "task_id": "declared-seed-task",
+        "url": "/api/conversations/9228d220a027b429d46ec0fae39e43186a29231ea350d90f/versions/bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86/file",
+        "version_number": 1
+      }
+    ]
+  },
+  "critical_errors_automated": 0,
+  "ended": "2026-09-13T16:51:52.54867Z",
+  "repeat": 2,
+  "response_metadata": [
+    {
+      "content_length": 0,
+      "event_seq": 7,
+      "message_index": 0,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 429,
+          "prompt_token_details": {
+            "cached_tokens": 1536
+          },
+          "prompt_tokens": 4184,
+          "total_tokens": 4613
+        }
+      },
+      "tool_argument_lengths": [
+        810
+      ],
+      "tool_count": 1
+    }
+  ],
+  "response_metadata_source": "agent_proposal_events",
+  "run_id": "5588161d3996b919266358dc9072944b2afa2740ef09b650",
+  "semantic_review": {
+    "instructions": [
+      "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+      "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+      "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。"
+    ],
+    "proposals": [
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 7,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"outcome\": \"answer\", \"explanation\": \"汽车是独立于茶壶的新资产，建议另开会话制作，不在本会话直接制作。\\n\\n本会话围绕同一资产「茶壶」运作，会话状态中已保存茶壶的意图目标（产品展示、卡通低模、≤5000 三角面、≤10MiB）以及已交付的版本 bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86。改做汽车会破坏本会话围绕单一资产的原则，因此请新建一个会话，并在新会话中说明汽车的需求，例如：用途、风格、面数上限、体积上限等。\\n\\n另请注意：当前能力仅支持文本生成静态自包含 GLB、减面以及解释已有结果；图片输入、外部导入、绑定、动画尚未接入。若汽车需求超出这些能力范围，也需在新会话中提前说明。\"}",
+              "name": "finish_request"
+            },
+            "id": "call_00_a4QoV4gT0GP9205GF3Xu2461",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    ],
+    "status": "pending"
+  },
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "在这个茶壶会话中，我想改做一个完全独立的汽车资产。若建议另开会话，请先说明，不要在本会话直接制作。",
+          "version_id": ""
+        },
+        "kind": "request",
+        "seq": 5,
+        "time": "2026-09-13T16:51:47.31542Z"
+      },
+      {
+        "data": {
+          "eino_input_hash": "153c488aebddc0927b8bba3cef283b2f5e8bfa89ef6b7d1c86c97a11a58a0fb2",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 6,
+        "time": "2026-09-13T16:51:47.468067Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 429,
+              "prompt_token_details": {
+                "cached_tokens": 1536
+              },
+              "prompt_tokens": 4184,
+              "total_tokens": 4613
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"outcome\": \"answer\", \"explanation\": \"汽车是独立于茶壶的新资产，建议另开会话制作，不在本会话直接制作。\\n\\n本会话围绕同一资产「茶壶」运作，会话状态中已保存茶壶的意图目标（产品展示、卡通低模、≤5000 三角面、≤10MiB）以及已交付的版本 bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86。改做汽车会破坏本会话围绕单一资产的原则，因此请新建一个会话，并在新会话中说明汽车的需求，例如：用途、风格、面数上限、体积上限等。\\n\\n另请注意：当前能力仅支持文本生成静态自包含 GLB、减面以及解释已有结果；图片输入、外部导入、绑定、动画尚未接入。若汽车需求超出这些能力范围，也需在新会话中提前说明。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_a4QoV4gT0GP9205GF3Xu2461",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 429,
+            "prompt_token_details": {
+              "cached_tokens": 1536
+            },
+            "prompt_tokens": 4184,
+            "total_tokens": 4613
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 7,
+        "time": "2026-09-13T16:51:52.372145Z"
+      },
+      {
+        "data": {
+          "explanation": "汽车是独立于茶壶的新资产，建议另开会话制作，不在本会话直接制作。\n\n本会话围绕同一资产「茶壶」运作，会话状态中已保存茶壶的意图目标（产品展示、卡通低模、≤5000 三角面、≤10MiB）以及已交付的版本 bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86。改做汽车会破坏本会话围绕单一资产的原则，因此请新建一个会话，并在新会话中说明汽车的需求，例如：用途、风格、面数上限、体积上限等。\n\n另请注意：当前能力仅支持文本生成静态自包含 GLB、减面以及解释已有结果；图片输入、外部导入、绑定、动画尚未接入。若汽车需求超出这些能力范围，也需在新会话中提前说明。",
+          "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "outcome": "answer",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "seq": 8,
+        "time": "2026-09-13T16:51:52.375283Z"
+      },
+      {
+        "data": {
+          "expires": "2026-09-20T16:51:52.375049Z"
+        },
+        "kind": "conversation_idle",
+        "seq": 9,
+        "time": "2026-09-13T16:51:52.377529Z"
+      }
+    ],
+    "session": {
+      "artifacts": [],
+      "clarifications": 0,
+      "created": "2026-09-13T16:51:47.315312Z",
+      "deadline": "0001-01-01T00:00:00Z",
+      "ended": "2026-09-13T16:51:52.375049Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "0",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "1",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "0",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "本次未宣告交付成功",
+            "name": "交付证据",
+            "status": "not_applicable"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-20T16:51:52.375049Z",
+      "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "generation": 0,
+      "id": "5588161d3996b919266358dc9072944b2afa2740ef09b650",
+      "input_assessment": null,
+      "intent": null,
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 1,
+      "outcome": {
+        "kind": "answer",
+        "source": "agent",
+        "text": "汽车是独立于茶壶的新资产，建议另开会话制作，不在本会话直接制作。\n\n本会话围绕同一资产「茶壶」运作，会话状态中已保存茶壶的意图目标（产品展示、卡通低模、≤5000 三角面、≤10MiB）以及已交付的版本 bc858463ad0d6d00055bf8c6cf5b2f36f8676ee0652a7e86。改做汽车会破坏本会话围绕单一资产的原则，因此请新建一个会话，并在新会话中说明汽车的需求，例如：用途、风格、面数上限、体积上限等。\n\n另请注意：当前能力仅支持文本生成静态自包含 GLB、减面以及解释已有结果；图片输入、外部导入、绑定、动画尚未接入。若汽车需求超出这些能力范围，也需在新会话中提前说明。"
+      },
+      "production": 0,
+      "prompt_version": "asset-agent-v3",
+      "question": "",
+      "request": "在这个茶壶会话中，我想改做一个完全独立的汽车资产。若建议另开会话，请先说明，不要在本会话直接制作。",
+      "result": {
+        "evidence": "verified",
+        "reason": "answered",
+        "source": "agent",
+        "status": "answered",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "",
+      "status": "answered",
+      "wait_id": ""
+    },
+    "source": "real-llm-fixed-provider-evaluation"
+  },
+  "source": "real DeepSeek; fixed Provider; synthetic GLB; no real Tripo",
+  "started": "2026-09-13T16:51:47.304794Z",
+  "suite_acceptance": "pending_semantic_review"
+}

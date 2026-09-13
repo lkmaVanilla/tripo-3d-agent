@@ -508,10 +508,19 @@ func TestExpiryAndTraceRedaction(t *testing.T) {
 			t.Fatalf("trace leaked %s", private)
 		}
 	}
-	_, _ = s.store.Edit(context.Background(), v.ID, func(v *Session) error { v.Expires = time.Now().Add(-time.Second); return nil }, "", nil)
+	// 空闲超时先结束 Run，下一轮释放已退出 worker 的占位，保留期由 Conversation 负责。
 	s.schedule()
+	c, err := s.store.GetRunConversation(context.Background(), v.ID)
+	if err != nil || c.ActiveRunID != "" || !c.Expires.Equal(v.Ended.Add(7*24*time.Hour)) {
+		t.Fatalf("conversation retention did not follow persisted end: %+v %v", c, err)
+	}
+	s.cleanupConversations(c.Expires.Add(-time.Nanosecond))
+	if kept, e := s.store.Get(context.Background(), v.ID); e != nil || !kept.Ended.Equal(v.Ended) || !kept.Expires.Equal(v.Expires) {
+		t.Fatal("cleanup changed or removed historic Run before conversation expiry", e)
+	}
+	s.cleanupConversations(c.Expires)
 	if _, err := s.store.Get(context.Background(), v.ID); err == nil {
-		t.Fatal("expired session data retained")
+		t.Fatal("expired conversation run data retained")
 	}
 }
 

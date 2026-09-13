@@ -52,13 +52,13 @@ func TestAudienceLiveSamples(t *testing.T) {
 			Name:    "product_display",
 			Request: "为产品展示制作一个卡通低模茶壶，静态、自包含 GLB，最多 5000 个三角面、10 MiB。",
 			Answer:  "用途是产品展示，主体为卡通低模茶壶；静态、自包含 GLB，最多 5000 个三角面、10 MiB，其他外观细节由你合理选择并公开假设。",
-			Review:  []string{"意图和生成描述保留产品展示用途", "未无依据地追问游戏引擎或游戏视角，也未把用途改成游戏", "原始解释只引用实际技术检查，未认证外观符合性"},
+			Review:  []string{"意图和生成描述保留产品展示用途", "未无依据地追问游戏引擎或游戏视角，也未把用途改成游戏", "原始解释中的技术数字和检查状态须引用实际报告"},
 		},
 		{
 			Name:    "game_prototype",
 			Request: "给我的俯视角游戏原型做一个卡通低模木箱，静态、自包含 GLB，最多 5000 个三角面、10 MiB。",
 			Answer:  "用途是俯视角游戏原型，主体为卡通低模木箱；静态、自包含 GLB，最多 5000 个三角面、10 MiB，其他外观细节由你合理选择并公开假设。",
-			Review:  []string{"意图与生成描述保留用户明确的游戏原型用途", "沿用静态技术检查与原预算，没有因新受众定位删去游戏信息", "原始解释未把合成文件检查视为木箱外观验证"},
+			Review:  []string{"意图与生成描述保留用户明确的游戏原型用途", "沿用静态技术检查与原预算，没有因新受众定位删去游戏信息"},
 		},
 		{
 			Name: "unsupported_rig_animation", Unsupported: true,
@@ -195,7 +195,8 @@ func runAudienceLiveCase(t *testing.T, key, evidenceDir string, tc audienceLiveC
 			"fixture":                     map[string]any{"generation_triangles": 12, "all_outputs_triangles_if_always_over": 6000, "always_over": tc.AlwaysOver, "submissions": provider.Count()},
 			"snapshot":                    s.snapshot(v, events),
 			"automated_check":             map[string]any{"passed": !t.Failed(), "scope": "运行完成、真实模型提议存在、生产次数及预期技术终态；不核验自然语言语义"},
-			"manual_review":               map[string]any{"status": "pending", "criteria": tc.Review},
+			"evaluation_rubric":           conversationEvaluationRubric,
+			"manual_review":               map[string]any{"status": "pending", "criteria": tc.Review, "excluded_semantic_checks": conversationEvaluationExcludedChecks()},
 			"full_agent_evaluation_suite": "not_run; four one-off samples do not replace the 60-run suite",
 		}
 		data, marshalErr := json.MarshalIndent(s.sanitize(evidence), "", "  ")

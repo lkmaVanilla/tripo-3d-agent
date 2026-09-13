@@ -314,6 +314,14 @@ func TestProductionRecoveryForcedProcessExit(t *testing.T) {
 			if (point == "before-tool-return" || point == "after-tool-return") && (queries.Load() != 1 || downloads.Load() != 1) {
 				t.Fatalf("completed result triggered new calls: queries=%d downloads=%d", queries.Load(), downloads.Load())
 			}
+			c, err := s.store.GetRunConversation(context.Background(), before.ID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			snap, err := s.store.ConversationSnapshot(context.Background(), c.ID, c.Owner, 0, 0, 50)
+			if err != nil || len(snap.Versions) != 1 || snap.Versions[0].SourceOperationID != before.Current.ID {
+				t.Fatal("force-exit recovery duplicated or lost version", err)
+			}
 		})
 	}
 }

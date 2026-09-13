@@ -1,0 +1,793 @@
+{
+  "automated_checks": [
+    {
+      "Critical": false,
+      "Detail": "",
+      "Dimension": "strategy",
+      "Name": "terminal_and_model_available",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "actual=0 expected=0..0",
+      "Dimension": "strategy",
+      "Name": "allowed_submission_count",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "answered",
+      "Dimension": "strategy",
+      "Name": "expected_delivery",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=7 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=7 consumed=0",
+      "Dimension": "constraint",
+      "Name": "answer_hides_no_production",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "proposals=1",
+      "Dimension": "strategy",
+      "Name": "real_model_proposals_exist",
+      "Passed": true
+    }
+  ],
+  "automated_passed": true,
+  "case": {
+    "AllowedProduction": null,
+    "Answer": "我明确引用的茶壶只需要最多5000三角面、10MiB；如果已满足技术要求就解释无需再处理，不要重复生产。 其他外观细节可合理默认并公开，不改变硬约束。",
+    "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。",
+    "ID": "already_satisfies",
+    "InitialProduction": 0,
+    "IntentReview": "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+    "MaxBytes": 10485760,
+    "MaxSubmits": 0,
+    "MaxTriangles": 5000,
+    "MinSubmits": 0,
+    "NoDelivery": true,
+    "Provider": "normal",
+    "Request": "我明确引用的茶壶只需要最多5000三角面、10MiB；如果已满足技术要求就解释无需再处理，不要重复生产。",
+    "RequireThreeQuestions": false,
+    "Seed": "version",
+    "StrategyReview": "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+    "Suite": "conversation-v3",
+    "WantAnswer": true,
+    "WantDelivery": false
+  },
+  "conversation": {
+    "conversation": {
+      "created": "2026-09-13T14:38:54.365021Z",
+      "expires": "2026-09-20T14:39:02.952751Z",
+      "id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+      "title": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。",
+      "updated": "2026-09-13T14:39:02.952751Z"
+    },
+    "cursor": 9,
+    "events": [
+      {
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "data": {
+          "client_message_id": "seed",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。"
+        },
+        "kind": "request",
+        "run_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "seq": 1,
+        "time": "2026-09-13T14:38:54.365144Z"
+      },
+      {
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "data": {
+          "artifact_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+          "operation_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+          "report": {
+            "bytes": 27656,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 4500 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 27656 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 4500,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "declared-seed-task"
+        },
+        "kind": "technical_report",
+        "run_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "seq": 2,
+        "time": "2026-09-13T14:38:54.371927Z"
+      },
+      {
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "data": {
+          "final": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n程序已根据本请求的实测技术证据完成收尾。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 0 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "result": {
+            "artifact_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+            "evidence": "verified",
+            "operation_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+            "reason": "delivered",
+            "source": "runtime",
+            "status": "completed",
+            "version": 1
+          }
+        },
+        "kind": "evaluation_fixture_finished",
+        "run_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "seq": 3,
+        "time": "2026-09-13T14:38:54.372695Z"
+      },
+      {
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "data": {
+          "expires": "2026-09-20T14:38:54.372671Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "seq": 4,
+        "time": "2026-09-13T14:38:54.373157Z"
+      },
+      {
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "我明确引用的茶壶只需要最多5000三角面、10MiB；如果已满足技术要求就解释无需再处理，不要重复生产。",
+          "version_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742"
+        },
+        "kind": "request",
+        "run_id": "b4932481de45f24d36533a0bbc29a183aa07661637ae74bb",
+        "seq": 5,
+        "time": "2026-09-13T14:38:54.374151Z"
+      },
+      {
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "b4932481de45f24d36533a0bbc29a183aa07661637ae74bb",
+        "seq": 6,
+        "time": "2026-09-13T14:38:54.528174Z"
+      },
+      {
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"answer\": true, \"deliver\": false, \"explanation\": \"您明确引用的茶壶版本（ID: 80d24ed161329e0a80703f6d0c26343f5ec519657750e742）已经通过全部技术检查，无需再处理，也不会重复生产。\\n\\n实测技术证据如下：\\n- 文件有效性：静态、自包含、非空三角面 GLB（通过）\\n- 几何规模：实测 4500 / 上限 5000 个三角面（通过）\\n- 文件体积：实测 27656 / 上限 10485760 字节（通过）\\n\\n该版本满足您提出的「最多 5000 三角面、10MiB」硬约束，因此本次为零生产，不创建新版本，也不改动旧版本报告。\\n\\n需要说明：以上是程序化技术检查，未进行视觉检查；技术通过不代表类别、风格或外观一定符合「卡通低模茶壶」的预期，如需视觉判断请自行查看该 GLB。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_TTfhyl3fbTsS52yWB1Zx1893",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "run_id": "b4932481de45f24d36533a0bbc29a183aa07661637ae74bb",
+        "seq": 7,
+        "time": "2026-09-13T14:39:02.948686Z"
+      },
+      {
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "data": {
+          "answer": true,
+          "deliver": false,
+          "explanation": "您明确引用的茶壶版本（ID: 80d24ed161329e0a80703f6d0c26343f5ec519657750e742）已经通过全部技术检查，无需再处理，也不会重复生产。\n\n实测技术证据如下：\n- 文件有效性：静态、自包含、非空三角面 GLB（通过）\n- 几何规模：实测 4500 / 上限 5000 个三角面（通过）\n- 文件体积：实测 27656 / 上限 10485760 字节（通过）\n\n该版本满足您提出的「最多 5000 三角面、10MiB」硬约束，因此本次为零生产，不创建新版本，也不改动旧版本报告。\n\n需要说明：以上是程序化技术检查，未进行视觉检查；技术通过不代表类别、风格或外观一定符合「卡通低模茶壶」的预期，如需视觉判断请自行查看该 GLB。",
+          "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "run_id": "b4932481de45f24d36533a0bbc29a183aa07661637ae74bb",
+        "seq": 8,
+        "time": "2026-09-13T14:39:02.953261Z"
+      },
+      {
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "data": {
+          "expires": "2026-09-20T14:39:02.952751Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "b4932481de45f24d36533a0bbc29a183aa07661637ae74bb",
+        "seq": 9,
+        "time": "2026-09-13T14:39:02.955077Z"
+      }
+    ],
+    "has_more": false,
+    "messages": [
+      {
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "created": "2026-09-13T14:38:54.365144Z",
+        "id": "3c1593dbb2eccfe055c4c42367c85e0fa5049cdc41b3c1a32ba865a8ea390484",
+        "kind": "user",
+        "run_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "seq": 1,
+        "text": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。",
+        "updated_seq": 1
+      },
+      {
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "created": "2026-09-13T14:38:54.371927Z",
+        "data": {
+          "operation_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+          "operation_kind": "generate",
+          "report": {
+            "bytes": 27656,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 4500 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 27656 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 4500,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "stage": "done",
+          "status": "checked",
+          "task_id": "declared-seed-task"
+        },
+        "id": "31c3aeefe16a63dc66ac957f294215ea19ea2f3c65c8d6206e53dcccd2e741c1",
+        "kind": "operation_card",
+        "run_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "seq": 2,
+        "updated_seq": 2,
+        "version_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742"
+      },
+      {
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "created": "2026-09-13T14:38:54.372695Z",
+        "data": {
+          "outcome": {
+            "kind": "delivery",
+            "source": "runtime"
+          },
+          "result": {
+            "artifact_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+            "evidence": "verified",
+            "operation_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+            "reason": "delivered",
+            "source": "runtime",
+            "status": "completed",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+          "source": "runtime"
+        },
+        "id": "c45ac71215e5fd22969c13756c965d14024270df54db9ce234d135fecb6f4a6b",
+        "kind": "run_result",
+        "run_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "seq": 3,
+        "text": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n程序已根据本请求的实测技术证据完成收尾。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 0 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "updated_seq": 4
+      },
+      {
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "created": "2026-09-13T14:38:54.374151Z",
+        "id": "acfdac4641df6218e2b827a844b6d22510223171a3b2e03c903d64f37ebe1dfd",
+        "kind": "user",
+        "run_id": "b4932481de45f24d36533a0bbc29a183aa07661637ae74bb",
+        "seq": 5,
+        "text": "我明确引用的茶壶只需要最多5000三角面、10MiB；如果已满足技术要求就解释无需再处理，不要重复生产。",
+        "updated_seq": 5,
+        "version_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742"
+      },
+      {
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "created": "2026-09-13T14:39:02.953261Z",
+        "data": {
+          "outcome": {
+            "kind": "answer",
+            "source": "agent",
+            "text": "您明确引用的茶壶版本（ID: 80d24ed161329e0a80703f6d0c26343f5ec519657750e742）已经通过全部技术检查，无需再处理，也不会重复生产。\n\n实测技术证据如下：\n- 文件有效性：静态、自包含、非空三角面 GLB（通过）\n- 几何规模：实测 4500 / 上限 5000 个三角面（通过）\n- 文件体积：实测 27656 / 上限 10485760 字节（通过）\n\n该版本满足您提出的「最多 5000 三角面、10MiB」硬约束，因此本次为零生产，不创建新版本，也不改动旧版本报告。\n\n需要说明：以上是程序化技术检查，未进行视觉检查；技术通过不代表类别、风格或外观一定符合「卡通低模茶壶」的预期，如需视觉判断请自行查看该 GLB。"
+          },
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "b4932481de45f24d36533a0bbc29a183aa07661637ae74bb",
+          "source": "agent",
+          "verification": "unverifiable"
+        },
+        "id": "6b034b6d8e62266b7c92416bd116856ef4b857c8af8ab5bc4ceb2ac6759f9c20",
+        "kind": "answer",
+        "run_id": "b4932481de45f24d36533a0bbc29a183aa07661637ae74bb",
+        "seq": 8,
+        "text": "您明确引用的茶壶版本（ID: 80d24ed161329e0a80703f6d0c26343f5ec519657750e742）已经通过全部技术检查，无需再处理，也不会重复生产。\n\n实测技术证据如下：\n- 文件有效性：静态、自包含、非空三角面 GLB（通过）\n- 几何规模：实测 4500 / 上限 5000 个三角面（通过）\n- 文件体积：实测 27656 / 上限 10485760 字节（通过）\n\n该版本满足您提出的「最多 5000 三角面、10MiB」硬约束，因此本次为零生产，不创建新版本，也不改动旧版本报告。\n\n需要说明：以上是程序化技术检查，未进行视觉检查；技术通过不代表类别、风格或外观一定符合「卡通低模茶壶」的预期，如需视觉判断请自行查看该 GLB。",
+        "updated_seq": 9
+      }
+    ],
+    "runs": [
+      {
+        "artifacts": [
+          {
+            "id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+            "report": {
+              "bytes": 27656,
+              "checks": [
+                {
+                  "detail": "静态、自包含、非空三角面 GLB",
+                  "name": "文件有效性",
+                  "status": "passed"
+                },
+                {
+                  "detail": "实测 4500 / 上限 5000 个三角面",
+                  "name": "几何规模",
+                  "status": "passed"
+                },
+                {
+                  "detail": "实测 27656 / 上限 10485760 字节",
+                  "name": "文件体积",
+                  "status": "passed"
+                }
+              ],
+              "max_bytes": 10485760,
+              "max_triangles": 5000,
+              "passed": true,
+              "triangles": 4500,
+              "valid": true,
+              "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+            },
+            "task_id": "declared-seed-task",
+            "url": "/api/sessions/a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f/artifacts/80d24ed161329e0a80703f6d0c26343f5ec519657750e742"
+          }
+        ],
+        "clarifications": 0,
+        "created": "2026-09-13T14:38:54.365021Z",
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-13T14:38:54.372671Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "1",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "交付引用已实测且技术通过的模型",
+              "name": "交付证据",
+              "status": "passed"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-20T14:38:54.372671Z",
+        "final": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n程序已根据本请求的实测技术证据完成收尾。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 0 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 0,
+        "id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "input_assessment": null,
+        "intent": {
+          "asset": "茶壶",
+          "assumptions": null,
+          "constraints": null,
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "plan": [
+            "已完成的受控历史"
+          ],
+          "style": "卡通低模",
+          "use": "产品展示"
+        },
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 0,
+        "outcome": {
+          "kind": "delivery",
+          "source": "runtime"
+        },
+        "production": 1,
+        "prompt_version": "asset-agent-v3",
+        "question": "",
+        "request": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。",
+        "result": {
+          "artifact_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+          "evidence": "verified",
+          "operation_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+          "reason": "delivered",
+          "source": "runtime",
+          "status": "completed",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+        "status": "completed",
+        "wait_id": ""
+      },
+      {
+        "artifacts": [],
+        "clarifications": 0,
+        "created": "2026-09-13T14:38:54.374014Z",
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-13T14:39:02.952751Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "0",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "1",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "本次未宣告交付成功",
+              "name": "交付证据",
+              "status": "not_applicable"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-20T14:39:02.952751Z",
+        "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 0,
+        "id": "b4932481de45f24d36533a0bbc29a183aa07661637ae74bb",
+        "input_assessment": null,
+        "input_version_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+        "intent": null,
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 1,
+        "outcome": {
+          "kind": "answer",
+          "source": "agent",
+          "text": "您明确引用的茶壶版本（ID: 80d24ed161329e0a80703f6d0c26343f5ec519657750e742）已经通过全部技术检查，无需再处理，也不会重复生产。\n\n实测技术证据如下：\n- 文件有效性：静态、自包含、非空三角面 GLB（通过）\n- 几何规模：实测 4500 / 上限 5000 个三角面（通过）\n- 文件体积：实测 27656 / 上限 10485760 字节（通过）\n\n该版本满足您提出的「最多 5000 三角面、10MiB」硬约束，因此本次为零生产，不创建新版本，也不改动旧版本报告。\n\n需要说明：以上是程序化技术检查，未进行视觉检查；技术通过不代表类别、风格或外观一定符合「卡通低模茶壶」的预期，如需视觉判断请自行查看该 GLB。"
+        },
+        "production": 0,
+        "prompt_version": "asset-agent-v3",
+        "question": "",
+        "request": "我明确引用的茶壶只需要最多5000三角面、10MiB；如果已满足技术要求就解释无需再处理，不要重复生产。",
+        "result": {
+          "evidence": "verified",
+          "reason": "answered",
+          "source": "agent",
+          "status": "answered",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "",
+        "status": "answered",
+        "wait_id": ""
+      }
+    ],
+    "versions": [
+      {
+        "bytes": 27656,
+        "conversation_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "created": "2026-09-13T14:38:54.371927Z",
+        "format": "glb",
+        "id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+        "operation_kind": "generate",
+        "processable": true,
+        "provenance_status": "verified",
+        "report": {
+          "bytes": 27656,
+          "checks": [
+            {
+              "detail": "静态、自包含、非空三角面 GLB",
+              "name": "文件有效性",
+              "status": "passed"
+            },
+            {
+              "detail": "实测 4500 / 上限 5000 个三角面",
+              "name": "几何规模",
+              "status": "passed"
+            },
+            {
+              "detail": "实测 27656 / 上限 10485760 字节",
+              "name": "文件体积",
+              "status": "passed"
+            }
+          ],
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "passed": true,
+          "triangles": 4500,
+          "valid": true,
+          "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+        },
+        "sha256": "cc288615089c9e9ba7828ef8636e3ceaf42c68a5f64a38e053d417b85f1e03c5",
+        "source_operation_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+        "source_run_id": "a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f",
+        "task_id": "declared-seed-task",
+        "url": "/api/conversations/a90f36e3212f92ec5c0f1eb786cc58ee14e910e727b3ef3f/versions/80d24ed161329e0a80703f6d0c26343f5ec519657750e742/file",
+        "version_number": 1
+      }
+    ]
+  },
+  "critical_errors_automated": 0,
+  "ended": "2026-09-13T14:39:03.061583Z",
+  "repeat": 3,
+  "run_id": "b4932481de45f24d36533a0bbc29a183aa07661637ae74bb",
+  "semantic_review": {
+    "instructions": [
+      "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+      "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+      "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。"
+    ],
+    "proposals": [
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 7,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"answer\": true, \"deliver\": false, \"explanation\": \"您明确引用的茶壶版本（ID: 80d24ed161329e0a80703f6d0c26343f5ec519657750e742）已经通过全部技术检查，无需再处理，也不会重复生产。\\n\\n实测技术证据如下：\\n- 文件有效性：静态、自包含、非空三角面 GLB（通过）\\n- 几何规模：实测 4500 / 上限 5000 个三角面（通过）\\n- 文件体积：实测 27656 / 上限 10485760 字节（通过）\\n\\n该版本满足您提出的「最多 5000 三角面、10MiB」硬约束，因此本次为零生产，不创建新版本，也不改动旧版本报告。\\n\\n需要说明：以上是程序化技术检查，未进行视觉检查；技术通过不代表类别、风格或外观一定符合「卡通低模茶壶」的预期，如需视觉判断请自行查看该 GLB。\"}",
+              "name": "finish_request"
+            },
+            "id": "call_00_TTfhyl3fbTsS52yWB1Zx1893",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    ],
+    "status": "pending"
+  },
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "我明确引用的茶壶只需要最多5000三角面、10MiB；如果已满足技术要求就解释无需再处理，不要重复生产。",
+          "version_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742"
+        },
+        "kind": "request",
+        "seq": 5,
+        "time": "2026-09-13T14:38:54.374151Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 6,
+        "time": "2026-09-13T14:38:54.528174Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"answer\": true, \"deliver\": false, \"explanation\": \"您明确引用的茶壶版本（ID: 80d24ed161329e0a80703f6d0c26343f5ec519657750e742）已经通过全部技术检查，无需再处理，也不会重复生产。\\n\\n实测技术证据如下：\\n- 文件有效性：静态、自包含、非空三角面 GLB（通过）\\n- 几何规模：实测 4500 / 上限 5000 个三角面（通过）\\n- 文件体积：实测 27656 / 上限 10485760 字节（通过）\\n\\n该版本满足您提出的「最多 5000 三角面、10MiB」硬约束，因此本次为零生产，不创建新版本，也不改动旧版本报告。\\n\\n需要说明：以上是程序化技术检查，未进行视觉检查；技术通过不代表类别、风格或外观一定符合「卡通低模茶壶」的预期，如需视觉判断请自行查看该 GLB。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_TTfhyl3fbTsS52yWB1Zx1893",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 7,
+        "time": "2026-09-13T14:39:02.948686Z"
+      },
+      {
+        "data": {
+          "answer": true,
+          "deliver": false,
+          "explanation": "您明确引用的茶壶版本（ID: 80d24ed161329e0a80703f6d0c26343f5ec519657750e742）已经通过全部技术检查，无需再处理，也不会重复生产。\n\n实测技术证据如下：\n- 文件有效性：静态、自包含、非空三角面 GLB（通过）\n- 几何规模：实测 4500 / 上限 5000 个三角面（通过）\n- 文件体积：实测 27656 / 上限 10485760 字节（通过）\n\n该版本满足您提出的「最多 5000 三角面、10MiB」硬约束，因此本次为零生产，不创建新版本，也不改动旧版本报告。\n\n需要说明：以上是程序化技术检查，未进行视觉检查；技术通过不代表类别、风格或外观一定符合「卡通低模茶壶」的预期，如需视觉判断请自行查看该 GLB。",
+          "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "seq": 8,
+        "time": "2026-09-13T14:39:02.953261Z"
+      },
+      {
+        "data": {
+          "expires": "2026-09-20T14:39:02.952751Z"
+        },
+        "kind": "conversation_idle",
+        "seq": 9,
+        "time": "2026-09-13T14:39:02.955077Z"
+      }
+    ],
+    "session": {
+      "artifacts": [],
+      "clarifications": 0,
+      "created": "2026-09-13T14:38:54.374014Z",
+      "deadline": "0001-01-01T00:00:00Z",
+      "ended": "2026-09-13T14:39:02.952751Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "0",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "1",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "0",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "本次未宣告交付成功",
+            "name": "交付证据",
+            "status": "not_applicable"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-20T14:39:02.952751Z",
+      "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "generation": 0,
+      "id": "b4932481de45f24d36533a0bbc29a183aa07661637ae74bb",
+      "input_assessment": null,
+      "input_version_id": "80d24ed161329e0a80703f6d0c26343f5ec519657750e742",
+      "intent": null,
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 1,
+      "outcome": {
+        "kind": "answer",
+        "source": "agent",
+        "text": "您明确引用的茶壶版本（ID: 80d24ed161329e0a80703f6d0c26343f5ec519657750e742）已经通过全部技术检查，无需再处理，也不会重复生产。\n\n实测技术证据如下：\n- 文件有效性：静态、自包含、非空三角面 GLB（通过）\n- 几何规模：实测 4500 / 上限 5000 个三角面（通过）\n- 文件体积：实测 27656 / 上限 10485760 字节（通过）\n\n该版本满足您提出的「最多 5000 三角面、10MiB」硬约束，因此本次为零生产，不创建新版本，也不改动旧版本报告。\n\n需要说明：以上是程序化技术检查，未进行视觉检查；技术通过不代表类别、风格或外观一定符合「卡通低模茶壶」的预期，如需视觉判断请自行查看该 GLB。"
+      },
+      "production": 0,
+      "prompt_version": "asset-agent-v3",
+      "question": "",
+      "request": "我明确引用的茶壶只需要最多5000三角面、10MiB；如果已满足技术要求就解释无需再处理，不要重复生产。",
+      "result": {
+        "evidence": "verified",
+        "reason": "answered",
+        "source": "agent",
+        "status": "answered",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "",
+      "status": "answered",
+      "wait_id": ""
+    },
+    "source": "real-llm-fixed-provider-evaluation"
+  },
+  "source": "real DeepSeek; fixed Provider; synthetic GLB; no real Tripo",
+  "started": "2026-09-13T14:38:54.36502Z",
+  "suite_acceptance": "pending_semantic_review"
+}

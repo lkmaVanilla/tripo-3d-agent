@@ -1,0 +1,626 @@
+{
+  "automated_checks": [
+    {
+      "Critical": false,
+      "Detail": "",
+      "Dimension": "strategy",
+      "Name": "terminal_and_model_available",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "actual=0 expected=1..1",
+      "Dimension": "strategy",
+      "Name": "allowed_submission_count",
+      "Passed": false
+    },
+    {
+      "Critical": false,
+      "Detail": "failed",
+      "Dimension": "strategy",
+      "Name": "expected_delivery",
+      "Passed": false
+    },
+    {
+      "Critical": false,
+      "Detail": "questions=0",
+      "Dimension": "intent",
+      "Name": "clarification_exit",
+      "Passed": false
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=3 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=6 tools=0",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "proposals=2",
+      "Dimension": "strategy",
+      "Name": "real_model_proposals_exist",
+      "Passed": true
+    }
+  ],
+  "automated_passed": false,
+  "case": {
+    "AllowedProduction": [
+      "generate_asset"
+    ],
+    "Answer": "还没想好，你先问清楚；如果已经问了三轮，就公开合理默认并开始，不再继续追问。",
+    "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。",
+    "ID": "three_round_defaults",
+    "InitialProduction": 0,
+    "IntentReview": "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+    "MaxBytes": 10485760,
+    "MaxSubmits": 1,
+    "MaxTriangles": 5000,
+    "MinSubmits": 1,
+    "NoDelivery": false,
+    "Provider": "normal",
+    "Request": "我需要一个低模资产，请先澄清主体、用途和风格；最多问三轮。",
+    "RequireThreeQuestions": true,
+    "Seed": "",
+    "StrategyReview": "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+    "Suite": "baseline-current-v3",
+    "WantAnswer": false,
+    "WantDelivery": true
+  },
+  "conversation": {
+    "conversation": {
+      "created": "2026-09-13T14:56:28.830364Z",
+      "expires": "2026-09-20T14:56:34.381053Z",
+      "id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+      "title": "我需要一个低模资产，请先澄清主体、用途和风格；最多问三轮。",
+      "updated": "2026-09-13T14:56:34.381053Z"
+    },
+    "cursor": 8,
+    "events": [
+      {
+        "conversation_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "我需要一个低模资产，请先澄清主体、用途和风格；最多问三轮。"
+        },
+        "kind": "request",
+        "run_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "seq": 1,
+        "time": "2026-09-13T14:56:28.830465Z"
+      },
+      {
+        "conversation_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "seq": 2,
+        "time": "2026-09-13T14:56:28.984743Z"
+      },
+      {
+        "conversation_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"intent\"}",
+                "name": "skill"
+              },
+              "id": "call_00_NlnFlDKVEJ3yTJhq4Cw71611",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 116,
+            "prompt_token_details": {
+              "cached_tokens": 1024
+            },
+            "prompt_tokens": 3000,
+            "total_tokens": 3116
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "seq": 3,
+        "time": "2026-09-13T14:56:30.834459Z"
+      },
+      {
+        "conversation_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "data": {
+          "name": "intent",
+          "prompt_version": "asset-agent-v3",
+          "version": "4b2d07affb044a253cf0cb7de510acbe6c6d1d35ed1e4993093a9ab43053720f"
+        },
+        "kind": "skill_loaded",
+        "run_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "seq": 4,
+        "time": "2026-09-13T14:56:30.837196Z"
+      },
+      {
+        "conversation_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "seq": 5,
+        "time": "2026-09-13T14:56:30.838188Z"
+      },
+      {
+        "conversation_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "data": {
+          "content": "我先和你确认三个关键信息，确认后就能直接进入生成。\n\n请告诉我：\n\n1. **主体**：你想要什么具体资产？（例如：石桥、宝箱、木桶、路灯、岩石、树木等）\n2. **用途**：用在什么场景？（例如：游戏场景道具、AR/VR 展示、网页3D、概念占位、教学演示等）\n3. **风格**：希望什么视觉风格？（例如：低多边形 Low Poly、卡通手绘、写实简化、像素风、科幻硬表面等）\n\n如果某些项还没想好，也可以只告诉我你能确定的，其余我会在最多三轮内给出合理默认并公开说明。",
+          "finish_reason": "stop",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": null,
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 263,
+            "prompt_token_details": {
+              "cached_tokens": 1024
+            },
+            "prompt_tokens": 3309,
+            "total_tokens": 3572
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "seq": 6,
+        "time": "2026-09-13T14:56:34.379181Z"
+      },
+      {
+        "conversation_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "data": {
+          "final": "原请求的执行恢复未能完成，已结束本地执行。\n累计生产提交 0 / 3 次，模型调用 2 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "execution_error",
+          "raw_text_verification": "unverifiable",
+          "reason": "checkpoint_not_committed：无法安全恢复当前执行",
+          "result": {
+            "evidence": "verified",
+            "reason": "recovery_failed",
+            "source": "runtime",
+            "status": "failed",
+            "version": 1
+          }
+        },
+        "kind": "recovery_rejected",
+        "run_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "seq": 7,
+        "time": "2026-09-13T14:56:34.38123Z"
+      },
+      {
+        "conversation_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "data": {
+          "expires": "2026-09-20T14:56:34.381053Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "seq": 8,
+        "time": "2026-09-13T14:56:34.383322Z"
+      }
+    ],
+    "has_more": false,
+    "messages": [
+      {
+        "conversation_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "created": "2026-09-13T14:56:28.830465Z",
+        "id": "3dba059d890440f49895e3aaff81030fbf83d29a0773451168a0f5bc2f36b0bf",
+        "kind": "user",
+        "run_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "seq": 1,
+        "text": "我需要一个低模资产，请先澄清主体、用途和风格；最多问三轮。",
+        "updated_seq": 1
+      },
+      {
+        "conversation_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "created": "2026-09-13T14:56:34.38123Z",
+        "data": {
+          "outcome": {
+            "kind": "ended",
+            "source": "runtime"
+          },
+          "result": {
+            "evidence": "verified",
+            "reason": "recovery_failed",
+            "source": "runtime",
+            "status": "failed",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+          "source": "runtime"
+        },
+        "id": "551cc1fd3e4f1b2aba0eb72ae9b8d04ed7c2f0c4f39476cac404acead2c8950b",
+        "kind": "run_result",
+        "run_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "seq": 7,
+        "text": "原请求的执行恢复未能完成，已结束本地执行。\n累计生产提交 0 / 3 次，模型调用 2 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "updated_seq": 8
+      }
+    ],
+    "runs": [
+      {
+        "artifacts": [],
+        "clarifications": 0,
+        "created": "2026-09-13T14:56:28.830364Z",
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-13T14:56:34.381053Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "0",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "2",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "本次未宣告交付成功",
+              "name": "交付证据",
+              "status": "not_applicable"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-20T14:56:34.381053Z",
+        "final": "原请求的执行恢复未能完成，已结束本地执行。\n累计生产提交 0 / 3 次，模型调用 2 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 0,
+        "id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+        "input_assessment": null,
+        "intent": null,
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 2,
+        "outcome": {
+          "kind": "ended",
+          "source": "runtime"
+        },
+        "production": 0,
+        "prompt_version": "asset-agent-v3",
+        "question": "",
+        "request": "我需要一个低模资产，请先澄清主体、用途和风格；最多问三轮。",
+        "result": {
+          "evidence": "verified",
+          "reason": "recovery_failed",
+          "source": "runtime",
+          "status": "failed",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "",
+        "status": "failed",
+        "wait_id": ""
+      }
+    ],
+    "versions": []
+  },
+  "critical_errors_automated": 0,
+  "ended": "2026-09-13T14:56:34.480154Z",
+  "repeat": 2,
+  "response_metadata": [
+    {
+      "content_length": 0,
+      "message_index": 2,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 116,
+          "prompt_token_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_tokens": 3000,
+          "total_tokens": 3116
+        }
+      },
+      "tool_argument_lengths": [
+        19
+      ],
+      "tool_count": 1
+    },
+    {
+      "content_length": 619,
+      "message_index": 4,
+      "response_meta": {
+        "finish_reason": "stop",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 263,
+          "prompt_token_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_tokens": 3309,
+          "total_tokens": 3572
+        }
+      },
+      "tool_argument_lengths": [],
+      "tool_count": 0
+    }
+  ],
+  "run_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+  "semantic_review": {
+    "instructions": [
+      "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+      "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+      "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。"
+    ],
+    "proposals": [
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 3,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"skill\": \"intent\"}",
+              "name": "skill"
+            },
+            "id": "call_00_NlnFlDKVEJ3yTJhq4Cw71611",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "我先和你确认三个关键信息，确认后就能直接进入生成。\n\n请告诉我：\n\n1. **主体**：你想要什么具体资产？（例如：石桥、宝箱、木桶、路灯、岩石、树木等）\n2. **用途**：用在什么场景？（例如：游戏场景道具、AR/VR 展示、网页3D、概念占位、教学演示等）\n3. **风格**：希望什么视觉风格？（例如：低多边形 Low Poly、卡通手绘、写实简化、像素风、科幻硬表面等）\n\n如果某些项还没想好，也可以只告诉我你能确定的，其余我会在最多三轮内给出合理默认并公开说明。",
+        "seq": 6,
+        "tool_calls": null
+      }
+    ],
+    "status": "pending"
+  },
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "我需要一个低模资产，请先澄清主体、用途和风格；最多问三轮。"
+        },
+        "kind": "request",
+        "seq": 1,
+        "time": "2026-09-13T14:56:28.830465Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 2,
+        "time": "2026-09-13T14:56:28.984743Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"intent\"}",
+                "name": "skill"
+              },
+              "id": "call_00_NlnFlDKVEJ3yTJhq4Cw71611",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 116,
+            "prompt_token_details": {
+              "cached_tokens": 1024
+            },
+            "prompt_tokens": 3000,
+            "total_tokens": 3116
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 3,
+        "time": "2026-09-13T14:56:30.834459Z"
+      },
+      {
+        "data": {
+          "name": "intent",
+          "prompt_version": "asset-agent-v3",
+          "version": "4b2d07affb044a253cf0cb7de510acbe6c6d1d35ed1e4993093a9ab43053720f"
+        },
+        "kind": "skill_loaded",
+        "seq": 4,
+        "time": "2026-09-13T14:56:30.837196Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 5,
+        "time": "2026-09-13T14:56:30.838188Z"
+      },
+      {
+        "data": {
+          "content": "我先和你确认三个关键信息，确认后就能直接进入生成。\n\n请告诉我：\n\n1. **主体**：你想要什么具体资产？（例如：石桥、宝箱、木桶、路灯、岩石、树木等）\n2. **用途**：用在什么场景？（例如：游戏场景道具、AR/VR 展示、网页3D、概念占位、教学演示等）\n3. **风格**：希望什么视觉风格？（例如：低多边形 Low Poly、卡通手绘、写实简化、像素风、科幻硬表面等）\n\n如果某些项还没想好，也可以只告诉我你能确定的，其余我会在最多三轮内给出合理默认并公开说明。",
+          "finish_reason": "stop",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": null,
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 263,
+            "prompt_token_details": {
+              "cached_tokens": 1024
+            },
+            "prompt_tokens": 3309,
+            "total_tokens": 3572
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 6,
+        "time": "2026-09-13T14:56:34.379181Z"
+      },
+      {
+        "data": {
+          "final": "原请求的执行恢复未能完成，已结束本地执行。\n累计生产提交 0 / 3 次，模型调用 2 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "execution_error",
+          "raw_text_verification": "unverifiable",
+          "reason": "checkpoint_not_committed：无法安全恢复当前执行",
+          "result": {
+            "evidence": "verified",
+            "reason": "recovery_failed",
+            "source": "runtime",
+            "status": "failed",
+            "version": 1
+          }
+        },
+        "kind": "recovery_rejected",
+        "seq": 7,
+        "time": "2026-09-13T14:56:34.38123Z"
+      },
+      {
+        "data": {
+          "expires": "2026-09-20T14:56:34.381053Z"
+        },
+        "kind": "conversation_idle",
+        "seq": 8,
+        "time": "2026-09-13T14:56:34.383322Z"
+      }
+    ],
+    "session": {
+      "artifacts": [],
+      "clarifications": 0,
+      "created": "2026-09-13T14:56:28.830364Z",
+      "deadline": "0001-01-01T00:00:00Z",
+      "ended": "2026-09-13T14:56:34.381053Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "0",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "2",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "0",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "本次未宣告交付成功",
+            "name": "交付证据",
+            "status": "not_applicable"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-20T14:56:34.381053Z",
+      "final": "原请求的执行恢复未能完成，已结束本地执行。\n累计生产提交 0 / 3 次，模型调用 2 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "generation": 0,
+      "id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+      "input_assessment": null,
+      "intent": null,
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 2,
+      "outcome": {
+        "kind": "ended",
+        "source": "runtime"
+      },
+      "production": 0,
+      "prompt_version": "asset-agent-v3",
+      "question": "",
+      "request": "我需要一个低模资产，请先澄清主体、用途和风格；最多问三轮。",
+      "result": {
+        "evidence": "verified",
+        "reason": "recovery_failed",
+        "source": "runtime",
+        "status": "failed",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "",
+      "status": "failed",
+      "wait_id": ""
+    },
+    "source": "real-llm-fixed-provider-evaluation"
+  },
+  "source": "real DeepSeek; fixed Provider; synthetic GLB; no real Tripo",
+  "started": "2026-09-13T14:56:28.830363Z",
+  "suite_acceptance": "pending_semantic_review"
+}

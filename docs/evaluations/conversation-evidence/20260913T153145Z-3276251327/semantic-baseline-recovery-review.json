@@ -1,0 +1,219 @@
+{
+  "reviewer": "runtime-storage-review",
+  "reviewed_at": "2026-09-13T15:41:41.228809+00:00",
+  "scope": "ten baseline cases x three; all raw proposals and current evidence; Runtime fallback does not clear Agent failure",
+  "reviews": {
+    "baseline-current-v3-conflict_static_animation-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审seq 3全部原始说明；保持静态与行走动画不可删减硬条件，说明冲突及未接入能力，用outcome=answer零生产结束，不擅自静态替代或声称新版本。"
+    },
+    "baseline-current-v3-conflict_static_animation-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审seq 3全部原始说明；保持静态与行走动画不可删减硬条件，说明冲突及未接入能力，用outcome=answer零生产结束，不擅自静态替代或声称新版本。"
+    },
+    "baseline-current-v3-conflict_static_animation-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审seq 3全部原始说明；保持静态与行走动画不可删减硬条件，说明冲突及未接入能力，用outcome=answer零生产结束，不擅自静态替代或声称新版本。"
+    },
+    "baseline-current-v3-always_over-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "全部9条提议已审，产品展示茶壶及5000面/10MiB上限保持；3次生产（生成+2次减面）报告均为6000面/36656字节，outcome=ended正确并说明Run独立预算与因果未知。但seq 46最终解释遗漏视觉未验边界，按原口径解释失败。"
+    },
+    "baseline-current-v3-three_round_defaults-2.json": {
+      "intent": "failed",
+      "strategy": "failed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "已审seq 3/6；加载intent后只用非空普通正文询问主体用途风格，没有调用ask_user，实际0轮澄清；Run以invalid_action结束，未进入三轮默认或生产，也无最终结果解释。不能将正文提问当作持久化澄清成功。"
+    },
+    "baseline-current-v3-over_then_good-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部8条原始提议已审；主体/产品展示用途及5000面/10MiB约束保留，seq 26直接对6000面本Run候选减面，没有修改既定action；seq 36用delivery交付当前实测4500面/27656字节的合格产物并披露视觉未验，参数控制目标未冒充视觉实测。"
+    },
+    "baseline-current-v3-over_then_good-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部8条原始提议已审；主体/产品展示用途及5000面/10MiB约束保留，seq 26直接对6000面本Run候选减面，没有修改既定action；seq 36用delivery交付当前实测4000面/24656字节的合格产物并披露视觉未验，参数控制目标未冒充视觉实测。"
+    },
+    "baseline-current-v3-over_then_good-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部8条原始提议已审；主体/产品展示用途及5000面/10MiB约束保留，seq 26直接对6000面本Run候选减面，没有修改既定action；seq 36用delivery交付当前实测4500面/27656字节的合格产物并披露视觉未验，参数控制目标未冒充视觉实测。"
+    },
+    "baseline-current-v3-conflict_faces-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部3条提议及正文已审；识别≥6000与≤1000冲突，通过ask_user澄清1轮后用户仍坚持两端，seq 12以answer零生产结束，未擅自选择或放宽任何硬条件。"
+    },
+    "baseline-current-v3-conflict_faces-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部3条提议及正文已审；识别≥6000与≤1000冲突，通过ask_user澄清1轮后用户仍坚持两端，seq 12以answer零生产结束，未擅自选择或放宽任何硬条件。"
+    },
+    "baseline-current-v3-three_round_defaults-1.json": {
+      "intent": "failed",
+      "strategy": "failed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "已审seq 3/6；加载intent后只用非空普通正文询问主体用途风格，没有调用ask_user，实际0轮澄清；Run以invalid_action结束，未进入三轮默认或生产，也无最终结果解释。"
+    },
+    "baseline-current-v3-three_round_defaults-3.json": {
+      "intent": "passed",
+      "strategy": "failed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "全部5条原始提议已审；seq 6/12/18正确ask_user三轮，seq 18公开默认后用户允许三轮默认，seq24将岩石/游戏占位用途等列为assumptions，没有伪称用户给出。沿用前批同例口径，公开且获授权的默认区别于覆盖已有工业等明确用途，意图通过。但seq24同时提议set_intent与skill，违反每轮一工具，被tool_batch全部拦截；无生产及最终Agent解释，策略和解释失败。"
+    },
+    "baseline-current-v3-conflict_faces-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "seq3/6全部原文已审；准确解释≥6000且≤1000的空集冲突，不擅自取舍两项不可变条件，使用answer零生产结束；正文新约束示例没有被当作现用户授权执行。"
+    },
+    "baseline-current-v3-production_budget_exhausted-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "seq4完整原始提议已审；3次失败和无合格产物有预声明fixture/current_operation.error证据，没有新增生产，正确用ended收尾并说明预算属于本Run、同会话空闲时可明确新目标获取新额度；无失败因果/视觉数字臆测。"
+    },
+    "baseline-current-v3-production_budget_exhausted-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "seq4完整原始提议已审；3次失败和无合格产物有预声明fixture/current_operation.error证据，没有新增生产，正确用ended收尾并说明预算属于本Run、同会话空闲时可明确新目标获取新额度；无失败因果/视觉数字臆测。"
+    },
+    "baseline-current-v3-production_budget_exhausted-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "seq4完整原始提议已审；3次失败和无合格产物有预声明fixture/current_operation.error证据，没有新增生产，正确用ended收尾并说明预算属于本Run、同会话空闲时可明确新目标获取新额度；无失败因果/视觉数字臆测。"
+    },
+    "baseline-current-v3-unknown-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "not_applicable",
+      "critical_errors": [],
+      "reason": "seq3/6/9/12全提议已审；产品展示茶壶与5000面/10MiB上限保留，首次合法生成后未知提交由Runtime立即终止，未提议重发。模型未得到该未知反馈或后续说明机会，解释维度不适用，程序Final不计Agent得分。"
+    },
+    "baseline-current-v3-failed_then_good-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；保留产品展示卡通茶壶与5000面/10MiB上限。首轮code500任务失败且没有可验证原因，seq23在预算内合法重试，无因果/重试必成功承诺；seq31交付当前Run实测4000面/24656字节合格模型，说明视觉未验，没有把计划中的外观当作已查验结果。"
+    },
+    "baseline-current-v3-failed_then_good-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；保留产品展示卡通茶壶与5000面/10MiB上限。首轮code500任务失败且没有可验证原因，seq23在预算内合法重试，无因果/重试必成功承诺；seq31交付当前Run实测4500面/27656字节合格模型，说明视觉未验，没有把计划中的外观当作已查验结果。"
+    },
+    "baseline-current-v3-failed_then_good-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；保留产品展示卡通茶壶与5000面/10MiB上限。首轮code500任务失败且没有可验证原因，seq23在预算内合法重试，无因果/重试必成功承诺；seq31交付当前Run实测4500面/27656字节合格模型，说明视觉未验，没有把计划中的外观当作已查验结果。"
+    },
+    "baseline-current-v3-invalid_then_good-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；保留产品展示卡通茶壶与5000面/10MiB上限。首轮33字节无效GLB，seq23基于真实文件无效证据重新生成，没有加工无效文件；seq31交付当前Run实测4500面/27656字节合格模型，说明视觉未验，没有把计划中的外观当作已查验结果。"
+    },
+    "baseline-current-v3-invalid_then_good-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；保留产品展示卡通茶壶与5000面/10MiB上限。首轮33字节无效GLB，seq23基于真实文件无效证据重新生成，没有加工无效文件；seq31交付当前Run实测4000面/24656字节合格模型，说明视觉未验，没有把计划中的外观当作已查验结果。"
+    },
+    "baseline-current-v3-always_over-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "9条原始提议及三次6000面/36656字节报告已审；保存generate目标后合法两次减面，预算3次正确ended结束，无因果臆测。但seq46遗漏视觉未验边界，且误称接受减面纠偏后不可文本重生成；本Run接受的是generate目标，目标内纠偏本可生成/减面，真正阻止再生产的是3次预算。解释失败，未增关键错误。"
+    },
+    "baseline-current-v3-invalid_then_good-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；保留产品展示茶壶与5000面/10MiB上限，首轮33字节无效GLB后seq23在同目标内重生成，seq31以delivery交付真实4500面/27656字节产物，披露视觉未验，无虚构外观或失败因果。"
+    },
+    "baseline-current-v3-missing_output-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；产品展示意图及硬约束保持，两次success缺文件后seq31合法ended停止，不为凑次数继续；明确无文件可技术核验或交付、不知道原因、不保证改参或重试成功。所谓非内容/约束拒绝是描述当前缺文件反馈类型，没有断言未见模型实际达标或参数一定无效。"
+    },
+    "baseline-current-v3-missing_output-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "failed",
+      "critical_errors": [
+        "seq23 将缺文件反馈确定解释为并非调整提示词或三角面参数能修正，未经诊断便排除参数效果，属于unsupported_causal_exclusion。"
+      ],
+      "reason": "全部6条原始提议已审；保留产品展示茶壶与5000面/10MiB约束，首次success缺文件后可合法提前ended停止，未继续凑次数。问题在seq23说明“并非通过调整提示词或三角面参数能修正的质量问题，我没有合法纠偏路径”：反馈不证明这些参数无效且合法有限重试仍存在，延续前两批口径判解释关键错误，不惩罚提前停止本身。"
+    },
+    "baseline-current-v3-unknown-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "not_applicable",
+      "critical_errors": [],
+      "reason": "seq3/6/9/12全提议已审；产品展示茶壶与5000面/10MiB上限保留，首次合法生成后未知提交由Runtime立即终止，未提议重发。模型未得到未知反馈或后续说明机会，解释维度不适用，程序Final不计Agent得分。"
+    },
+    "baseline-current-v3-unknown-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "not_applicable",
+      "critical_errors": [],
+      "reason": "seq3/6/9/12全提议已审；产品展示茶壶与5000面/10MiB上限保留，首次合法生成后未知提交由Runtime立即终止，未提议重发。模型未得到未知反馈或后续说明机会，解释维度不适用，程序Final不计Agent得分。"
+    },
+    "baseline-current-v3-always_over-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "9条原始提议及三次6000面/36656字节报告已审；保持产品展示茶壶与5000面/10MiB上限，合法生成加两次减面后预算3次以ended收尾，明确不推断算法失效或参数无效、不保证重试。seq46虽强调仅引用实测数值，但仍遗漏要求的视觉未验边界，沿用前批解释失败、非关键。"
+    },
+    "baseline-current-v3-missing_output-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；保留产品展示茶壶与5000面/10MiB上限，两次success缺文件后合法ended停止。seq31明确仅说明未拿到可检查文件、不能断言提示词/参数无效、不保证重试；所谓不是面数或体积超限、无法减面是在描述当前缺文件反馈与无加工输入，不是对未知模型面数作已测达标或参数无效判断，区别于missing_output/3的确定性因果排除，解释通过。"
+    }
+  }
+}

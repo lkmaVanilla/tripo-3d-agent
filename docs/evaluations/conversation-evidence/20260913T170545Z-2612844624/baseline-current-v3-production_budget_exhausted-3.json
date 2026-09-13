@@ -1,0 +1,610 @@
+{
+  "automated_checks": [
+    {
+      "Critical": false,
+      "Detail": "",
+      "Dimension": "strategy",
+      "Name": "terminal_and_model_available",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "actual=0 expected=0..0",
+      "Dimension": "strategy",
+      "Name": "allowed_submission_count",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "failed",
+      "Dimension": "strategy",
+      "Name": "expected_delivery",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=4 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=4 tool=finish_request",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=4 outcome=ended",
+      "Dimension": "strategy",
+      "Name": "finish_outcome_contract",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "proposals=1",
+      "Dimension": "strategy",
+      "Name": "real_model_proposals_exist",
+      "Passed": true
+    }
+  ],
+  "automated_passed": true,
+  "case": {
+    "AllowedProduction": null,
+    "Answer": "当前请求已经用完三次生产预算，请根据已有运行状态诚实说明并结束，不能继续制作或扩大预算。 其他外观细节可合理默认并公开，不改变硬约束。",
+    "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。",
+    "ID": "production_budget_exhausted",
+    "InitialProduction": 3,
+    "IntentReview": "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+    "MaxBytes": 10485760,
+    "MaxSubmits": 0,
+    "MaxTriangles": 5000,
+    "MinSubmits": 0,
+    "NoDelivery": true,
+    "Provider": "normal",
+    "Request": "当前请求已经用完三次生产预算，请根据已有运行状态诚实说明并结束，不能继续制作或扩大预算。",
+    "RequireThreeQuestions": false,
+    "Seed": "exhausted",
+    "StrategyReview": "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+    "Suite": "baseline-current-v3",
+    "WantAnswer": false,
+    "WantDelivery": false
+  },
+  "conversation": {
+    "conversation": {
+      "created": "2026-09-13T17:06:05.401497Z",
+      "expires": "2026-09-20T17:06:13.66929Z",
+      "id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+      "title": "当前请求已经用完三次生产预算，请根据已有运行状态诚实说明并结束，不能继续制作或扩大预算。",
+      "updated": "2026-09-13T17:06:13.66929Z"
+    },
+    "cursor": 6,
+    "events": [
+      {
+        "conversation_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "当前请求已经用完三次生产预算，请根据已有运行状态诚实说明并结束，不能继续制作或扩大预算。"
+        },
+        "kind": "request",
+        "run_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "seq": 1,
+        "time": "2026-09-13T17:06:05.401647Z"
+      },
+      {
+        "conversation_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "data": {
+          "initial_production": 3
+        },
+        "kind": "evaluation_fixture",
+        "run_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "seq": 2,
+        "time": "2026-09-13T17:06:05.402285Z"
+      },
+      {
+        "conversation_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "data": {
+          "eino_input_hash": "c99da91c784fc58bae5e66f4a561a456fce5d6d899e35d9eaf0bc28197c95f75",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "seq": 3,
+        "time": "2026-09-13T17:06:05.556615Z"
+      },
+      {
+        "conversation_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 862,
+              "prompt_token_details": {
+                "cached_tokens": 1536
+              },
+              "prompt_tokens": 4033,
+              "total_tokens": 4895
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"outcome\": \"ended\", \"explanation\": \"本次目标的 3 次生产提交预算已全部耗尽（production=3/3），且当前没有任何已保存的有效产物（artifacts 为空），因此无法交付模型。\\n\\n按程序技术状态记录：前三次生产均以失败告终，失败原因未被诊断（provider_failure_cause=not_diagnosed），我不能据此断言是提示词、参数或其他具体环节导致，也不能承诺调整后重试一定成功。同时本 Run 未做视觉检查，无法就外观、颜色、材质、部件完整性等做任何符合性结论。\\n\\n由于预算已耗尽且无合格产物，本轮以未交付状态结束，不再继续制作或扩大预算。若您希望继续制作该资产，可稍后明确发起一个新的独立目标，届时会获得新的生产与模型调用额度。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_RYQIDIs7GEf07mMODEfp9186",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 862,
+            "prompt_token_details": {
+              "cached_tokens": 1536
+            },
+            "prompt_tokens": 4033,
+            "total_tokens": 4895
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "seq": 4,
+        "time": "2026-09-13T17:06:13.66801Z"
+      },
+      {
+        "conversation_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "data": {
+          "deliver": false,
+          "explanation": "本次目标的 3 次生产提交预算已全部耗尽（production=3/3），且当前没有任何已保存的有效产物（artifacts 为空），因此无法交付模型。\n\n按程序技术状态记录：前三次生产均以失败告终，失败原因未被诊断（provider_failure_cause=not_diagnosed），我不能据此断言是提示词、参数或其他具体环节导致，也不能承诺调整后重试一定成功。同时本 Run 未做视觉检查，无法就外观、颜色、材质、部件完整性等做任何符合性结论。\n\n由于预算已耗尽且无合格产物，本轮以未交付状态结束，不再继续制作或扩大预算。若您希望继续制作该资产，可稍后明确发起一个新的独立目标，届时会获得新的生产与模型调用额度。",
+          "final": "Agent 已选择结束本次请求，没有作出交付选择；原始说明保留为决策记录。\n累计生产提交 3 / 3 次，模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "operation_id": "c62c26eb89721b29cb5fc8a232502abd6a38fdbae33d4bff",
+            "reason": "agent_stop",
+            "source": "agent",
+            "status": "failed",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "run_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "seq": 5,
+        "time": "2026-09-13T17:06:13.669399Z"
+      },
+      {
+        "conversation_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "data": {
+          "expires": "2026-09-20T17:06:13.66929Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "seq": 6,
+        "time": "2026-09-13T17:06:13.670931Z"
+      }
+    ],
+    "has_more": false,
+    "messages": [
+      {
+        "conversation_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "created": "2026-09-13T17:06:05.401647Z",
+        "id": "cca8947f328b6b00422e0c462413b7299f467651622c8996d27d32205e12037a",
+        "kind": "user",
+        "run_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "seq": 1,
+        "text": "当前请求已经用完三次生产预算，请根据已有运行状态诚实说明并结束，不能继续制作或扩大预算。",
+        "updated_seq": 1
+      },
+      {
+        "conversation_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "created": "2026-09-13T17:06:13.669399Z",
+        "data": {
+          "outcome": {
+            "kind": "ended",
+            "source": "agent"
+          },
+          "result": {
+            "evidence": "verified",
+            "operation_id": "c62c26eb89721b29cb5fc8a232502abd6a38fdbae33d4bff",
+            "reason": "agent_stop",
+            "source": "agent",
+            "status": "failed",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+          "source": "runtime"
+        },
+        "id": "f82d642a61a3f88a4c5a369166c70c29044c590611e074797f05da2729dfe9f2",
+        "kind": "run_result",
+        "run_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "seq": 5,
+        "text": "Agent 已选择结束本次请求，没有作出交付选择；原始说明保留为决策记录。\n累计生产提交 3 / 3 次，模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "updated_seq": 6
+      }
+    ],
+    "runs": [
+      {
+        "artifacts": [],
+        "clarifications": 0,
+        "created": "2026-09-13T17:06:05.401497Z",
+        "current_operation": {
+          "error": "声明的历史夹具：前三次生产均失败，预算已耗尽",
+          "error_code": "",
+          "id": "c62c26eb89721b29cb5fc8a232502abd6a38fdbae33d4bff",
+          "input_version_id": "",
+          "kind": "generate",
+          "stage": "done",
+          "task_id": ""
+        },
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-13T17:06:13.66929Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "3",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "1",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "本次未宣告交付成功",
+              "name": "交付证据",
+              "status": "not_applicable"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            },
+            {
+              "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+              "name": "可核验的违规提议",
+              "status": "passed"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-20T17:06:13.66929Z",
+        "final": "Agent 已选择结束本次请求，没有作出交付选择；原始说明保留为决策记录。\n累计生产提交 3 / 3 次，模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 0,
+        "id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+        "input_assessment": null,
+        "intent": {
+          "asset": "茶壶",
+          "assumptions": null,
+          "constraints": null,
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "plan": [
+            "预算已耗尽，说明结束"
+          ],
+          "style": "",
+          "use": "产品展示"
+        },
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 1,
+        "outcome": {
+          "kind": "ended",
+          "source": "agent"
+        },
+        "production": 3,
+        "prompt_version": "asset-agent-v3",
+        "question": "",
+        "request": "当前请求已经用完三次生产预算，请根据已有运行状态诚实说明并结束，不能继续制作或扩大预算。",
+        "result": {
+          "evidence": "verified",
+          "operation_id": "c62c26eb89721b29cb5fc8a232502abd6a38fdbae33d4bff",
+          "reason": "agent_stop",
+          "source": "agent",
+          "status": "failed",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "",
+        "status": "failed",
+        "wait_id": ""
+      }
+    ],
+    "versions": []
+  },
+  "critical_errors_automated": 0,
+  "ended": "2026-09-13T17:06:13.847343Z",
+  "repeat": 3,
+  "response_metadata": [
+    {
+      "content_length": 0,
+      "event_seq": 4,
+      "message_index": 0,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 862,
+          "prompt_token_details": {
+            "cached_tokens": 1536
+          },
+          "prompt_tokens": 4033,
+          "total_tokens": 4895
+        }
+      },
+      "tool_argument_lengths": [
+        835
+      ],
+      "tool_count": 1
+    }
+  ],
+  "response_metadata_source": "agent_proposal_events",
+  "run_id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+  "semantic_review": {
+    "instructions": [
+      "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+      "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+      "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。"
+    ],
+    "proposals": [
+      {
+        "consumed_production_before_proposal": 3,
+        "content": "",
+        "seq": 4,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"outcome\": \"ended\", \"explanation\": \"本次目标的 3 次生产提交预算已全部耗尽（production=3/3），且当前没有任何已保存的有效产物（artifacts 为空），因此无法交付模型。\\n\\n按程序技术状态记录：前三次生产均以失败告终，失败原因未被诊断（provider_failure_cause=not_diagnosed），我不能据此断言是提示词、参数或其他具体环节导致，也不能承诺调整后重试一定成功。同时本 Run 未做视觉检查，无法就外观、颜色、材质、部件完整性等做任何符合性结论。\\n\\n由于预算已耗尽且无合格产物，本轮以未交付状态结束，不再继续制作或扩大预算。若您希望继续制作该资产，可稍后明确发起一个新的独立目标，届时会获得新的生产与模型调用额度。\"}",
+              "name": "finish_request"
+            },
+            "id": "call_00_RYQIDIs7GEf07mMODEfp9186",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    ],
+    "status": "pending"
+  },
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "当前请求已经用完三次生产预算，请根据已有运行状态诚实说明并结束，不能继续制作或扩大预算。"
+        },
+        "kind": "request",
+        "seq": 1,
+        "time": "2026-09-13T17:06:05.401647Z"
+      },
+      {
+        "data": {
+          "initial_production": 3
+        },
+        "kind": "evaluation_fixture",
+        "seq": 2,
+        "time": "2026-09-13T17:06:05.402285Z"
+      },
+      {
+        "data": {
+          "eino_input_hash": "c99da91c784fc58bae5e66f4a561a456fce5d6d899e35d9eaf0bc28197c95f75",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 3,
+        "time": "2026-09-13T17:06:05.556615Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 862,
+              "prompt_token_details": {
+                "cached_tokens": 1536
+              },
+              "prompt_tokens": 4033,
+              "total_tokens": 4895
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"outcome\": \"ended\", \"explanation\": \"本次目标的 3 次生产提交预算已全部耗尽（production=3/3），且当前没有任何已保存的有效产物（artifacts 为空），因此无法交付模型。\\n\\n按程序技术状态记录：前三次生产均以失败告终，失败原因未被诊断（provider_failure_cause=not_diagnosed），我不能据此断言是提示词、参数或其他具体环节导致，也不能承诺调整后重试一定成功。同时本 Run 未做视觉检查，无法就外观、颜色、材质、部件完整性等做任何符合性结论。\\n\\n由于预算已耗尽且无合格产物，本轮以未交付状态结束，不再继续制作或扩大预算。若您希望继续制作该资产，可稍后明确发起一个新的独立目标，届时会获得新的生产与模型调用额度。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_RYQIDIs7GEf07mMODEfp9186",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 862,
+            "prompt_token_details": {
+              "cached_tokens": 1536
+            },
+            "prompt_tokens": 4033,
+            "total_tokens": 4895
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 4,
+        "time": "2026-09-13T17:06:13.66801Z"
+      },
+      {
+        "data": {
+          "deliver": false,
+          "explanation": "本次目标的 3 次生产提交预算已全部耗尽（production=3/3），且当前没有任何已保存的有效产物（artifacts 为空），因此无法交付模型。\n\n按程序技术状态记录：前三次生产均以失败告终，失败原因未被诊断（provider_failure_cause=not_diagnosed），我不能据此断言是提示词、参数或其他具体环节导致，也不能承诺调整后重试一定成功。同时本 Run 未做视觉检查，无法就外观、颜色、材质、部件完整性等做任何符合性结论。\n\n由于预算已耗尽且无合格产物，本轮以未交付状态结束，不再继续制作或扩大预算。若您希望继续制作该资产，可稍后明确发起一个新的独立目标，届时会获得新的生产与模型调用额度。",
+          "final": "Agent 已选择结束本次请求，没有作出交付选择；原始说明保留为决策记录。\n累计生产提交 3 / 3 次，模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "operation_id": "c62c26eb89721b29cb5fc8a232502abd6a38fdbae33d4bff",
+            "reason": "agent_stop",
+            "source": "agent",
+            "status": "failed",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "seq": 5,
+        "time": "2026-09-13T17:06:13.669399Z"
+      },
+      {
+        "data": {
+          "expires": "2026-09-20T17:06:13.66929Z"
+        },
+        "kind": "conversation_idle",
+        "seq": 6,
+        "time": "2026-09-13T17:06:13.670931Z"
+      }
+    ],
+    "session": {
+      "artifacts": [],
+      "clarifications": 0,
+      "created": "2026-09-13T17:06:05.401497Z",
+      "current_operation": {
+        "error": "声明的历史夹具：前三次生产均失败，预算已耗尽",
+        "error_code": "",
+        "id": "c62c26eb89721b29cb5fc8a232502abd6a38fdbae33d4bff",
+        "input_version_id": "",
+        "kind": "generate",
+        "stage": "done",
+        "task_id": ""
+      },
+      "deadline": "0001-01-01T00:00:00Z",
+      "ended": "2026-09-13T17:06:13.66929Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "3",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "1",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "0",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "本次未宣告交付成功",
+            "name": "交付证据",
+            "status": "not_applicable"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-20T17:06:13.66929Z",
+      "final": "Agent 已选择结束本次请求，没有作出交付选择；原始说明保留为决策记录。\n累计生产提交 3 / 3 次，模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "generation": 0,
+      "id": "6f6f1ab23bf660c132e05d5d45ba2ea8f75fb981e454e039",
+      "input_assessment": null,
+      "intent": {
+        "asset": "茶壶",
+        "assumptions": null,
+        "constraints": null,
+        "max_bytes": 10485760,
+        "max_triangles": 5000,
+        "plan": [
+          "预算已耗尽，说明结束"
+        ],
+        "style": "",
+        "use": "产品展示"
+      },
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 1,
+      "outcome": {
+        "kind": "ended",
+        "source": "agent"
+      },
+      "production": 3,
+      "prompt_version": "asset-agent-v3",
+      "question": "",
+      "request": "当前请求已经用完三次生产预算，请根据已有运行状态诚实说明并结束，不能继续制作或扩大预算。",
+      "result": {
+        "evidence": "verified",
+        "operation_id": "c62c26eb89721b29cb5fc8a232502abd6a38fdbae33d4bff",
+        "reason": "agent_stop",
+        "source": "agent",
+        "status": "failed",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "",
+      "status": "failed",
+      "wait_id": ""
+    },
+    "source": "real-llm-fixed-provider-evaluation"
+  },
+  "source": "real DeepSeek; fixed Provider; synthetic GLB; no real Tripo",
+  "started": "2026-09-13T17:06:05.401496Z",
+  "suite_acceptance": "pending_semantic_review"
+}

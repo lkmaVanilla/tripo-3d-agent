@@ -96,7 +96,14 @@ type Operation struct {
 	// submitting 且 TaskID 为空代表提交结果未知，不能通过重发来猜测结果。
 	TaskID     string `json:"task_id"`
 	Error      string `json:"error,omitempty"`
+	ErrorCode  string `json:"error_code,omitempty"`
 	ArtifactID string `json:"artifact_id,omitempty"`
+	// v3 的语义输入保持固定，临时上传凭证单独保存，避免重放时改变加工对象。
+	InputVersionID     string         `json:"input_version_id,omitempty"`
+	ContextReferenceID string         `json:"context_reference_id,omitempty"`
+	InputSHA256        string         `json:"input_sha256,omitempty"`
+	PreparedInput      *PreparedInput `json:"prepared_input,omitempty"`
+	SubmissionParams   *tripo.Params  `json:"submission_params,omitempty"`
 }
 
 // Session 是一个资产请求的持久化业务事实，包含对话、执行和恢复状态。
@@ -132,6 +139,13 @@ type Session struct {
 	// 答案按问题身份保留至会话清理，工具读取一次后仍可从旧检查点重放。
 	Answers         map[string]AnswerRecord
 	RecoveryFailure string
+	// 连续会话只给新的 v3 Run 增加上下文；旧 View 和框架恢复输入不变。
+	InputVersion        *AssetVersion  `json:",omitempty"`
+	InputAssessment     *asset.Report  `json:",omitempty"`
+	IntentDraft         *IntentDraft   `json:",omitempty"`
+	ConversationContext map[string]any `json:",omitempty"`
+	GoalKind            string         `json:",omitempty"`
+	Outcome             *RunOutcome    `json:",omitempty"`
 }
 
 // Terminal 使用持久化结束时间判断终态，避免依赖可能扩展的状态字符串集合。

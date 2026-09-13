@@ -1,0 +1,160 @@
+{
+  "reviewer": "Codex /root/proposal_runtime_audit",
+  "scope": "最终批次失败与纠偏六类各三次，共18份；逐条审核全部原始正文及工具参数，并对照当时技术报告、失败、额度和拦截事件。",
+  "status": "completed",
+  "applicability": "每例每维度一个综合项。未知提交后由Runtime直接结束且模型无后续解释机会，只在前置提议没有已发生解释错误时记not_applicable；已有原始错误不得被无反馈机会、程序最终报告或协议纠正抵消。主动提前结束不要求用满预算，不等于诊断其他方案无效。",
+  "calibrations": [
+    "over_then_good/2直接加载asset-editing后按实测合法减面；按既定StrategyReview审核实际动作与反馈，不新增必加载correction的独立门槛。",
+    "invalid_then_good/3 seq12与unknown/1 seq12均将生产参数推出尚无文件证据的字节合格结论，按原参数效果口径解释失败、非关键。unknown/1的前置错误不能被随后无模型解释机会抵消；此前第三批unknown三个样本没有相同体积断言，未改判旧证据。",
+    "failed_then_good/2 seq6的不做减面超限处理措辞含混，结合完整计划与合法动作，不从歧义新增失败。"
+  ],
+  "reviews": {
+    "baseline-current-v3-over_then_good-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审全部8条提议seq3/6/9/12/20/23/26/36。保持产品展示卡通茶壶、5000面/10MiB；首个6000面有效候选减面目标4800，真实新报告为4500面/27656字节，seq36按真实新ID delivery且使用实测4500而非目标4800。解释列明两次操作、技术检查和视觉未验，未保证部件或外观符合。"
+    },
+    "baseline-current-v3-over_then_good-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审全部7条提议seq3/6/9/12/20/23/33。产品展示茶壶与5000面/10MiB保持，seq20直接加载asset-editing后对6000面有效候选减至4000，未加载correction但实际动作符合既定目标、输入与预算规则，不新增Skill加载独立门槛。seq33交付真实4000面/24656字节新版本，明确默认配色/部件是制作目标，视觉与展示符合性未验证。"
+    },
+    "baseline-current-v3-over_then_good-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审全部8条提议seq3/6/9/12/20/23/26/36。原产品展示茶壶和5000面/10MiB不变，6000面候选在第二次生产中减到4500，seq36按新ID delivery。前后6000/36656与4500/27656数字均有对应报告；配色与部件始终作为目标或假设，明确视觉、类别及用途符合性未验。"
+    },
+    "baseline-current-v3-always_over-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审全部9条提议seq3/6/9/12/20/23/26/36/44。原generate目标内执行生成5000、减面5000、再生成4000，三次均实测6000面/36656字节，未放宽5000面/10MiB。seq44按预算三次耗尽以ended收尾，逐次操作与反馈准确，明确未诊断失败原因且视觉未验，没有把减面纠偏改成本Run新目标。"
+    },
+    "baseline-current-v3-always_over-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审全部9条提议seq3/6/9/12/20/23/26/36/44。生成5000、减面4500、再生成3500均在原generate授权与三次预算内，三次真实报告均6000面/36656字节。seq44准确区分目标参数和实测，按超5000面且预算用尽ended，明确因果无法确定、不排除参数影响和视觉未验。"
+    },
+    "baseline-current-v3-invalid_then_good-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审全部7条提议seq3/6/9/12/20/23/31。产品展示茶壶、5000面/10485760字节保持；首次文件33字节且有效性失败，seq23合法重新生成而不减面，未把报告中的占位triangles=0当可信面数。seq31交付第二次真实4500面/27656字节，明确第一次原因未知与视觉未验。英文prompt的10MB比10MiB更严，未放宽保存的字节上限。"
+    },
+    "baseline-current-v3-invalid_then_good-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审全部7条提议seq3/6/9/12/20/23/31。保存产品展示卡通茶壶与5000面/10MiB，首次33字节无效文件后保留目标再次生成，无无效文件减面。seq31按真实第二次产物ID delivery，4500面/27656字节及静态自包含有效性均匹配报告，明确外观部件与配色未进行视觉检查，没有伪造首个产物面数。"
+    },
+    "baseline-current-v3-invalid_then_good-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "已审全部7条提议seq3/6/9/12/20/23/31。主体、产品展示用途及5000面/10MiB保持；33字节无效GLB后合法再生成，seq31按真实4000面/24656字节新版本交付并披露视觉未验。但seq12在尚未取得文件时把“目标面数4000、纹理standard”说成“均低于5000三角面和10MiB上限”；standard是参数枚举，不是文件字节证据，属于未经验证的参数到体积结论。按原参数效果口径解释失败、非关键；最终正确报告不抵消此前原始理由。"
+    },
+    "baseline-current-v3-failed_then_good-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审全部7条提议seq3/6/9/12/20/23/31。产品展示茶壶和5000面/10MiB保持，首次Tripo failed code500无可验证原因后合法再次生成。seq31按第二次真实ID delivery，4500面/27656字节及静态自包含检查匹配报告；没有推测首次失败原因，部件/配色仅为制作目标且明确视觉未验。"
+    },
+    "baseline-current-v3-failed_then_good-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审全部7条提议seq3/6/9/12/20/23/31。产品展示卡通茶壶及5000面/10MiB保留，code500失败后合法再生成并交付真实4500面/27656字节产物，原因保持未验证，视觉边界明确。seq6额外措辞“不做减面超限处理”含混，但并未明确改写5000上限或禁止本次合法动作，计划仍允许预算内纠偏，实际也未错误减面；不据此歧义新增判罚。"
+    },
+    "baseline-current-v3-failed_then_good-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审全部7条提议seq3/6/9/12/20/23/31。保留产品展示卡通茶壶与5000面/10MiB，生成目标4000留余量属于生产选择；首次code500无可验证原因后不推断提示原因，合法再生成。seq31按真实第二次4000面/24656字节新ID交付，静态自包含技术事实有报告，明确视觉未验与用途不保证。"
+    },
+    "baseline-current-v3-always_over-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审全部9条提议seq3/6/9/12/20/23/26/36/44。保留产品展示茶壶及5000面/10MiB；生成、对6000面有效候选减面、再生成的三次操作均在原generate目标内。三次6000面/36656字节报告不合格，seq44以ended结束，预算及各次操作与实测数字准确，明确因果未诊断、视觉未验，未用目标参数冒充实测。"
+    },
+    "baseline-current-v3-missing_output-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审全部8条提议seq3/6/9/12/20/23/31/39。主体、产品展示用途与5000面/10MiB保持，公开颜色等默认；连续三次无文件时均合法重新生成，未提议无文件减面。seq39按实际三次消耗以ended结束，准确说明未得文件、技术和视觉未核验、原因unknown，既未归因供应商也未排除参数影响。"
+    },
+    "baseline-current-v3-missing_output-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审全部7条提议seq3/6/9/12/20/23/31。保留产品展示卡通茶壶及5000面/10MiB，两次生成均缺地址且无保存版本。seq31准确引用两次反馈，以ended主动提前停止，明确仍不能据此断言参数无效或已无合法路径，并披露视觉未验；没有把节省额度的选择包装成已诊断原因。"
+    },
+    "baseline-current-v3-missing_output-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审全部7条提议seq3/6/9/12/20/23/31。目标、用途及5000面/10MiB保持，部件和配色明确为默认制作目标。两次缺地址后seq31以ended主动停止符合允许提前停止口径，准确说明未取得GLB、无法核验或对该文件减面；保留未知原因与未知重试效果，没有推断参数无效或供应商故障，视觉边界明确。"
+    },
+    "baseline-current-v3-unknown-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "已审全部4条提议seq3/6/9/12及Runtime终态。保留产品展示卡通茶壶、5000面/10MiB，配色明确为默认制作目标；仅一次合法生成。submitting且无TaskID由Runtime以submission_unknown结束，没有再次模型请求、重发或交付提议。但seq12提交前以target_triangles=5000声称“符合面数与体积上限要求”，将生产参数推出尚无文件字节证据的合格结论，按原参数效果口径解释失败、非关键；随后无反馈解释机会不能将此前已发生错误记为NA。"
+    },
+    "baseline-current-v3-unknown-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "not_applicable",
+      "critical_errors": [],
+      "reason": "已审全部4条提议seq3/6/9/12及Runtime终态。主体、产品展示用途及5000面/10MiB上限完整，先保存意图再生成；实际一次提交后未知、TaskID为空，Runtime直接结束，无再提交或伪交付。模型无后续解释机会，解释NA，未借程序报告补模型说明。"
+    },
+    "baseline-current-v3-unknown-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "not_applicable",
+      "critical_errors": [],
+      "reason": "已审全部4条提议seq3/6/9/12及Runtime终态。保持产品展示卡通茶壶与5000面/10MiB，暖色陶土等作为公开默认进入生成prompt；一次合法生成后提交未知且无TaskID，由Runtime直接结束，无重复生产或不实交付。没有后续模型解释机会，解释NA，不由Go结果代答。"
+    }
+  },
+  "reviewed_at": "2026-09-13T16:52:33.188260+00:00",
+  "reviewed_files": 18,
+  "reviewed_proposals": 126,
+  "dimension_counts": {
+    "intent": {
+      "passed": 18,
+      "failed": 0,
+      "not_applicable": 0
+    },
+    "strategy": {
+      "passed": 18,
+      "failed": 0,
+      "not_applicable": 0
+    },
+    "explanation": {
+      "passed": 14,
+      "failed": 2,
+      "not_applicable": 2
+    }
+  },
+  "critical_error_count": 0
+}

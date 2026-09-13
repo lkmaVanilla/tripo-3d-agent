@@ -190,7 +190,16 @@ func TestProductionRecoveryCompletedResultUsesLiveBudget(t *testing.T) {
 // 验证产物与技术报告事件只保存一份，迟到失败不能推翻已完成证据。
 func TestProductionRecoveryArtifactCommitIsIdempotent(t *testing.T) {
 	s, before, _ := productionRecoveryFixture(t, "submitted")
-	a := Artifact{ID: before.Current.ID, TaskID: before.Current.TaskID, Report: asset.Inspect(testfixture.Cube(12), 5000, 10<<20)}
+	data := testfixture.Cube(12)
+	dir := filepath.Join(s.Config.DataDir, "artifacts", before.ID)
+	if err := os.MkdirAll(dir, 0700); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(dir, before.Current.ID+".glb")
+	if err := atomicWrite(path, data); err != nil {
+		t.Fatal(err)
+	}
+	a := Artifact{ID: before.Current.ID, TaskID: before.Current.TaskID, Path: path, Report: asset.Inspect(data, 5000, 10<<20)}
 	var wg sync.WaitGroup
 	for i := 0; i < 8; i++ {
 		wg.Add(1)
@@ -205,6 +214,10 @@ func TestProductionRecoveryArtifactCommitIsIdempotent(t *testing.T) {
 	after := getProductionFixture(t, s, before.ID)
 	if len(after.Artifacts) != 1 || productionEventCount(t, s, before.ID, "technical_report") != 1 {
 		t.Fatalf("duplicate completion: %+v", after)
+	}
+	snapshot, err := s.store.ConversationSnapshot(context.Background(), before.ID, before.Owner, 0, 0, 50)
+	if err != nil || len(snapshot.Versions) != 1 || snapshot.Versions[0].SourceOperationID != before.Current.ID {
+		t.Fatalf("duplicate version registration: %+v %v", snapshot.Versions, err)
 	}
 	if _, err := s.operationFailure(before.ID, before.Current.ID, errors.New("late failure")); err != nil {
 		t.Fatal(err)
@@ -382,7 +395,7 @@ func TestRecoverKnownTaskNeedsRealPassingEvidence(t *testing.T) {
 			}
 			switch outcome {
 			case "valid", "corrupt-pending":
-				if err != nil || after.Status != "completed" || len(after.Artifacts) != 1 || after.SelectedArtifact != before.Current.ID || !strings.Contains(after.Final, "未进行视觉检查") {
+				if err != nil || after.Status != "completed" || len(after.Artifacts) != 1 || after.SelectedArtifact != before.Current.ID {
 					t.Fatalf("valid evidence not delivered: %+v err=%v", after, err)
 				}
 			case "unknown-submit", "ready":

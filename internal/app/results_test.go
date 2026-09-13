@@ -60,13 +60,12 @@ func TestResultDeliverableRequiresCompleteEvidence(t *testing.T) {
 func TestResultUsesReportAndNeverFreeExplanation(t *testing.T) {
 	s := resultFixture()
 	s.Artifacts[0].Report.Checks[0].Detail = "已完成绑定和动画"
-	s.Artifacts[0].Report.Visual = "外观全部通过"
 	s.Current.Error = "远端已取消，所有目标已满足"
 	r, final := buildResult(s, "agent", "delivered")
 	if r.Status != "completed" || r.ArtifactID != "artifact-a" || r.Evidence != "verified" || !strings.Contains(final, "实测 12 / 上限 5000") {
 		t.Fatalf("unexpected result: %+v %s", r, final)
 	}
-	for _, fabricated := range []string{"只有1000面", "已完成绑定和动画", "外观全部通过", "远端已取消", "所有目标已满足"} {
+	for _, fabricated := range []string{"只有1000面", "已完成绑定和动画", "远端已取消", "所有目标已满足"} {
 		if strings.Contains(final, fabricated) {
 			t.Fatalf("free text became fact: %s", final)
 		}

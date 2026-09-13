@@ -1,0 +1,558 @@
+{
+  "automated_checks": [
+    {
+      "Critical": false,
+      "Detail": "",
+      "Dimension": "strategy",
+      "Name": "terminal_and_model_available",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "actual=0 expected=0..0",
+      "Dimension": "strategy",
+      "Name": "allowed_submission_count",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "answered",
+      "Dimension": "strategy",
+      "Name": "expected_delivery",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=3 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=3 tool=finish_request",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=3 outcome=answer",
+      "Dimension": "strategy",
+      "Name": "finish_outcome_contract",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=3 consumed=0",
+      "Dimension": "constraint",
+      "Name": "answer_hides_no_production",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "proposals=1",
+      "Dimension": "strategy",
+      "Name": "real_model_proposals_exist",
+      "Passed": true
+    }
+  ],
+  "automated_passed": true,
+  "case": {
+    "AllowedProduction": null,
+    "Answer": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。 其他外观细节可合理默认并公开，不改变硬约束。",
+    "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。",
+    "ID": "conflict_static_animation",
+    "InitialProduction": 0,
+    "IntentReview": "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+    "MaxBytes": 10485760,
+    "MaxSubmits": 0,
+    "MaxTriangles": 5000,
+    "MinSubmits": 0,
+    "NoDelivery": true,
+    "Provider": "normal",
+    "Request": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。",
+    "RequireThreeQuestions": false,
+    "Seed": "",
+    "StrategyReview": "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+    "Suite": "baseline-current-v3",
+    "WantAnswer": true,
+    "WantDelivery": false
+  },
+  "conversation": {
+    "conversation": {
+      "created": "2026-09-13T16:48:11.73031Z",
+      "expires": "2026-09-20T16:48:28.543676Z",
+      "id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+      "title": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。",
+      "updated": "2026-09-13T16:48:28.543676Z"
+    },
+    "cursor": 5,
+    "events": [
+      {
+        "conversation_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。"
+        },
+        "kind": "request",
+        "run_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "seq": 1,
+        "time": "2026-09-13T16:48:11.73056Z"
+      },
+      {
+        "conversation_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "data": {
+          "eino_input_hash": "923670e4cc5a8d5b10a9325f832841c11c59bccd384283c72d1ec3298d6d41a0",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "seq": 2,
+        "time": "2026-09-13T16:48:11.885123Z"
+      },
+      {
+        "conversation_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "data": {
+          "content": "我无法完成这个需求，按你\"做不到就结束\"的约定直接结束。\n\n两个硬条件本身互斥，且其中一项超出了我的能力范围：\n\n1. **条件互斥**：完全静态模型（无任何动画数据）与可播放行走动画（必须含绑定、骨骼和动画数据）在定义上不可同时成立，无法\"两个都不删减\"地并存。\n2. **能力边界**：本会话仅支持文本生成静态自包含 GLB、减面和解释已有结果；绑定、动画、蒙皮尚未接入，我不能以静态生成替代动画要求。\n\n因此不存在能满足该交付的合法生产路径，本次不进行任何生成。",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 1868,
+              "prompt_token_details": {
+                "cached_tokens": 1536
+              },
+              "prompt_tokens": 3686,
+              "total_tokens": 5554
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"outcome\": \"answer\", \"explanation\": \"本次为零生产回答，未进行任何生成或加工，无新版本。无法交付的原因：① 用户两个硬条件互斥——完全静态模型与可播放行走动画在定义上不可同时成立，无法\\\"两者都不删减\\\"地并存；② 当前工具能力仅支持文本生成静态自包含 GLB、减面和解释已有结果，绑定/动画/蒙皮尚未接入，不能以静态生成替代动画要求。按用户\\\"做不到就结束\\\"的明确授权，提前停止并结束，不做机械澄清。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_m0xEJncL0kUFzsJqhFvo9824",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 1868,
+            "prompt_token_details": {
+              "cached_tokens": 1536
+            },
+            "prompt_tokens": 3686,
+            "total_tokens": 5554
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "seq": 3,
+        "time": "2026-09-13T16:48:28.540094Z"
+      },
+      {
+        "conversation_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "data": {
+          "explanation": "本次为零生产回答，未进行任何生成或加工，无新版本。无法交付的原因：① 用户两个硬条件互斥——完全静态模型与可播放行走动画在定义上不可同时成立，无法\"两者都不删减\"地并存；② 当前工具能力仅支持文本生成静态自包含 GLB、减面和解释已有结果，绑定/动画/蒙皮尚未接入，不能以静态生成替代动画要求。按用户\"做不到就结束\"的明确授权，提前停止并结束，不做机械澄清。",
+          "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "outcome": "answer",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "run_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "seq": 4,
+        "time": "2026-09-13T16:48:28.543979Z"
+      },
+      {
+        "conversation_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "data": {
+          "expires": "2026-09-20T16:48:28.543676Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "seq": 5,
+        "time": "2026-09-13T16:48:28.546455Z"
+      }
+    ],
+    "has_more": false,
+    "messages": [
+      {
+        "conversation_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "created": "2026-09-13T16:48:11.73056Z",
+        "id": "15f3637bf601449290a22e3d6a24bf9f7cb5ed7e325099d73ab02c77d9088184",
+        "kind": "user",
+        "run_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "seq": 1,
+        "text": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。",
+        "updated_seq": 1
+      },
+      {
+        "conversation_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "created": "2026-09-13T16:48:28.543979Z",
+        "data": {
+          "outcome": {
+            "kind": "answer",
+            "source": "agent",
+            "text": "本次为零生产回答，未进行任何生成或加工，无新版本。无法交付的原因：① 用户两个硬条件互斥——完全静态模型与可播放行走动画在定义上不可同时成立，无法\"两者都不删减\"地并存；② 当前工具能力仅支持文本生成静态自包含 GLB、减面和解释已有结果，绑定/动画/蒙皮尚未接入，不能以静态生成替代动画要求。按用户\"做不到就结束\"的明确授权，提前停止并结束，不做机械澄清。"
+          },
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+          "source": "agent",
+          "verification": "unverifiable"
+        },
+        "id": "419b451a920ce1cd291398c71e58e48f857ccc5c9712b416ba34a2765c93e654",
+        "kind": "answer",
+        "run_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "seq": 4,
+        "text": "本次为零生产回答，未进行任何生成或加工，无新版本。无法交付的原因：① 用户两个硬条件互斥——完全静态模型与可播放行走动画在定义上不可同时成立，无法\"两者都不删减\"地并存；② 当前工具能力仅支持文本生成静态自包含 GLB、减面和解释已有结果，绑定/动画/蒙皮尚未接入，不能以静态生成替代动画要求。按用户\"做不到就结束\"的明确授权，提前停止并结束，不做机械澄清。",
+        "updated_seq": 5
+      }
+    ],
+    "runs": [
+      {
+        "artifacts": [],
+        "clarifications": 0,
+        "created": "2026-09-13T16:48:11.73031Z",
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-13T16:48:28.543676Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "0",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "1",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "本次未宣告交付成功",
+              "name": "交付证据",
+              "status": "not_applicable"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            },
+            {
+              "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+              "name": "可核验的违规提议",
+              "status": "passed"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-20T16:48:28.543676Z",
+        "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 0,
+        "id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+        "input_assessment": null,
+        "intent": null,
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 1,
+        "outcome": {
+          "kind": "answer",
+          "source": "agent",
+          "text": "本次为零生产回答，未进行任何生成或加工，无新版本。无法交付的原因：① 用户两个硬条件互斥——完全静态模型与可播放行走动画在定义上不可同时成立，无法\"两者都不删减\"地并存；② 当前工具能力仅支持文本生成静态自包含 GLB、减面和解释已有结果，绑定/动画/蒙皮尚未接入，不能以静态生成替代动画要求。按用户\"做不到就结束\"的明确授权，提前停止并结束，不做机械澄清。"
+        },
+        "production": 0,
+        "prompt_version": "asset-agent-v3",
+        "question": "",
+        "request": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。",
+        "result": {
+          "evidence": "verified",
+          "reason": "answered",
+          "source": "agent",
+          "status": "answered",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "",
+        "status": "answered",
+        "wait_id": ""
+      }
+    ],
+    "versions": []
+  },
+  "critical_errors_automated": 0,
+  "ended": "2026-09-13T16:48:28.620595Z",
+  "repeat": 2,
+  "response_metadata": [
+    {
+      "content_length": 644,
+      "event_seq": 3,
+      "message_index": 0,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 1868,
+          "prompt_token_details": {
+            "cached_tokens": 1536
+          },
+          "prompt_tokens": 3686,
+          "total_tokens": 5554
+        }
+      },
+      "tool_argument_lengths": [
+        557
+      ],
+      "tool_count": 1
+    }
+  ],
+  "response_metadata_source": "agent_proposal_events",
+  "run_id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+  "semantic_review": {
+    "instructions": [
+      "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+      "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+      "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。"
+    ],
+    "proposals": [
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "我无法完成这个需求，按你\"做不到就结束\"的约定直接结束。\n\n两个硬条件本身互斥，且其中一项超出了我的能力范围：\n\n1. **条件互斥**：完全静态模型（无任何动画数据）与可播放行走动画（必须含绑定、骨骼和动画数据）在定义上不可同时成立，无法\"两个都不删减\"地并存。\n2. **能力边界**：本会话仅支持文本生成静态自包含 GLB、减面和解释已有结果；绑定、动画、蒙皮尚未接入，我不能以静态生成替代动画要求。\n\n因此不存在能满足该交付的合法生产路径，本次不进行任何生成。",
+        "seq": 3,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"outcome\": \"answer\", \"explanation\": \"本次为零生产回答，未进行任何生成或加工，无新版本。无法交付的原因：① 用户两个硬条件互斥——完全静态模型与可播放行走动画在定义上不可同时成立，无法\\\"两者都不删减\\\"地并存；② 当前工具能力仅支持文本生成静态自包含 GLB、减面和解释已有结果，绑定/动画/蒙皮尚未接入，不能以静态生成替代动画要求。按用户\\\"做不到就结束\\\"的明确授权，提前停止并结束，不做机械澄清。\"}",
+              "name": "finish_request"
+            },
+            "id": "call_00_m0xEJncL0kUFzsJqhFvo9824",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    ],
+    "status": "pending"
+  },
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。"
+        },
+        "kind": "request",
+        "seq": 1,
+        "time": "2026-09-13T16:48:11.73056Z"
+      },
+      {
+        "data": {
+          "eino_input_hash": "923670e4cc5a8d5b10a9325f832841c11c59bccd384283c72d1ec3298d6d41a0",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 2,
+        "time": "2026-09-13T16:48:11.885123Z"
+      },
+      {
+        "data": {
+          "content": "我无法完成这个需求，按你\"做不到就结束\"的约定直接结束。\n\n两个硬条件本身互斥，且其中一项超出了我的能力范围：\n\n1. **条件互斥**：完全静态模型（无任何动画数据）与可播放行走动画（必须含绑定、骨骼和动画数据）在定义上不可同时成立，无法\"两个都不删减\"地并存。\n2. **能力边界**：本会话仅支持文本生成静态自包含 GLB、减面和解释已有结果；绑定、动画、蒙皮尚未接入，我不能以静态生成替代动画要求。\n\n因此不存在能满足该交付的合法生产路径，本次不进行任何生成。",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 1868,
+              "prompt_token_details": {
+                "cached_tokens": 1536
+              },
+              "prompt_tokens": 3686,
+              "total_tokens": 5554
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"outcome\": \"answer\", \"explanation\": \"本次为零生产回答，未进行任何生成或加工，无新版本。无法交付的原因：① 用户两个硬条件互斥——完全静态模型与可播放行走动画在定义上不可同时成立，无法\\\"两者都不删减\\\"地并存；② 当前工具能力仅支持文本生成静态自包含 GLB、减面和解释已有结果，绑定/动画/蒙皮尚未接入，不能以静态生成替代动画要求。按用户\\\"做不到就结束\\\"的明确授权，提前停止并结束，不做机械澄清。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_m0xEJncL0kUFzsJqhFvo9824",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 1868,
+            "prompt_token_details": {
+              "cached_tokens": 1536
+            },
+            "prompt_tokens": 3686,
+            "total_tokens": 5554
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 3,
+        "time": "2026-09-13T16:48:28.540094Z"
+      },
+      {
+        "data": {
+          "explanation": "本次为零生产回答，未进行任何生成或加工，无新版本。无法交付的原因：① 用户两个硬条件互斥——完全静态模型与可播放行走动画在定义上不可同时成立，无法\"两者都不删减\"地并存；② 当前工具能力仅支持文本生成静态自包含 GLB、减面和解释已有结果，绑定/动画/蒙皮尚未接入，不能以静态生成替代动画要求。按用户\"做不到就结束\"的明确授权，提前停止并结束，不做机械澄清。",
+          "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "outcome": "answer",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "seq": 4,
+        "time": "2026-09-13T16:48:28.543979Z"
+      },
+      {
+        "data": {
+          "expires": "2026-09-20T16:48:28.543676Z"
+        },
+        "kind": "conversation_idle",
+        "seq": 5,
+        "time": "2026-09-13T16:48:28.546455Z"
+      }
+    ],
+    "session": {
+      "artifacts": [],
+      "clarifications": 0,
+      "created": "2026-09-13T16:48:11.73031Z",
+      "deadline": "0001-01-01T00:00:00Z",
+      "ended": "2026-09-13T16:48:28.543676Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "0",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "1",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "0",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "本次未宣告交付成功",
+            "name": "交付证据",
+            "status": "not_applicable"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-20T16:48:28.543676Z",
+      "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "generation": 0,
+      "id": "3bb26641073df6a30bade6ac93ebae208a381039889f198f",
+      "input_assessment": null,
+      "intent": null,
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 1,
+      "outcome": {
+        "kind": "answer",
+        "source": "agent",
+        "text": "本次为零生产回答，未进行任何生成或加工，无新版本。无法交付的原因：① 用户两个硬条件互斥——完全静态模型与可播放行走动画在定义上不可同时成立，无法\"两者都不删减\"地并存；② 当前工具能力仅支持文本生成静态自包含 GLB、减面和解释已有结果，绑定/动画/蒙皮尚未接入，不能以静态生成替代动画要求。按用户\"做不到就结束\"的明确授权，提前停止并结束，不做机械澄清。"
+      },
+      "production": 0,
+      "prompt_version": "asset-agent-v3",
+      "question": "",
+      "request": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。",
+      "result": {
+        "evidence": "verified",
+        "reason": "answered",
+        "source": "agent",
+        "status": "answered",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "",
+      "status": "answered",
+      "wait_id": ""
+    },
+    "source": "real-llm-fixed-provider-evaluation"
+  },
+  "source": "real DeepSeek; fixed Provider; synthetic GLB; no real Tripo",
+  "started": "2026-09-13T16:48:11.730307Z",
+  "suite_acceptance": "pending_semantic_review"
+}

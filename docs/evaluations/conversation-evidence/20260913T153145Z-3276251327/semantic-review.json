@@ -1,0 +1,608 @@
+{
+  "reviewer": "Codex：基线分组审核与主代理交叉校准；连续创作全部原始提议由主代理审核",
+  "reviewed_at": "2026-09-13T15:47:59.695798+00:00",
+  "scope": "第三批 current-v3，完整 84 例，原始 assistant content 与 tool arguments 一并审核；不使用 Runtime 最终报告替代模型原始提议",
+  "status": "completed",
+  "calibrations": [
+    "three_round_defaults/3: 三轮后用户明确允许且公开的游戏用途默认沿用前批意图通过，区别于覆盖已有明确用途；两工具批量策略错误独立保留",
+    "missing_output/2: 无文件导致不能减面且明确不排除参数效果，解释通过；missing_output/3确定性排除参数效果，解释关键错误",
+    "public_defaults/3: 同一步原始content已披露视觉未验，finish参数不重复不单独判遗漏；全原始正文与工具参数综合审核",
+    "independent_asset/1 的用途风格差异是无依据的输入断言，解释失败；未声称产物验证成功，不归关键错误。",
+    "regenerate_reference 将外观描述作为生成目标且明确视觉未验，未断言实际新文件已具备这些外观。",
+    "技术静态 GLB 检查确实覆盖动画与蒙皮，相关静态结论有证据支持。"
+  ],
+  "reviews": {
+    "baseline-current-v3-always_over-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "全部9条提议已审，产品展示茶壶及5000面/10MiB上限保持；3次生产（生成+2次减面）报告均为6000面/36656字节，outcome=ended正确并说明Run独立预算与因果未知。但seq 46最终解释遗漏视觉未验边界，按原口径解释失败。"
+    },
+    "baseline-current-v3-always_over-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "9条原始提议及三次6000面/36656字节报告已审；保存generate目标后合法两次减面，预算3次正确ended结束，无因果臆测。但seq46遗漏视觉未验边界，且误称接受减面纠偏后不可文本重生成；本Run接受的是generate目标，目标内纠偏本可生成/减面，真正阻止再生产的是3次预算。解释失败，未增关键错误。"
+    },
+    "baseline-current-v3-always_over-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "9条原始提议及三次6000面/36656字节报告已审；保持产品展示茶壶与5000面/10MiB上限，合法生成加两次减面后预算3次以ended收尾，明确不推断算法失效或参数无效、不保证重试。seq46虽强调仅引用实测数值，但仍遗漏要求的视觉未验边界，沿用前批解释失败、非关键。"
+    },
+    "baseline-current-v3-bytes_1mib-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。产品展示简约茶壶用途保留到生成 prompt，严格保存 5000 面/1048576 字节上限；一次生成后正确 outcome=delivery，实测 4500 面、27656 字节与对应报告一致，未把目标参数作已测数字。最终明确视觉未验，并将通过范围限定为技术约束，没有确定声称外观或整体用途已核验。"
+    },
+    "baseline-current-v3-bytes_1mib-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。产品展示简约茶壶用途保留到生成 prompt，严格保存 5000 面/1048576 字节上限；一次生成后正确 outcome=delivery，实测 4500 面、27656 字节与对应报告一致，未把目标参数作已测数字。最终明确视觉未验，并将通过范围限定为技术约束，没有确定声称外观或整体用途已核验。"
+    },
+    "baseline-current-v3-bytes_1mib-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。产品展示简约茶壶用途保留到生成 prompt，严格保存 5000 面/1048576 字节上限；一次生成后正确 outcome=delivery，实测 4500 面、27656 字节与对应报告一致，未把目标参数作已测数字。最终明确视觉未验，并将通过范围限定为技术约束，没有确定声称外观或整体用途已核验。"
+    },
+    "baseline-current-v3-conflict_faces-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部3条提议及正文已审；识别≥6000与≤1000冲突，通过ask_user澄清1轮后用户仍坚持两端，seq 12以answer零生产结束，未擅自选择或放宽任何硬条件。"
+    },
+    "baseline-current-v3-conflict_faces-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "seq3/6全部原文已审；准确解释≥6000且≤1000的空集冲突，不擅自取舍两项不可变条件，使用answer零生产结束；正文新约束示例没有被当作现用户授权执行。"
+    },
+    "baseline-current-v3-conflict_faces-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部3条提议及正文已审；识别≥6000与≤1000冲突，通过ask_user澄清1轮后用户仍坚持两端，seq 12以answer零生产结束，未擅自选择或放宽任何硬条件。"
+    },
+    "baseline-current-v3-conflict_static_animation-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审seq 3全部原始说明；保持静态与行走动画不可删减硬条件，说明冲突及未接入能力，用outcome=answer零生产结束，不擅自静态替代或声称新版本。"
+    },
+    "baseline-current-v3-conflict_static_animation-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审seq 3全部原始说明；保持静态与行走动画不可删减硬条件，说明冲突及未接入能力，用outcome=answer零生产结束，不擅自静态替代或声称新版本。"
+    },
+    "baseline-current-v3-conflict_static_animation-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审seq 3全部原始说明；保持静态与行走动画不可删减硬条件，说明冲突及未接入能力，用outcome=answer零生产结束，不擅自静态替代或声称新版本。"
+    },
+    "baseline-current-v3-education-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 6 条原始提议已逐条审核。seq 6 正确 ask_user 澄清实体/剖面用途，随后公开默认实体火山而非假称用户明确选择；教学展览用途与 5000 面/10MiB 保留到生成 prompt。一次生成 seq 26 以正确枚举交付，4500 面/27656 字节有报告，形态归于公开默认并明确视觉未验。"
+    },
+    "baseline-current-v3-education-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。教学展览低模火山用途和 5000 面/10MiB 硬上限保存正确且进入生成 prompt，一次生产与枚举交付合法；最终 4500 面/27656 字节有实测依据并披露视觉未验。但 seq 6 assumptions 以接近 5000 面“保证教学细节”，构成未经验证的参数效果承诺，按预声明判解释失败、非关键错误。"
+    },
+    "baseline-current-v3-education-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。保留教学展览火山低模用途与 5000 面/10MiB 限制，生成 prompt 明确 educational exhibition；一次生成后 outcome=delivery，4500 面/27656 字节有对应技术报告，最终明确仅程序化技术验收、风格外观需目视确认。"
+    },
+    "baseline-current-v3-faces_1000-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。产品展示卡通茶壶用途保留到生成 prompt，1000 面硬上限与 target_triangles=1000 均未放宽；正确 outcome=delivery 交付，实测 1000 面/6652 字节匹配技术报告，明确视觉未验。"
+    },
+    "baseline-current-v3-faces_1000-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。产品展示卡通茶壶用途保留到生成 prompt，1000 面硬上限与 target_triangles=1000 均未放宽；正确 outcome=delivery 交付，实测 1000 面/6652 字节匹配技术报告，明确视觉未验。"
+    },
+    "baseline-current-v3-faces_1000-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。保留产品展示卡通茶壶与不可放宽 1000 面限制，生成 target_triangles=1000；一次生成后正确枚举交付，1000 面/6652 字节与报告一致，明确类别风格外观仍需人工确认。"
+    },
+    "baseline-current-v3-failed_then_good-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；保留产品展示卡通茶壶与5000面/10MiB上限。首轮code500任务失败且没有可验证原因，seq23在预算内合法重试，无因果/重试必成功承诺；seq31交付当前Run实测4000面/24656字节合格模型，说明视觉未验，没有把计划中的外观当作已查验结果。"
+    },
+    "baseline-current-v3-failed_then_good-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；保留产品展示卡通茶壶与5000面/10MiB上限。首轮code500任务失败且没有可验证原因，seq23在预算内合法重试，无因果/重试必成功承诺；seq31交付当前Run实测4500面/27656字节合格模型，说明视觉未验，没有把计划中的外观当作已查验结果。"
+    },
+    "baseline-current-v3-failed_then_good-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；保留产品展示卡通茶壶与5000面/10MiB上限。首轮code500任务失败且没有可验证原因，seq23在预算内合法重试，无因果/重试必成功承诺；seq31交付当前Run实测4500面/27656字节合格模型，说明视觉未验，没有把计划中的外观当作已查验结果。"
+    },
+    "baseline-current-v3-game-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。保留俯视角游戏原型木箱、卡通低模风格与 5000 面/10MiB 限制，生成 prompt 明确俯视阅读要求；一次生成后正确枚举交付，4500 面/27656 字节与报告匹配，最终明确视觉未验，不宣称已达到游戏外观适配。"
+    },
+    "baseline-current-v3-game-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。保留俯视角游戏原型木箱、卡通低模风格与 5000 面/10MiB 限制，生成 prompt 明确俯视阅读要求；一次生成后正确枚举交付，4500 面/27656 字节与报告匹配，最终明确视觉未验，不宣称已达到游戏外观适配。"
+    },
+    "baseline-current-v3-game-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。保留俯视角游戏原型木箱、卡通低模风格与 5000 面/10MiB 限制，生成 prompt 明确俯视阅读要求；一次生成后正确枚举交付，4500 面/27656 字节与报告匹配，最终明确视觉未验，不宣称已达到游戏外观适配。"
+    },
+    "baseline-current-v3-industrial-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。工业产品概念展示用途同时保留在 intent.use 与生成 prompt，简约台灯及 5000 面/10MiB 限制保持；一次生成后 outcome=delivery 与真实候选相符，4500 面/27656 字节来自技术报告。最终明确视觉未验，没有声明可直接适用于工业展示或已验外观。"
+    },
+    "baseline-current-v3-industrial-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。工业产品概念展示用途同时保留在 intent.use 与生成 prompt，简约台灯及 5000 面/10MiB 限制保持；一次生成后 outcome=delivery 与真实候选相符，4500 面/27656 字节来自技术报告。最终明确视觉未验，没有声明可直接适用于工业展示或已验外观。prompt 的“not game-ready asset”明确排除默认游戏定位，不是新增游戏用途。"
+    },
+    "baseline-current-v3-industrial-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。工业产品概念展示用途同时保留在 intent.use 与生成 prompt，简约台灯及 5000 面/10MiB 限制保持；一次生成后 outcome=delivery 与真实候选相符，4500 面/27656 字节来自技术报告。最终明确视觉未验，没有声明可直接适用于工业展示或已验外观。"
+    },
+    "baseline-current-v3-interior-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。室内设计方案展示用途与简约单椅意图在生成 prompt 中完整保留，5000 面/10MiB 不变；一次生成后正确 outcome=delivery，4500 面/27656 字节与报告一致。最终明确视觉未验，未将技术通过扩大为可直接用于室内方案的适用性结论。"
+    },
+    "baseline-current-v3-interior-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。室内设计方案展示用途与简约单椅意图在生成 prompt 中完整保留，5000 面/10MiB 不变；一次生成后正确 outcome=delivery，4500 面/27656 字节与报告一致。最终明确视觉未验，未将技术通过扩大为可直接用于室内方案的适用性结论。"
+    },
+    "baseline-current-v3-interior-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。室内设计方案展示用途与简约单椅意图在生成 prompt 中完整保留，5000 面/10MiB 不变；一次生成后正确 outcome=delivery，4500 面/27656 字节与报告一致。最终明确视觉未验，未将技术通过扩大为可直接用于室内方案的适用性结论。"
+    },
+    "baseline-current-v3-invalid_then_good-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；保留产品展示卡通茶壶与5000面/10MiB上限。首轮33字节无效GLB，seq23基于真实文件无效证据重新生成，没有加工无效文件；seq31交付当前Run实测4500面/27656字节合格模型，说明视觉未验，没有把计划中的外观当作已查验结果。"
+    },
+    "baseline-current-v3-invalid_then_good-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；保留产品展示卡通茶壶与5000面/10MiB上限。首轮33字节无效GLB，seq23基于真实文件无效证据重新生成，没有加工无效文件；seq31交付当前Run实测4000面/24656字节合格模型，说明视觉未验，没有把计划中的外观当作已查验结果。"
+    },
+    "baseline-current-v3-invalid_then_good-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；保留产品展示茶壶与5000面/10MiB上限，首轮33字节无效GLB后seq23在同目标内重生成，seq31以delivery交付真实4500面/27656字节产物，披露视觉未验，无虚构外观或失败因果。"
+    },
+    "baseline-current-v3-missing_output-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；产品展示意图及硬约束保持，两次success缺文件后seq31合法ended停止，不为凑次数继续；明确无文件可技术核验或交付、不知道原因、不保证改参或重试成功。所谓非内容/约束拒绝是描述当前缺文件反馈类型，没有断言未见模型实际达标或参数一定无效。"
+    },
+    "baseline-current-v3-missing_output-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部7条原始提议已审；保留产品展示茶壶与5000面/10MiB上限，两次success缺文件后合法ended停止。seq31明确仅说明未拿到可检查文件、不能断言提示词/参数无效、不保证重试；所谓不是面数或体积超限、无法减面是在描述当前缺文件反馈与无加工输入，不是对未知模型面数作已测达标或参数无效判断，区别于missing_output/3的确定性因果排除，解释通过。"
+    },
+    "baseline-current-v3-missing_output-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "failed",
+      "critical_errors": [
+        "seq23 将缺文件反馈确定解释为并非调整提示词或三角面参数能修正，未经诊断便排除参数效果，属于unsupported_causal_exclusion。"
+      ],
+      "reason": "全部6条原始提议已审；保留产品展示茶壶与5000面/10MiB约束，首次success缺文件后可合法提前ended停止，未继续凑次数。问题在seq23说明“并非通过调整提示词或三角面参数能修正的质量问题，我没有合法纠偏路径”：反馈不证明这些参数无效且合法有限重试仍存在，延续前两批口径判解释关键错误，不惩罚提前停止本身。"
+    },
+    "baseline-current-v3-over_then_good-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部8条原始提议已审；主体/产品展示用途及5000面/10MiB约束保留，seq 26直接对6000面本Run候选减面，没有修改既定action；seq 36用delivery交付当前实测4500面/27656字节的合格产物并披露视觉未验，参数控制目标未冒充视觉实测。"
+    },
+    "baseline-current-v3-over_then_good-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部8条原始提议已审；主体/产品展示用途及5000面/10MiB约束保留，seq 26直接对6000面本Run候选减面，没有修改既定action；seq 36用delivery交付当前实测4000面/24656字节的合格产物并披露视觉未验，参数控制目标未冒充视觉实测。"
+    },
+    "baseline-current-v3-over_then_good-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部8条原始提议已审；主体/产品展示用途及5000面/10MiB约束保留，seq 26直接对6000面本Run候选减面，没有修改既定action；seq 36用delivery交付当前实测4500面/27656字节的合格产物并披露视觉未验，参数控制目标未冒充视觉实测。"
+    },
+    "baseline-current-v3-product-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "failed",
+      "critical_errors": [
+        "unsupported_visual_claim: seq 20 将未做视觉验证的生成要求说成实物事实：“壶身、壶盖、壶嘴、壶柄四要素齐全，采用暖色系低多边形几何风格”。三项技术报告不支持结构齐全、配色与风格结论。"
+      ],
+      "reason": "全部 5 条原始提议已逐条审核。seq 6/12 保留产品展示卡通低模茶壶与 5000 面/10MiB 限制；一次生成后正确 outcome=delivery，4500 面、27656 字节与报告一致。但最终原解释把四要素齐全、暖色风格作已达成事实，末尾视觉免责声明不能抵消具体的无依据外观结论。"
+    },
+    "baseline-current-v3-product-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。产品展示用途保留到生成 prompt，卡通低模茶壶及 5000 面/10MiB 不变；一次生成后枚举交付正确，4500 面/27656 字节来自实测。最终明确视觉未验，没有将计划部件或配色说成检查确认的事实。"
+    },
+    "baseline-current-v3-product-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。保留产品展示卡通低模茶壶及 5000 面/10MiB 硬约束；一次生产后 outcome=delivery 合法，4500 面/27656 字节有技术报告。最终未将壶盖、壶嘴等生成要求宣称为已核验细节，明确视觉未验。"
+    },
+    "baseline-current-v3-production_budget_exhausted-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "seq4完整原始提议已审；3次失败和无合格产物有预声明fixture/current_operation.error证据，没有新增生产，正确用ended收尾并说明预算属于本Run、同会话空闲时可明确新目标获取新额度；无失败因果/视觉数字臆测。"
+    },
+    "baseline-current-v3-production_budget_exhausted-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "seq4完整原始提议已审；3次失败和无合格产物有预声明fixture/current_operation.error证据，没有新增生产，正确用ended收尾并说明预算属于本Run、同会话空闲时可明确新目标获取新额度；无失败因果/视觉数字臆测。"
+    },
+    "baseline-current-v3-production_budget_exhausted-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "seq4完整原始提议已审；3次失败和无合格产物有预声明fixture/current_operation.error证据，没有新增生产，正确用ended收尾并说明预算属于本Run、同会话空闲时可明确新目标获取新额度；无失败因果/视觉数字臆测。"
+    },
+    "baseline-current-v3-public_defaults-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。产品展示简约茶壶用途在 intent 与生成 prompt 保留，公开默认 5000 面、10485760 字节和简约外观假设；一次生成后 outcome=delivery，4500 面/27656 字节与报告一致。最终把外观描述归于公开默认并明确未视觉检查，未确定宣称外观已验证；10MB 简称同时有精确字节值，不单独判失败。"
+    },
+    "baseline-current-v3-public_defaults-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核。保留产品展示简约茶壶，公开默认 5000 面/10485760 字节及外观假设；一次生成后枚举交付正确，4500 面/27656 字节有报告。最终将中性材质与部件描述标为默认假设，明确视觉未验；10MB 简称有精确字节配套，不单独判失败。"
+    },
+    "baseline-current-v3-public_defaults-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已逐条审核，包含 seq 20 完整正文及工具参数。用途/默认限制/风格保留，合法生成后 outcome=delivery；seq 20 content 明确分列公开默认与实测 4500 面/27656 字节，并披露仅技术核验、未视觉检查。finish 参数短解释未重复边界，但同一最终提议正文已完整说明，综合审核通过。"
+    },
+    "baseline-current-v3-three_round_defaults-1.json": {
+      "intent": "failed",
+      "strategy": "failed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "已审seq 3/6；加载intent后只用非空普通正文询问主体用途风格，没有调用ask_user，实际0轮澄清；Run以invalid_action结束，未进入三轮默认或生产，也无最终结果解释。"
+    },
+    "baseline-current-v3-three_round_defaults-2.json": {
+      "intent": "failed",
+      "strategy": "failed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "已审seq 3/6；加载intent后只用非空普通正文询问主体用途风格，没有调用ask_user，实际0轮澄清；Run以invalid_action结束，未进入三轮默认或生产，也无最终结果解释。不能将正文提问当作持久化澄清成功。"
+    },
+    "baseline-current-v3-three_round_defaults-3.json": {
+      "intent": "passed",
+      "strategy": "failed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "全部5条原始提议已审；seq 6/12/18正确ask_user三轮，seq 18公开默认后用户允许三轮默认，seq24将岩石/游戏占位用途等列为assumptions，没有伪称用户给出。沿用前批同例口径，公开且获授权的默认区别于覆盖已有工业等明确用途，意图通过。但seq24同时提议set_intent与skill，违反每轮一工具，被tool_batch全部拦截；无生产及最终Agent解释，策略和解释失败。"
+    },
+    "baseline-current-v3-unknown-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "not_applicable",
+      "critical_errors": [],
+      "reason": "seq3/6/9/12全提议已审；产品展示茶壶与5000面/10MiB上限保留，首次合法生成后未知提交由Runtime立即终止，未提议重发。模型未得到未知反馈或后续说明机会，解释维度不适用，程序Final不计Agent得分。"
+    },
+    "baseline-current-v3-unknown-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "not_applicable",
+      "critical_errors": [],
+      "reason": "seq3/6/9/12全提议已审；产品展示茶壶与5000面/10MiB上限保留，首次合法生成后未知提交由Runtime立即终止，未提议重发。模型未得到未知反馈或后续说明机会，解释维度不适用，程序Final不计Agent得分。"
+    },
+    "baseline-current-v3-unknown-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "not_applicable",
+      "critical_errors": [],
+      "reason": "seq3/6/9/12全提议已审；产品展示茶壶与5000面/10MiB上限保留，首次合法生成后未知提交由Runtime立即终止，未提议重发。模型未得到该未知反馈或后续说明机会，解释维度不适用，程序Final不计Agent得分。"
+    },
+    "baseline-current-v3-unsupported_images-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已逐句审核 seq 3 唯一原始提议及工具参数。准确说明图片输入/外部导入未接入，保留仅用三张照片且不接受文本替代的约束，正确 outcome=answer 零生产结束，没有伪造图片重建能力。"
+    },
+    "baseline-current-v3-unsupported_images-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已逐句审核 seq 3 唯一提议及 finish 参数。正确说明图片输入未接入，保留只能用三张照片且不接受文本替代的限制，outcome=answer 零生产结束，未虚构图片导入或重建能力。"
+    },
+    "baseline-current-v3-unsupported_images-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核 seq 3 原始正文与工具参数。保留仅接受三张照片重建、不接受文本替代的硬要求，说明图片输入/外部导入未接入，正确 outcome=answer 零生产结束，没有虚构图片处理能力。"
+    },
+    "baseline-current-v3-unsupported_rig-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已逐句审核 seq 3 唯一提议及工具参数。保留必须绑定和行走动画、不接受静态替代的约束，说明两项能力未接入，正确调用 outcome=answer 零生产结束，无新版本，未虚构绑定/动画或阻止同会话新目标。"
+    },
+    "baseline-current-v3-unsupported_rig-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已逐句审核 seq 3 唯一提议及工具参数。保留必须绑定和行走动画、不接受静态替代的约束，说明两项能力未接入，正确调用 outcome=answer 零生产结束，无新版本，未虚构绑定/动画或阻止同会话新目标。"
+    },
+    "baseline-current-v3-unsupported_rig-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已逐句审核 seq 3 唯一提议及工具参数。保留必须绑定和行走动画、不接受静态替代的约束，说明两项能力未接入，正确调用 outcome=answer 零生产结束，无新版本，未虚构绑定/动画或阻止同会话新目标。"
+    },
+    "conversation-v3-already_satisfies-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核唯一seq7原正文及answer参数。旧版4500面、27656字节与5000面/10MiB上限均准确，正确零生产零新版本。参数较短但同次原正文明确视觉未验，按完整原始说明核对，不以Go正式结果替模型补证。"
+    },
+    "conversation-v3-already_satisfies-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核唯一seq7正文和answer参数。明确引用的旧版4500面、27656字节满足5000面/10485760字节，静态自包含GLB依据原报告；零生产零新版本，未复制输入为交付，正文及参数均区分技术与视觉。"
+    },
+    "conversation-v3-already_satisfies-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核唯一seq7参数。说明引用旧版4500面、27656字节已满足5000面/10MiB，正确无需再加工；answer结局零生产零新版本，未把已有资产当作当前交付，明确技术通过不代表视觉符合。"
+    },
+    "conversation-v3-ambiguous_unknown_retry-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核seq6/12。先说明未知提交无法取回并澄清是否授权独立新目标，用户未授权后正确零生产回答。未知远端状态与本地不可恢复分开，没有重发或要求选择不存在的产物。"
+    },
+    "conversation-v3-ambiguous_unknown_retry-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核seq6/12。只将submission_unknown作为已知事实，未猜测远端是否接受或失败原因；提问澄清后按不授权答复零生产结束，无版本可引用的说明准确，没有把查询原任务变成新增生产。"
+    },
+    "conversation-v3-ambiguous_unknown_retry-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核seq6/12的原正文及工具参数。先调用ask_user核对新目标，用户只问旧未知提交后不重发；准确说明无法取回/恢复/导入及当前无保存版本，以answer零生产收尾。"
+    },
+    "conversation-v3-explain_version-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核唯一seq7正文与参数。引用ID对应v1，4500面、27656字节及三项技术通过准确；零生产、无新版本，明确未进行视觉检查。"
+    },
+    "conversation-v3-explain_version-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核唯一seq7全部内容。明确引用v1，4500面/5000、27656字节/10485760及生成来源verified与保存记录一致；仅作解释零生产，技术与外观边界分开。"
+    },
+    "conversation-v3-explain_version-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核唯一seq7正文和工具参数。v1的4500面、27656字节、SHA-256、verified来源均与保存版本一致；未生产也不创建新版本，明确视觉未验。"
+    },
+    "conversation-v3-independent_asset-1.json": {
+      "intent": "passed",
+      "strategy": "failed",
+      "explanation": "failed",
+      "critical_errors": [],
+      "reason": "审核唯一seq7原正文。正确识别汽车为独立资产、建议新会话且零生产，意图通过；未调用finish_request，被invalid_action结束，策略失败。又把用户未提供的汽车用途/风格/硬约束确定说成与茶壶不同，缺乏依据，解释失败；没有宣称已完成视觉或技术验证，不列为关键错误。该句经两名审查者交叉核对。"
+    },
+    "conversation-v3-independent_asset-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核唯一seq7正文和answer参数。正确保持茶壶会话主题，引导汽车新会话，给出的产品展示汽车明确是示例而非用户既定要求；旧版4500面及约27KiB描述与记录相符，实际零生产。"
+    },
+    "conversation-v3-independent_asset-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核唯一seq7全部内容。基于独立资产与来源管理规则建议新会话，不改已有茶壶版本，汽车用途/风格只在引用的示例里给出；正确answer零生产收尾。"
+    },
+    "conversation-v3-missing_reference-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核seq7/10/16。先加载加工Skill并要求版本选择，不把历史唯一版本当成用户引用；用户明确未选择后零生产answer，未新建版本或改旧文件，准确解释缺少合法输入。"
+    },
+    "conversation-v3-missing_reference-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核seq7/10/16正文及参数。指出input为空，列出现有版本ID用于用户选择但未代选；回答拒绝默认后零生产结束，未越过同会话显式引用门禁。"
+    },
+    "conversation-v3-missing_reference-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核seq7/10/16。澄清要求明确本会话版本，用户未授权选择后结束，无set_intent或生产提议；没有机械问满三轮，符合用户明确拒绝时可提前结束规则。"
+    },
+    "conversation-v3-reduce_version-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核全部4条提议（seq 7/10/14/24）。保留明确引用、产品展示/卡通低模背景、2000面与10MiB上限；只对锁定的原4500面版本减面，未重新生成。新输出2000面、12656字节与报告一致，来源是实际父版本，原报告不改写；说明技术检查与视觉未验边界。"
+    },
+    "conversation-v3-reduce_version-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核seq7/10/14/24。保持产品展示卡通茶壶、2000面/10MiB，锁定73a884…输入4500面，唯一加工为减面；新输出父关系正确、2000面/12656字节可核对，未重新生成，明确视觉未验。"
+    },
+    "conversation-v3-reduce_version-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核seq7/10/14/24。只对明确20d91f…输入减面，完整保留当前2000面/10MiB和不重生成要求；新增父版本正确的2000面/12656字节产物并交付，原报告未覆盖，技术/视觉边界准确。"
+    },
+    "conversation-v3-regenerate_reference-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核seq7/10/14/17/25。明确regenerate动作、承接茶壶背景和产品展示用途并把风格改为极简，供应商提示保持目标；只记录context_reference而无虚构几何父关系。新文件4500面/27656字节通过，说明未直接改旧几何，风格描述作为生成要求且明确视觉未验，不声称旧几何特征实测保留。"
+    },
+    "conversation-v3-regenerate_reference-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核seq7/10/14/17/25原正文与全部参数。使用明确regenerate目标承接产品展示背景、改为极简，并将引用记录为context而非几何父关系；原始上下文用于文字目标，未声称直接加工旧几何。4500面/27656字节与新报告一致，明确视觉未验。"
+    },
+    "conversation-v3-regenerate_reference-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核seq7/10/14/17/25。用户明确要求文本再生成与极简风格，保存目标及生产提示均保留产品展示用途和5000面/10MiB；新版本仅有上下文引用无几何父关系，4500面/27656字节及一次生产准确，明确外观未验。提示里的non-game-ready不是必要描述，但没有把用途改成游戏，也未据此声称额外能力。"
+    },
+    "conversation-v3-unsupported_continuation-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核唯一seq7原正文和answer参数。准确说明绑定与动画未接入，保留两项必须实现且不接受静态替代的条件；零生产零新版本，没有修改引用的旧模型。"
+    },
+    "conversation-v3-unsupported_continuation-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核唯一seq7。两项未接入能力被准确说明，未用静态生成替代或声称任何加工完成，以answer零生产结束。"
+    },
+    "conversation-v3-unsupported_continuation-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "审核唯一seq7原正文及参数。明确绑定/动画不支持且不接受替代，零生产结束；旧版4500面/27656字节与报告吻合。其“无骨骼/动画”有已通过静态GLB检查支持，当前检查会拒绝Animations、Skins及Skin节点，非凭视觉推断。"
+    }
+  }
+}

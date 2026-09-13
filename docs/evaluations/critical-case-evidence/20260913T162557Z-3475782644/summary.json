@@ -1,0 +1,83 @@
+{
+  "scope": "targeted_diagnostic_only_not_full_acceptance",
+  "status": "not_passed",
+  "full_suite_status": "not_evaluated",
+  "runs_per_target": 1,
+  "counts": {
+    "runs": 2,
+    "raw_automated_passed": 2,
+    "model_calls": 12,
+    "actual_provider_submissions": 3,
+    "critical_errors": 1,
+    "dimensions": {
+      "intent": {
+        "passed": 2,
+        "applicable": 2,
+        "rate": 1.0
+      },
+      "strategy": {
+        "passed": 2,
+        "applicable": 2,
+        "rate": 1.0
+      },
+      "explanation": {
+        "passed": 1,
+        "applicable": 2,
+        "rate": 0.5
+      }
+    },
+    "recorded_response_count": 12,
+    "recorded_prompt_tokens": 62737,
+    "recorded_completion_tokens": 4997,
+    "status": "not_passed"
+  },
+  "rows": [
+    {
+      "file": "baseline-current-v3-product-1.json",
+      "suite": "baseline-current-v3",
+      "case": "product",
+      "repeat": 1,
+      "run_id": "440c87405534d3d10b216d61966cbbe278c05d3813b19af4",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3/6/9/12/20）。保留产品展示、卡通低模、5000面与10MiB上限，一次生成并引用本Run实测通过的产物交付。seq20准确引用4500面、27656字节；明确将配色、朝向和材质作为制作目标/默认假设，部件完整、风格和用途符合性没有视觉验证依据。没有把这些外观要求说成已经验证的事实。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 25193,
+      "recorded_completion_tokens": 1657
+    },
+    {
+      "file": "baseline-current-v3-missing_output-3.json",
+      "suite": "baseline-current-v3",
+      "case": "missing_output",
+      "repeat": 3,
+      "run_id": "89a262fc7360cc2d7007b4536d4c0d4f7aded4906de3f6c5",
+      "status": "failed",
+      "model_calls": 7,
+      "actual_provider_submissions": 2,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": false
+      },
+      "critical_errors": [
+        "semantic:unsupported_causal_exclusion: seq31 正文确定断言无法通过调整提示词、面数或纹理参数纠正，finish_request.explanation重复不属于参数层面可纠正且无可行动纠偏项；两次缺文件反馈不能证明这些排除结论。"
+      ],
+      "reason": "已审核全部7条原始提议（seq 3/6/9/12/20/23/31）。保留产品展示与5000面/10MiB硬约束，首次缺文件后在原预算内合法再次生成，两次同类反馈后主动ended停止合法；没有新文件或伪造技术通过。seq23正确保留原因未知；seq31却在正文及工具解释中将参数影响排除为确定事实，仍是关键解释错误。原因未知和未做视觉检查的补充不能抵消具体断言；不惩罚提前停止或将任务状态failed等同评测失败。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 7,
+      "recorded_prompt_tokens": 37544,
+      "recorded_completion_tokens": 3340
+    }
+  ],
+  "note": "每个指定案例仅一次新运行；复用逐记录证据核对，不放宽完整84例汇总器的覆盖要求。"
+}

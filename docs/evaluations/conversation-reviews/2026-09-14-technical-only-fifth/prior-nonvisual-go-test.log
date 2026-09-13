@@ -1,0 +1,71 @@
+=== RUN   TestAudienceLiveSamples
+    audience_live_test.go:29: 未启用真实 LLM 小样本；设置 RUN_AUDIENCE_LIVE=1 和 AUDIENCE_LIVE_EVIDENCE_DIR 后单独运行
+--- SKIP: TestAudienceLiveSamples (0.00s)
+=== RUN   TestAudienceLiveCredentialIsolation
+--- PASS: TestAudienceLiveCredentialIsolation (0.00s)
+=== RUN   TestConversationAgentCriticalCaseRetest
+    conversation_critical_retest_test.go:18: opt-in targeted real DeepSeek retest; no real Tripo
+--- SKIP: TestConversationAgentCriticalCaseRetest (0.00s)
+=== RUN   TestConversationRetestKeepsScenario
+=== RUN   TestConversationRetestKeepsScenario/missing_output
+=== RUN   TestConversationRetestKeepsScenario/missing_reference
+--- PASS: TestConversationRetestKeepsScenario (0.00s)
+    --- PASS: TestConversationRetestKeepsScenario/missing_output (0.00s)
+    --- PASS: TestConversationRetestKeepsScenario/missing_reference (0.00s)
+=== RUN   TestConversationAgentEvaluation
+    conversation_eval_test.go:206: opt-in real DeepSeek evaluation; no real Tripo
+--- SKIP: TestConversationAgentEvaluation (0.00s)
+=== RUN   TestConversationEvaluationRetainsRejectedProtocolEvidence
+=== RUN   TestConversationEvaluationRetainsRejectedProtocolEvidence/missing_tool
+=== RUN   TestConversationEvaluationRetainsRejectedProtocolEvidence/multiple_tools
+--- PASS: TestConversationEvaluationRetainsRejectedProtocolEvidence (0.00s)
+    --- PASS: TestConversationEvaluationRetainsRejectedProtocolEvidence/missing_tool (0.00s)
+    --- PASS: TestConversationEvaluationRetainsRejectedProtocolEvidence/multiple_tools (0.00s)
+=== RUN   TestConversationEvaluationManifestFrozenCoverage
+--- PASS: TestConversationEvaluationManifestFrozenCoverage (0.00s)
+=== RUN   TestConversationEvaluationScoresRawFinishContracts
+=== RUN   TestConversationEvaluationScoresRawFinishContracts/legacy_delivery_boolean
+=== RUN   TestConversationEvaluationScoresRawFinishContracts/recovered_string_boolean_remains_failure
+=== RUN   TestConversationEvaluationScoresRawFinishContracts/enum_delivery
+=== RUN   TestConversationEvaluationScoresRawFinishContracts/enum_ended_after_production
+=== RUN   TestConversationEvaluationScoresRawFinishContracts/enum_answer_after_production
+=== RUN   TestConversationEvaluationScoresRawFinishContracts/unverified_enum_delivery
+=== RUN   TestConversationEvaluationScoresRawFinishContracts/truncated_tool_arguments
+--- PASS: TestConversationEvaluationScoresRawFinishContracts (0.00s)
+    --- PASS: TestConversationEvaluationScoresRawFinishContracts/legacy_delivery_boolean (0.00s)
+    --- PASS: TestConversationEvaluationScoresRawFinishContracts/recovered_string_boolean_remains_failure (0.00s)
+    --- PASS: TestConversationEvaluationScoresRawFinishContracts/enum_delivery (0.00s)
+    --- PASS: TestConversationEvaluationScoresRawFinishContracts/enum_ended_after_production (0.00s)
+    --- PASS: TestConversationEvaluationScoresRawFinishContracts/enum_answer_after_production (0.00s)
+    --- PASS: TestConversationEvaluationScoresRawFinishContracts/unverified_enum_delivery (0.00s)
+    --- PASS: TestConversationEvaluationScoresRawFinishContracts/truncated_tool_arguments (0.00s)
+=== RUN   TestConversationModelContextSeparatesTargetsFromEvidence
+--- PASS: TestConversationModelContextSeparatesTargetsFromEvidence (0.01s)
+=== RUN   TestConversationMissingOutputDoesNotInventDiagnosis
+--- PASS: TestConversationMissingOutputDoesNotInventDiagnosis (0.00s)
+=== RUN   TestRecoverKnownTaskNeedsRealPassingEvidence
+=== RUN   TestRecoverKnownTaskNeedsRealPassingEvidence/valid
+=== RUN   TestRecoverKnownTaskNeedsRealPassingEvidence/over-limit
+=== RUN   TestRecoverKnownTaskNeedsRealPassingEvidence/invalid-file
+=== RUN   TestRecoverKnownTaskNeedsRealPassingEvidence/remote-failure
+=== RUN   TestRecoverKnownTaskNeedsRealPassingEvidence/missing-result
+=== RUN   TestRecoverKnownTaskNeedsRealPassingEvidence/missing-url
+=== RUN   TestRecoverKnownTaskNeedsRealPassingEvidence/unknown-submit
+=== RUN   TestRecoverKnownTaskNeedsRealPassingEvidence/ready
+=== RUN   TestRecoverKnownTaskNeedsRealPassingEvidence/pending
+=== RUN   TestRecoverKnownTaskNeedsRealPassingEvidence/corrupt-pending
+--- PASS: TestRecoverKnownTaskNeedsRealPassingEvidence (0.08s)
+    --- PASS: TestRecoverKnownTaskNeedsRealPassingEvidence/valid (0.01s)
+    --- PASS: TestRecoverKnownTaskNeedsRealPassingEvidence/over-limit (0.01s)
+    --- PASS: TestRecoverKnownTaskNeedsRealPassingEvidence/invalid-file (0.01s)
+    --- PASS: TestRecoverKnownTaskNeedsRealPassingEvidence/remote-failure (0.00s)
+    --- PASS: TestRecoverKnownTaskNeedsRealPassingEvidence/missing-result (0.00s)
+    --- PASS: TestRecoverKnownTaskNeedsRealPassingEvidence/missing-url (0.00s)
+    --- PASS: TestRecoverKnownTaskNeedsRealPassingEvidence/unknown-submit (0.00s)
+    --- PASS: TestRecoverKnownTaskNeedsRealPassingEvidence/ready (0.00s)
+    --- PASS: TestRecoverKnownTaskNeedsRealPassingEvidence/pending (0.01s)
+    --- PASS: TestRecoverKnownTaskNeedsRealPassingEvidence/corrupt-pending (0.01s)
+=== RUN   TestResultUsesReportAndNeverFreeExplanation
+--- PASS: TestResultUsesReportAndNeverFreeExplanation (0.00s)
+PASS
+ok  	github.com/lkmaVanilla/tripo-3d-agent/internal/app	2.464s

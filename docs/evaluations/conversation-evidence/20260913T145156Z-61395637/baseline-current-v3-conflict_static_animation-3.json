@@ -1,0 +1,509 @@
+{
+  "automated_checks": [
+    {
+      "Critical": false,
+      "Detail": "",
+      "Dimension": "strategy",
+      "Name": "terminal_and_model_available",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "actual=0 expected=0..0",
+      "Dimension": "strategy",
+      "Name": "allowed_submission_count",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "answered",
+      "Dimension": "strategy",
+      "Name": "expected_delivery",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=3 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=3 consumed=0",
+      "Dimension": "constraint",
+      "Name": "answer_hides_no_production",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "proposals=1",
+      "Dimension": "strategy",
+      "Name": "real_model_proposals_exist",
+      "Passed": true
+    }
+  ],
+  "automated_passed": true,
+  "case": {
+    "AllowedProduction": null,
+    "Answer": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。 其他外观细节可合理默认并公开，不改变硬约束。",
+    "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。",
+    "ID": "conflict_static_animation",
+    "InitialProduction": 0,
+    "IntentReview": "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+    "MaxBytes": 10485760,
+    "MaxSubmits": 0,
+    "MaxTriangles": 5000,
+    "MinSubmits": 0,
+    "NoDelivery": true,
+    "Provider": "normal",
+    "Request": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。",
+    "RequireThreeQuestions": false,
+    "Seed": "",
+    "StrategyReview": "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+    "Suite": "baseline-current-v3",
+    "WantAnswer": true,
+    "WantDelivery": false
+  },
+  "conversation": {
+    "conversation": {
+      "created": "2026-09-13T14:56:50.218404Z",
+      "expires": "2026-09-20T14:57:00.625546Z",
+      "id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+      "title": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。",
+      "updated": "2026-09-13T14:57:00.625546Z"
+    },
+    "cursor": 5,
+    "events": [
+      {
+        "conversation_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。"
+        },
+        "kind": "request",
+        "run_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "seq": 1,
+        "time": "2026-09-13T14:56:50.218512Z"
+      },
+      {
+        "conversation_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "seq": 2,
+        "time": "2026-09-13T14:56:50.373572Z"
+      },
+      {
+        "conversation_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"answer\": true, \"deliver\": false, \"explanation\": \"该需求无法满足，按约定结束，不进行生产。\\n\\n原因如下：\\n1. 当前系统仅支持「文本生成静态自包含 GLB」「减面」和「解释已有结果」。骨骼绑定与动画制作能力尚未接入，我不能用静态模型生成来冒充「可播放行走动画」这一交付条件。\\n2. 你提出的两个硬条件是相互冲突的：交付物要求「完全静态模型」，同时又要「包含可播放行走动画」。在我的能力范围内，这两项无法同时成立——我能交付的只有不含动画的静态自包含模型，无法附加行走动画。\\n3. 你已明确「两个硬条件都不接受删减，做不到就结束」。由于动画条件无法满足，且不能删减或默认替代，我在此以零生产结束。\\n\\n若你后续希望改为生成一个「完全静态模型」（不含动画），或另立一个我能力范围内的目标，可新建会话或重新说明需求。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_QkMijo6A3VarlVpIA7Za9984",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 844,
+            "prompt_token_details": {
+              "cached_tokens": 1024
+            },
+            "prompt_tokens": 3032,
+            "total_tokens": 3876
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "seq": 3,
+        "time": "2026-09-13T14:57:00.620317Z"
+      },
+      {
+        "conversation_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "data": {
+          "answer": true,
+          "deliver": false,
+          "explanation": "该需求无法满足，按约定结束，不进行生产。\n\n原因如下：\n1. 当前系统仅支持「文本生成静态自包含 GLB」「减面」和「解释已有结果」。骨骼绑定与动画制作能力尚未接入，我不能用静态模型生成来冒充「可播放行走动画」这一交付条件。\n2. 你提出的两个硬条件是相互冲突的：交付物要求「完全静态模型」，同时又要「包含可播放行走动画」。在我的能力范围内，这两项无法同时成立——我能交付的只有不含动画的静态自包含模型，无法附加行走动画。\n3. 你已明确「两个硬条件都不接受删减，做不到就结束」。由于动画条件无法满足，且不能删减或默认替代，我在此以零生产结束。\n\n若你后续希望改为生成一个「完全静态模型」（不含动画），或另立一个我能力范围内的目标，可新建会话或重新说明需求。",
+          "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "run_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "seq": 4,
+        "time": "2026-09-13T14:57:00.625758Z"
+      },
+      {
+        "conversation_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "data": {
+          "expires": "2026-09-20T14:57:00.625546Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "seq": 5,
+        "time": "2026-09-13T14:57:00.627263Z"
+      }
+    ],
+    "has_more": false,
+    "messages": [
+      {
+        "conversation_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "created": "2026-09-13T14:56:50.218512Z",
+        "id": "8c3b70521295c70e65848cd3e229c58520c5b0a05bc4ae6b94a9ffff45027427",
+        "kind": "user",
+        "run_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "seq": 1,
+        "text": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。",
+        "updated_seq": 1
+      },
+      {
+        "conversation_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "created": "2026-09-13T14:57:00.625758Z",
+        "data": {
+          "outcome": {
+            "kind": "answer",
+            "source": "agent",
+            "text": "该需求无法满足，按约定结束，不进行生产。\n\n原因如下：\n1. 当前系统仅支持「文本生成静态自包含 GLB」「减面」和「解释已有结果」。骨骼绑定与动画制作能力尚未接入，我不能用静态模型生成来冒充「可播放行走动画」这一交付条件。\n2. 你提出的两个硬条件是相互冲突的：交付物要求「完全静态模型」，同时又要「包含可播放行走动画」。在我的能力范围内，这两项无法同时成立——我能交付的只有不含动画的静态自包含模型，无法附加行走动画。\n3. 你已明确「两个硬条件都不接受删减，做不到就结束」。由于动画条件无法满足，且不能删减或默认替代，我在此以零生产结束。\n\n若你后续希望改为生成一个「完全静态模型」（不含动画），或另立一个我能力范围内的目标，可新建会话或重新说明需求。"
+          },
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+          "source": "agent",
+          "verification": "unverifiable"
+        },
+        "id": "066eb3f586f37f55588951c1028422f0d212347a448a128ad78eaac2aab74277",
+        "kind": "answer",
+        "run_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "seq": 4,
+        "text": "该需求无法满足，按约定结束，不进行生产。\n\n原因如下：\n1. 当前系统仅支持「文本生成静态自包含 GLB」「减面」和「解释已有结果」。骨骼绑定与动画制作能力尚未接入，我不能用静态模型生成来冒充「可播放行走动画」这一交付条件。\n2. 你提出的两个硬条件是相互冲突的：交付物要求「完全静态模型」，同时又要「包含可播放行走动画」。在我的能力范围内，这两项无法同时成立——我能交付的只有不含动画的静态自包含模型，无法附加行走动画。\n3. 你已明确「两个硬条件都不接受删减，做不到就结束」。由于动画条件无法满足，且不能删减或默认替代，我在此以零生产结束。\n\n若你后续希望改为生成一个「完全静态模型」（不含动画），或另立一个我能力范围内的目标，可新建会话或重新说明需求。",
+        "updated_seq": 5
+      }
+    ],
+    "runs": [
+      {
+        "artifacts": [],
+        "clarifications": 0,
+        "created": "2026-09-13T14:56:50.218404Z",
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-13T14:57:00.625546Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "0",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "1",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "本次未宣告交付成功",
+              "name": "交付证据",
+              "status": "not_applicable"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-20T14:57:00.625546Z",
+        "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 0,
+        "id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+        "input_assessment": null,
+        "intent": null,
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 1,
+        "outcome": {
+          "kind": "answer",
+          "source": "agent",
+          "text": "该需求无法满足，按约定结束，不进行生产。\n\n原因如下：\n1. 当前系统仅支持「文本生成静态自包含 GLB」「减面」和「解释已有结果」。骨骼绑定与动画制作能力尚未接入，我不能用静态模型生成来冒充「可播放行走动画」这一交付条件。\n2. 你提出的两个硬条件是相互冲突的：交付物要求「完全静态模型」，同时又要「包含可播放行走动画」。在我的能力范围内，这两项无法同时成立——我能交付的只有不含动画的静态自包含模型，无法附加行走动画。\n3. 你已明确「两个硬条件都不接受删减，做不到就结束」。由于动画条件无法满足，且不能删减或默认替代，我在此以零生产结束。\n\n若你后续希望改为生成一个「完全静态模型」（不含动画），或另立一个我能力范围内的目标，可新建会话或重新说明需求。"
+        },
+        "production": 0,
+        "prompt_version": "asset-agent-v3",
+        "question": "",
+        "request": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。",
+        "result": {
+          "evidence": "verified",
+          "reason": "answered",
+          "source": "agent",
+          "status": "answered",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "",
+        "status": "answered",
+        "wait_id": ""
+      }
+    ],
+    "versions": []
+  },
+  "critical_errors_automated": 0,
+  "ended": "2026-09-13T14:57:00.703473Z",
+  "repeat": 3,
+  "response_metadata": [
+    {
+      "content_length": 0,
+      "message_index": 2,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 844,
+          "prompt_token_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_tokens": 3032,
+          "total_tokens": 3876
+        }
+      },
+      "tool_argument_lengths": [
+        1007
+      ],
+      "tool_count": 1
+    }
+  ],
+  "run_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+  "semantic_review": {
+    "instructions": [
+      "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+      "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+      "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。"
+    ],
+    "proposals": [
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 3,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"answer\": true, \"deliver\": false, \"explanation\": \"该需求无法满足，按约定结束，不进行生产。\\n\\n原因如下：\\n1. 当前系统仅支持「文本生成静态自包含 GLB」「减面」和「解释已有结果」。骨骼绑定与动画制作能力尚未接入，我不能用静态模型生成来冒充「可播放行走动画」这一交付条件。\\n2. 你提出的两个硬条件是相互冲突的：交付物要求「完全静态模型」，同时又要「包含可播放行走动画」。在我的能力范围内，这两项无法同时成立——我能交付的只有不含动画的静态自包含模型，无法附加行走动画。\\n3. 你已明确「两个硬条件都不接受删减，做不到就结束」。由于动画条件无法满足，且不能删减或默认替代，我在此以零生产结束。\\n\\n若你后续希望改为生成一个「完全静态模型」（不含动画），或另立一个我能力范围内的目标，可新建会话或重新说明需求。\"}",
+              "name": "finish_request"
+            },
+            "id": "call_00_QkMijo6A3VarlVpIA7Za9984",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    ],
+    "status": "pending"
+  },
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。"
+        },
+        "kind": "request",
+        "seq": 1,
+        "time": "2026-09-13T14:56:50.218512Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 2,
+        "time": "2026-09-13T14:56:50.373572Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"answer\": true, \"deliver\": false, \"explanation\": \"该需求无法满足，按约定结束，不进行生产。\\n\\n原因如下：\\n1. 当前系统仅支持「文本生成静态自包含 GLB」「减面」和「解释已有结果」。骨骼绑定与动画制作能力尚未接入，我不能用静态模型生成来冒充「可播放行走动画」这一交付条件。\\n2. 你提出的两个硬条件是相互冲突的：交付物要求「完全静态模型」，同时又要「包含可播放行走动画」。在我的能力范围内，这两项无法同时成立——我能交付的只有不含动画的静态自包含模型，无法附加行走动画。\\n3. 你已明确「两个硬条件都不接受删减，做不到就结束」。由于动画条件无法满足，且不能删减或默认替代，我在此以零生产结束。\\n\\n若你后续希望改为生成一个「完全静态模型」（不含动画），或另立一个我能力范围内的目标，可新建会话或重新说明需求。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_QkMijo6A3VarlVpIA7Za9984",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 844,
+            "prompt_token_details": {
+              "cached_tokens": 1024
+            },
+            "prompt_tokens": 3032,
+            "total_tokens": 3876
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 3,
+        "time": "2026-09-13T14:57:00.620317Z"
+      },
+      {
+        "data": {
+          "answer": true,
+          "deliver": false,
+          "explanation": "该需求无法满足，按约定结束，不进行生产。\n\n原因如下：\n1. 当前系统仅支持「文本生成静态自包含 GLB」「减面」和「解释已有结果」。骨骼绑定与动画制作能力尚未接入，我不能用静态模型生成来冒充「可播放行走动画」这一交付条件。\n2. 你提出的两个硬条件是相互冲突的：交付物要求「完全静态模型」，同时又要「包含可播放行走动画」。在我的能力范围内，这两项无法同时成立——我能交付的只有不含动画的静态自包含模型，无法附加行走动画。\n3. 你已明确「两个硬条件都不接受删减，做不到就结束」。由于动画条件无法满足，且不能删减或默认替代，我在此以零生产结束。\n\n若你后续希望改为生成一个「完全静态模型」（不含动画），或另立一个我能力范围内的目标，可新建会话或重新说明需求。",
+          "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "seq": 4,
+        "time": "2026-09-13T14:57:00.625758Z"
+      },
+      {
+        "data": {
+          "expires": "2026-09-20T14:57:00.625546Z"
+        },
+        "kind": "conversation_idle",
+        "seq": 5,
+        "time": "2026-09-13T14:57:00.627263Z"
+      }
+    ],
+    "session": {
+      "artifacts": [],
+      "clarifications": 0,
+      "created": "2026-09-13T14:56:50.218404Z",
+      "deadline": "0001-01-01T00:00:00Z",
+      "ended": "2026-09-13T14:57:00.625546Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "0",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "1",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "0",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "本次未宣告交付成功",
+            "name": "交付证据",
+            "status": "not_applicable"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-20T14:57:00.625546Z",
+      "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "generation": 0,
+      "id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+      "input_assessment": null,
+      "intent": null,
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 1,
+      "outcome": {
+        "kind": "answer",
+        "source": "agent",
+        "text": "该需求无法满足，按约定结束，不进行生产。\n\n原因如下：\n1. 当前系统仅支持「文本生成静态自包含 GLB」「减面」和「解释已有结果」。骨骼绑定与动画制作能力尚未接入，我不能用静态模型生成来冒充「可播放行走动画」这一交付条件。\n2. 你提出的两个硬条件是相互冲突的：交付物要求「完全静态模型」，同时又要「包含可播放行走动画」。在我的能力范围内，这两项无法同时成立——我能交付的只有不含动画的静态自包含模型，无法附加行走动画。\n3. 你已明确「两个硬条件都不接受删减，做不到就结束」。由于动画条件无法满足，且不能删减或默认替代，我在此以零生产结束。\n\n若你后续希望改为生成一个「完全静态模型」（不含动画），或另立一个我能力范围内的目标，可新建会话或重新说明需求。"
+      },
+      "production": 0,
+      "prompt_version": "asset-agent-v3",
+      "question": "",
+      "request": "创建一个资产，交付必须既是完全静态模型又包含可播放行走动画；两个硬条件都不接受删减，做不到就结束。",
+      "result": {
+        "evidence": "verified",
+        "reason": "answered",
+        "source": "agent",
+        "status": "answered",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "",
+      "status": "answered",
+      "wait_id": ""
+    },
+    "source": "real-llm-fixed-provider-evaluation"
+  },
+  "source": "real DeepSeek; fixed Provider; synthetic GLB; no real Tripo",
+  "started": "2026-09-13T14:56:50.218403Z",
+  "suite_acceptance": "pending_semantic_review"
+}

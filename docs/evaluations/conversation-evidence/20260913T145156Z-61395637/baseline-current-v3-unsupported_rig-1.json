@@ -1,0 +1,509 @@
+{
+  "automated_checks": [
+    {
+      "Critical": false,
+      "Detail": "",
+      "Dimension": "strategy",
+      "Name": "terminal_and_model_available",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "actual=0 expected=0..0",
+      "Dimension": "strategy",
+      "Name": "allowed_submission_count",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "answered",
+      "Dimension": "strategy",
+      "Name": "expected_delivery",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=3 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=3 consumed=0",
+      "Dimension": "constraint",
+      "Name": "answer_hides_no_production",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "proposals=1",
+      "Dimension": "strategy",
+      "Name": "real_model_proposals_exist",
+      "Passed": true
+    }
+  ],
+  "automated_passed": true,
+  "case": {
+    "AllowedProduction": null,
+    "Answer": "我要为角色绑定骨骼并制作行走动画；两者必须包含。当前未接入就说明并结束，不接受静态生成替代。 其他外观细节可合理默认并公开，不改变硬约束。",
+    "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。",
+    "ID": "unsupported_rig",
+    "InitialProduction": 0,
+    "IntentReview": "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+    "MaxBytes": 10485760,
+    "MaxSubmits": 0,
+    "MaxTriangles": 5000,
+    "MinSubmits": 0,
+    "NoDelivery": true,
+    "Provider": "normal",
+    "Request": "我要为角色绑定骨骼并制作行走动画；两者必须包含。当前未接入就说明并结束，不接受静态生成替代。",
+    "RequireThreeQuestions": false,
+    "Seed": "",
+    "StrategyReview": "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+    "Suite": "baseline-current-v3",
+    "WantAnswer": true,
+    "WantDelivery": false
+  },
+  "conversation": {
+    "conversation": {
+      "created": "2026-09-13T14:56:46.594321Z",
+      "expires": "2026-09-20T14:56:54.03412Z",
+      "id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+      "title": "我要为角色绑定骨骼并制作行走动画；两者必须包含。当前未接入就说明并结束，不接受静态生成替代。",
+      "updated": "2026-09-13T14:56:54.03412Z"
+    },
+    "cursor": 5,
+    "events": [
+      {
+        "conversation_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "我要为角色绑定骨骼并制作行走动画；两者必须包含。当前未接入就说明并结束，不接受静态生成替代。"
+        },
+        "kind": "request",
+        "run_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "seq": 1,
+        "time": "2026-09-13T14:56:46.594441Z"
+      },
+      {
+        "conversation_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "seq": 2,
+        "time": "2026-09-13T14:56:46.747722Z"
+      },
+      {
+        "conversation_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "data": {
+          "content": "绑定骨骼和行走动画这两项能力目前都未接入，无法执行，且我不会用静态生成来冒充替代。\n\n说明如下：\n\n- **当前仅支持**：通过文本生成静态、自包含的 GLB 模型；对已有模型做减面加工；以及对已有结果做解释。\n- **尚未接入**：骨骼绑定（Rigging）、蒙皮、动画制作（包括行走动画）等能力均不可用。\n- **你的需求约束**：你要的是\"绑定骨骼 + 行走动画\"两者必须包含。这是硬约束，不能省略，也不能用静态模型替代，因此本次无法生产任何资产。\n- 图片导入、外部模型导入等能力也尚未接入，所以也无法通过\"导入现有角色再绑定\"的方式完成。\n\n由于这属于当前能力限制，且你不接受静态生成替代，我按零生产方式结束，不会创建任何新版本或提交生产任务。若后续骨骼绑定与动画能力接入，再回来即可继续；若你另有**静态道具**类需求，也可以新开会话处理。",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"answer\": true, \"deliver\": false, \"explanation\": \"用户要求为角色绑定骨骼并制作行走动画，两者必须包含，且不接受静态生成替代。当前系统仅支持静态自包含GLB生成、减面和解释已有结果，骨骼绑定（Rigging）、蒙皮与动画制作均未接入。这是硬能力限制，无法执行且不能默认替代，故按零生产方式说明并结束，不创建任何新版本。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_gvIZgLVM46OFnoHXfyx24329",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 540,
+            "prompt_token_details": {
+              "cached_tokens": 1024
+            },
+            "prompt_tokens": 3024,
+            "total_tokens": 3564
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "seq": 3,
+        "time": "2026-09-13T14:56:54.032478Z"
+      },
+      {
+        "conversation_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "data": {
+          "answer": true,
+          "deliver": false,
+          "explanation": "用户要求为角色绑定骨骼并制作行走动画，两者必须包含，且不接受静态生成替代。当前系统仅支持静态自包含GLB生成、减面和解释已有结果，骨骼绑定（Rigging）、蒙皮与动画制作均未接入。这是硬能力限制，无法执行且不能默认替代，故按零生产方式说明并结束，不创建任何新版本。",
+          "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "run_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "seq": 4,
+        "time": "2026-09-13T14:56:54.03424Z"
+      },
+      {
+        "conversation_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "data": {
+          "expires": "2026-09-20T14:56:54.03412Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "seq": 5,
+        "time": "2026-09-13T14:56:54.035376Z"
+      }
+    ],
+    "has_more": false,
+    "messages": [
+      {
+        "conversation_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "created": "2026-09-13T14:56:46.594441Z",
+        "id": "fd8855a762936a63ffd15b8210fcd516f042b8cb462b66e8bb2dd6b51c19ec31",
+        "kind": "user",
+        "run_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "seq": 1,
+        "text": "我要为角色绑定骨骼并制作行走动画；两者必须包含。当前未接入就说明并结束，不接受静态生成替代。",
+        "updated_seq": 1
+      },
+      {
+        "conversation_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "created": "2026-09-13T14:56:54.03424Z",
+        "data": {
+          "outcome": {
+            "kind": "answer",
+            "source": "agent",
+            "text": "用户要求为角色绑定骨骼并制作行走动画，两者必须包含，且不接受静态生成替代。当前系统仅支持静态自包含GLB生成、减面和解释已有结果，骨骼绑定（Rigging）、蒙皮与动画制作均未接入。这是硬能力限制，无法执行且不能默认替代，故按零生产方式说明并结束，不创建任何新版本。"
+          },
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+          "source": "agent",
+          "verification": "unverifiable"
+        },
+        "id": "f8f17bc37ac46c3be2a00309380b110b8308ddfc7b3b32e14c7cfd86dc6a3aa8",
+        "kind": "answer",
+        "run_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "seq": 4,
+        "text": "用户要求为角色绑定骨骼并制作行走动画，两者必须包含，且不接受静态生成替代。当前系统仅支持静态自包含GLB生成、减面和解释已有结果，骨骼绑定（Rigging）、蒙皮与动画制作均未接入。这是硬能力限制，无法执行且不能默认替代，故按零生产方式说明并结束，不创建任何新版本。",
+        "updated_seq": 5
+      }
+    ],
+    "runs": [
+      {
+        "artifacts": [],
+        "clarifications": 0,
+        "created": "2026-09-13T14:56:46.594321Z",
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-13T14:56:54.03412Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "0",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "1",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "本次未宣告交付成功",
+              "name": "交付证据",
+              "status": "not_applicable"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-20T14:56:54.03412Z",
+        "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 0,
+        "id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+        "input_assessment": null,
+        "intent": null,
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 1,
+        "outcome": {
+          "kind": "answer",
+          "source": "agent",
+          "text": "用户要求为角色绑定骨骼并制作行走动画，两者必须包含，且不接受静态生成替代。当前系统仅支持静态自包含GLB生成、减面和解释已有结果，骨骼绑定（Rigging）、蒙皮与动画制作均未接入。这是硬能力限制，无法执行且不能默认替代，故按零生产方式说明并结束，不创建任何新版本。"
+        },
+        "production": 0,
+        "prompt_version": "asset-agent-v3",
+        "question": "",
+        "request": "我要为角色绑定骨骼并制作行走动画；两者必须包含。当前未接入就说明并结束，不接受静态生成替代。",
+        "result": {
+          "evidence": "verified",
+          "reason": "answered",
+          "source": "agent",
+          "status": "answered",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "",
+        "status": "answered",
+        "wait_id": ""
+      }
+    ],
+    "versions": []
+  },
+  "critical_errors_automated": 0,
+  "ended": "2026-09-13T14:56:54.047547Z",
+  "repeat": 1,
+  "response_metadata": [
+    {
+      "content_length": 1024,
+      "message_index": 2,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 540,
+          "prompt_token_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_tokens": 3024,
+          "total_tokens": 3564
+        }
+      },
+      "tool_argument_lengths": [
+        432
+      ],
+      "tool_count": 1
+    }
+  ],
+  "run_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+  "semantic_review": {
+    "instructions": [
+      "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+      "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+      "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。"
+    ],
+    "proposals": [
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "绑定骨骼和行走动画这两项能力目前都未接入，无法执行，且我不会用静态生成来冒充替代。\n\n说明如下：\n\n- **当前仅支持**：通过文本生成静态、自包含的 GLB 模型；对已有模型做减面加工；以及对已有结果做解释。\n- **尚未接入**：骨骼绑定（Rigging）、蒙皮、动画制作（包括行走动画）等能力均不可用。\n- **你的需求约束**：你要的是\"绑定骨骼 + 行走动画\"两者必须包含。这是硬约束，不能省略，也不能用静态模型替代，因此本次无法生产任何资产。\n- 图片导入、外部模型导入等能力也尚未接入，所以也无法通过\"导入现有角色再绑定\"的方式完成。\n\n由于这属于当前能力限制，且你不接受静态生成替代，我按零生产方式结束，不会创建任何新版本或提交生产任务。若后续骨骼绑定与动画能力接入，再回来即可继续；若你另有**静态道具**类需求，也可以新开会话处理。",
+        "seq": 3,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"answer\": true, \"deliver\": false, \"explanation\": \"用户要求为角色绑定骨骼并制作行走动画，两者必须包含，且不接受静态生成替代。当前系统仅支持静态自包含GLB生成、减面和解释已有结果，骨骼绑定（Rigging）、蒙皮与动画制作均未接入。这是硬能力限制，无法执行且不能默认替代，故按零生产方式说明并结束，不创建任何新版本。\"}",
+              "name": "finish_request"
+            },
+            "id": "call_00_gvIZgLVM46OFnoHXfyx24329",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    ],
+    "status": "pending"
+  },
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "我要为角色绑定骨骼并制作行走动画；两者必须包含。当前未接入就说明并结束，不接受静态生成替代。"
+        },
+        "kind": "request",
+        "seq": 1,
+        "time": "2026-09-13T14:56:46.594441Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 2,
+        "time": "2026-09-13T14:56:46.747722Z"
+      },
+      {
+        "data": {
+          "content": "绑定骨骼和行走动画这两项能力目前都未接入，无法执行，且我不会用静态生成来冒充替代。\n\n说明如下：\n\n- **当前仅支持**：通过文本生成静态、自包含的 GLB 模型；对已有模型做减面加工；以及对已有结果做解释。\n- **尚未接入**：骨骼绑定（Rigging）、蒙皮、动画制作（包括行走动画）等能力均不可用。\n- **你的需求约束**：你要的是\"绑定骨骼 + 行走动画\"两者必须包含。这是硬约束，不能省略，也不能用静态模型替代，因此本次无法生产任何资产。\n- 图片导入、外部模型导入等能力也尚未接入，所以也无法通过\"导入现有角色再绑定\"的方式完成。\n\n由于这属于当前能力限制，且你不接受静态生成替代，我按零生产方式结束，不会创建任何新版本或提交生产任务。若后续骨骼绑定与动画能力接入，再回来即可继续；若你另有**静态道具**类需求，也可以新开会话处理。",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"answer\": true, \"deliver\": false, \"explanation\": \"用户要求为角色绑定骨骼并制作行走动画，两者必须包含，且不接受静态生成替代。当前系统仅支持静态自包含GLB生成、减面和解释已有结果，骨骼绑定（Rigging）、蒙皮与动画制作均未接入。这是硬能力限制，无法执行且不能默认替代，故按零生产方式说明并结束，不创建任何新版本。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_gvIZgLVM46OFnoHXfyx24329",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 540,
+            "prompt_token_details": {
+              "cached_tokens": 1024
+            },
+            "prompt_tokens": 3024,
+            "total_tokens": 3564
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 3,
+        "time": "2026-09-13T14:56:54.032478Z"
+      },
+      {
+        "data": {
+          "answer": true,
+          "deliver": false,
+          "explanation": "用户要求为角色绑定骨骼并制作行走动画，两者必须包含，且不接受静态生成替代。当前系统仅支持静态自包含GLB生成、减面和解释已有结果，骨骼绑定（Rigging）、蒙皮与动画制作均未接入。这是硬能力限制，无法执行且不能默认替代，故按零生产方式说明并结束，不创建任何新版本。",
+          "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "seq": 4,
+        "time": "2026-09-13T14:56:54.03424Z"
+      },
+      {
+        "data": {
+          "expires": "2026-09-20T14:56:54.03412Z"
+        },
+        "kind": "conversation_idle",
+        "seq": 5,
+        "time": "2026-09-13T14:56:54.035376Z"
+      }
+    ],
+    "session": {
+      "artifacts": [],
+      "clarifications": 0,
+      "created": "2026-09-13T14:56:46.594321Z",
+      "deadline": "0001-01-01T00:00:00Z",
+      "ended": "2026-09-13T14:56:54.03412Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "0",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "1",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "0",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "本次未宣告交付成功",
+            "name": "交付证据",
+            "status": "not_applicable"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-20T14:56:54.03412Z",
+      "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "generation": 0,
+      "id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+      "input_assessment": null,
+      "intent": null,
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 1,
+      "outcome": {
+        "kind": "answer",
+        "source": "agent",
+        "text": "用户要求为角色绑定骨骼并制作行走动画，两者必须包含，且不接受静态生成替代。当前系统仅支持静态自包含GLB生成、减面和解释已有结果，骨骼绑定（Rigging）、蒙皮与动画制作均未接入。这是硬能力限制，无法执行且不能默认替代，故按零生产方式说明并结束，不创建任何新版本。"
+      },
+      "production": 0,
+      "prompt_version": "asset-agent-v3",
+      "question": "",
+      "request": "我要为角色绑定骨骼并制作行走动画；两者必须包含。当前未接入就说明并结束，不接受静态生成替代。",
+      "result": {
+        "evidence": "verified",
+        "reason": "answered",
+        "source": "agent",
+        "status": "answered",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "",
+      "status": "answered",
+      "wait_id": ""
+    },
+    "source": "real-llm-fixed-provider-evaluation"
+  },
+  "source": "real DeepSeek; fixed Provider; synthetic GLB; no real Tripo",
+  "started": "2026-09-13T14:56:46.59432Z",
+  "suite_acceptance": "pending_semantic_review"
+}
