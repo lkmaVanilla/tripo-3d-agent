@@ -17,10 +17,13 @@ import (
 	webui "github.com/lkmaVanilla/tripo-3d-agent/internal/web"
 )
 
+// visitorKey 只在当前 HTTP 请求的 context 中携带凭证哈希，避免与字符串键冲突。
 type visitorKey struct{}
 
 const cookieName = "tripo_visitor"
 
+// Handler 先核对 Origin 并签发/续期匿名 Cookie，再把访客归属传给具体路由。
+// 会话内容与控制接口还必须调用 owned；知道会话 ID 并不等于拥有访问权限。
 func (s *Service) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/config", func(w http.ResponseWriter, r *http.Request) {
@@ -73,6 +76,7 @@ func (s *Service) Handler() http.Handler {
 		s.respond(w, 200, s.snapshot(v, events))
 	})
 	mux.HandleFunc("POST /api/sessions/{id}/answer", func(w http.ResponseWriter, r *http.Request) {
+		// HTTP 负责输入与归属；答案是否对应可恢复的等待点由 Service.Answer 校验。
 		v, ok := s.owned(w, r)
 		if !ok {
 			return
@@ -94,6 +98,7 @@ func (s *Service) Handler() http.Handler {
 		s.respond(w, 200, map[string]bool{"ok": true})
 	})
 	mux.HandleFunc("POST /api/sessions/{id}/stop", func(w http.ResponseWriter, r *http.Request) {
+		// 这是停止本地执行的命令，不表示 Tripo 远端任务已经取消。
 		v, ok := s.owned(w, r)
 		if !ok {
 			return
@@ -116,6 +121,7 @@ func (s *Service) Handler() http.Handler {
 		s.respond(w, 200, map[string]bool{"ok": true})
 	})
 	mux.HandleFunc("GET /api/sessions/{id}/trace", func(w http.ResponseWriter, r *http.Request) {
+		// 导出复用页面快照及脱敏路径，不直接序列化包含 History/恢复材料的 Session。
 		v, ok := s.owned(w, r)
 		if !ok {
 			return
@@ -129,6 +135,7 @@ func (s *Service) Handler() http.Handler {
 		s.respond(w, 200, s.snapshot(v, events))
 	})
 	mux.HandleFunc("GET /api/sessions/{id}/artifacts/{artifact}", func(w http.ResponseWriter, r *http.Request) {
+		// 路径只能来自已校验归属的会话记录，不接受客户端提供任意本地文件路径。
 		v, ok := s.owned(w, r)
 		if !ok {
 			return
@@ -162,6 +169,7 @@ func (s *Service) Handler() http.Handler {
 		if c, err := r.Cookie(cookieName); err == nil {
 			token = c.Value
 		}
+		// 凭证失效会产生新的匿名归属；不会借此迁移旧会话或停止其后台任务。
 		issued, owner, err := s.store.Visitor(r.Context(), token, s.Config.VisitorTTL)
 		if err != nil {
 			s.fail(w, 500, err)
@@ -171,6 +179,8 @@ func (s *Service) Handler() http.Handler {
 		mux.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), visitorKey{}, owner)))
 	})
 }
+
+// owned 将不存在、他人所有和数据已过期统一返回 404，不泄露他人会话是否存在。
 func (s *Service) owned(w http.ResponseWriter, r *http.Request) (Session, bool) {
 	v, err := s.store.Get(r.Context(), r.PathValue("id"))
 	if err != nil || v.Owner != r.Context().Value(visitorKey{}).(string) || (!v.Expires.IsZero() && !time.Now().Before(v.Expires)) {
@@ -179,6 +189,8 @@ func (s *Service) owned(w http.ResponseWriter, r *http.Request) (Session, bool) 
 	}
 	return v, true
 }
+
+// decode 限制请求体大小并拒绝未知 JSON 字段，路由仍需校验各业务字段的取值。
 func decode(w http.ResponseWriter, r *http.Request, out any) bool {
 	if !strings.HasPrefix(r.Header.Get("Content-Type"), "application/json") {
 		http.Error(w, "需要 JSON 请求", 415)
@@ -193,6 +205,8 @@ func decode(w http.ResponseWriter, r *http.Request, out any) bool {
 	}
 	return true
 }
+
+// respond 是普通 JSON 响应的统一脱敏出口；WebSocket 写入也显式复用 sanitize。
 func (s *Service) respond(w http.ResponseWriter, status int, v any) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(status)
@@ -201,6 +215,9 @@ func (s *Service) respond(w http.ResponseWriter, status int, v any) {
 func (s *Service) fail(w http.ResponseWriter, status int, err error) {
 	s.respond(w, status, map[string]string{"error": s.redact(err.Error())})
 }
+
+// sanitize 在序列化副本上遮蔽已知敏感字段、配置密钥和独立 URL 字符串的查询参数。
+// 持久化原记录不会被改写；调用方仍应先用 View/snapshot 排除内部恢复材料。
 func (s *Service) sanitize(v any) any {
 	b, err := json.Marshal(v)
 	if err != nil {
@@ -237,6 +254,9 @@ func (s *Service) sanitize(v any) any {
 	}
 	return walk(out)
 }
+
+// snapshot 合并公开会话状态、事件及基于完整记录的单次核验。
+// Runtime 拦截违规提议仍算行为证据，不能因为成功拦截就替 Agent 宣告通过。
 func (s *Service) snapshot(v Session, events []Event) map[string]any {
 	view := v.View()
 	e := evaluate(v)
@@ -261,6 +281,9 @@ func (s *Service) snapshot(v Session, events []Event) map[string]any {
 	view["evaluation"] = e
 	return map[string]any{"session": view, "events": events, "source": v.Source}
 }
+
+// eventsSocket 是单向进度通道；回答、停止和重试仍通过 HTTP 命令提交。
+// 每次轮询读取最新会话快照，并按 after 游标发送增量事件；断线不会取消后台生产。
 func (s *Service) eventsSocket(w http.ResponseWriter, r *http.Request) {
 	v, ok := s.owned(w, r)
 	if !ok {
@@ -275,6 +298,7 @@ func (s *Service) eventsSocket(w http.ResponseWriter, r *http.Request) {
 	stop := context.AfterFunc(s.ctx, cancelLifetime)
 	defer stop()
 	defer cancelLifetime()
+	// 持续消费连接关闭信号，避免浏览器离开后继续写入；服务关闭也会结束此连接。
 	ctx := conn.CloseRead(lifetime)
 	after, _ := strconv.ParseInt(r.URL.Query().Get("after"), 10, 64)
 	for {
@@ -289,6 +313,7 @@ func (s *Service) eventsSocket(w http.ResponseWriter, r *http.Request) {
 		if e != nil {
 			return
 		}
+		// 单次核验仍依赖完整历史；发送给浏览器的 events 则只包含游标后的增量。
 		all, e := s.store.Events(ctx, v.ID, 0)
 		if e != nil {
 			return

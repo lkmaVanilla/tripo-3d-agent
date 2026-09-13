@@ -1,3 +1,4 @@
+// Package asset 根据实际 GLB 字节执行确定性的技术检查，不评判资产外观与语义。
 package asset
 
 import (
@@ -12,12 +13,15 @@ import (
 	"github.com/qmuntal/gltf/modeler"
 )
 
+// Check 是可供页面和执行记录直接展示的一项检查证据。
 type Check struct {
 	Name   string `json:"name"`
 	Status string `json:"status"`
 	Detail string `json:"detail"`
 }
 
+// Report 同时保存实测值与验收上限，避免把生成目标误当作实际结果。
+// Valid 表示文件处于可检查的支持范围，Passed 还要求面数与体积均合格。
 type Report struct {
 	Valid        bool    `json:"valid"`
 	Passed       bool    `json:"passed"`
@@ -29,6 +33,8 @@ type Report struct {
 	Visual       string  `json:"visual"`
 }
 
+// Inspect 只检查文件有效性、所有网格的总三角面数和实际文件体积。
+// 文件无法可靠解析时，面数标为无法验证，而不是用零面数宣告通过。
 func Inspect(data []byte, maxTriangles int, maxBytes int64) Report {
 	r := Report{Bytes: int64(len(data)), MaxTriangles: maxTriangles, MaxBytes: maxBytes, Visual: "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"}
 	triangles, err := geometry(data)
@@ -51,8 +57,8 @@ func verdict(ok bool) string {
 	return "failed"
 }
 
-// Validate the container and references before letting the decoder read buffers.
-// The deferred recovery turns malformed third-party indices into a failed report.
+// geometry 先核对容器长度和资源引用，再允许解码器读取缓冲区。
+// 第三方模型中的非法索引即使触发解码器 panic，也转成检查失败，不使服务退出。
 func geometry(data []byte) (triangles int, err error) {
 	defer func() {
 		if recover() != nil {
@@ -63,6 +69,7 @@ func geometry(data []byte) (triangles int, err error) {
 	if len(data) < 20 || string(data[:4]) != "glTF" || binary.LittleEndian.Uint32(data[4:8]) != 2 || uint64(binary.LittleEndian.Uint32(data[8:12])) != uint64(len(data)) {
 		return 0, fmt.Errorf("不是长度有效的 GLB 2.0 文件")
 	}
+	// GLB 使用小端长度字段，区块按 4 字节对齐；先校验长度再切片。
 	jsonSize := int(binary.LittleEndian.Uint32(data[12:16]))
 	if jsonSize%4 != 0 || jsonSize <= 0 || jsonSize > len(data)-20 || binary.LittleEndian.Uint32(data[16:20]) != 0x4e4f534a {
 		return 0, fmt.Errorf("GLB JSON 区块无效")
@@ -100,7 +107,7 @@ func geometry(data []byte) (triangles int, err error) {
 			return 0, fmt.Errorf("bufferView 超出实际文件")
 		}
 	}
-	// Bound expanded sparse data before the decoder allocates it.
+	// accessor 的展开大小可能远大于文件体积；在读取稀疏数据前限制累计分配规模。
 	remaining := 256 << 20
 	for _, a := range doc.Accessors {
 		if a == nil || a.Count < 1 || a.ByteOffset < 0 {
@@ -115,6 +122,8 @@ func geometry(data []byte) (triangles int, err error) {
 			return 0, fmt.Errorf("accessor 数据无效：%w", e)
 		}
 	}
+	// 按文件内所有 mesh 的 primitive 计数，不只看默认场景可见对象，
+	// 也不按节点实例数量重复累加同一个 mesh。
 	for _, m := range doc.Meshes {
 		if m == nil || len(m.Weights) > 0 {
 			return 0, fmt.Errorf("不支持变形网格")
@@ -146,6 +155,7 @@ func geometry(data []byte) (triangles int, err error) {
 					}
 				}
 			}
+			// 索引网格按索引条目计数，非索引网格按顶点条目计数，三条组成一面。
 			count := len(positions)
 			if p.Indices != nil {
 				if *p.Indices < 0 || *p.Indices >= len(doc.Accessors) {
@@ -177,6 +187,7 @@ func geometry(data []byte) (triangles int, err error) {
 	return triangles, nil
 }
 
+// sceneReferences 验证场景引用构成无环、无多父节点的层级，并确认默认场景可展示网格。
 func sceneReferences(doc *gltf.Document) error {
 	parents := make([]int, len(doc.Nodes))
 	for _, n := range doc.Nodes {
@@ -199,7 +210,7 @@ func sceneReferences(doc *gltf.Document) error {
 			}
 		}
 	}
-	// Topological traversal detects cycles without recursive stack growth.
+	// 已排除多父节点，用根节点队列遍历即可发现循环，避免递归栈随模型深度增长。
 	var queue []int
 	for i, count := range parents {
 		if count == 0 {
@@ -246,6 +257,8 @@ func sceneReferences(doc *gltf.Document) error {
 	return nil
 }
 
+// checkReferences 在解码前拒绝外部资源与当前不支持的网格压缩。
+// data URI 仍属于文件自包含数据；此处不发起网络请求。
 func checkReferences(v any) error {
 	switch x := v.(type) {
 	case map[string]any:

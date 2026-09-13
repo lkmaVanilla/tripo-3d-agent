@@ -1,18 +1,26 @@
 <!doctype html>
 <html lang="zh-CN">
+<!-- 查看器与页面脚本均由本服务提供，Go 编译前需先准备 vendor 资源。 -->
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%2345603c%27/%3E%3Ctext x=%279%27 y=%2724%27 fill=%27white%27 font-size=%2724%27%3ET%3C/text%3E%3C/svg%3E"><title>Tripo Agent · 静态道具工作台</title><link rel="stylesheet" href="/style.css"><script type="module" src="/vendor/model-viewer.min.js"></script><script type="module" src="/app.js"></script></head>
 <body>
+<!-- 会话列表不含访问凭证；会话归属由服务端 Cookie 校验。 -->
 <aside><a class="brand" href="/">TRIPO <span>AGENT</span></a><p class="muted">从一句需求，到一个道具。</p><button id="new-session" class="primary">＋ 新建资产会话</button><nav id="sessions" aria-label="资产会话"></nav><footer>无需登录 · 同一浏览器可找回<br>一个会话，一个静态道具</footer></aside>
 <main>
 <header><div><span class="eyebrow">3D ASSET WORKSPACE</span><h1 id="title">让你的下一个道具成形</h1></div><span id="connection" class="badge">准备就绪</span></header>
 <div id="notice" role="status" hidden></div>
+<!-- 新请求入口；一个会话只承载一个资产请求。 -->
 <section id="composer" class="panel"><h2>你想制作什么？</h2><p class="muted">描述道具、用途和限制。Agent 会澄清关键需求，并展示完整生产过程。</p><form id="request-form"><textarea id="request" required maxlength="2500" rows="4" aria-label="资产需求" placeholder="给我的俯视角游戏原型做一个低模木箱。"></textarea><div class="form-end"><span class="muted">默认：静态 GLB · ≤5,000 三角面 · ≤10 MiB</span><button class="primary" type="submit" id="submit">开始制作</button></div></form></section>
+<!-- 当前会话工作台：app.js 依据服务端状态切换可用操作与等待面板。 -->
 <div id="workspace" hidden>
 <div class="toolbar"><span id="status" class="badge"></span><span id="budget" class="muted"></span><button id="retry" hidden>重试入队</button><button id="stop">停止本地执行</button><a id="export" class="button">导出执行记录</a></div>
+<!-- 只有已提交的等待回答状态才展示；提交答案走 HTTP，后续进度走 WebSocket。 -->
 <section id="question-panel" class="panel" hidden><h2>补充一个关键需求</h2><p id="question"></p><form id="answer-form"><input id="answer" required maxlength="2000" aria-label="澄清回答" placeholder="输入你的回答"><button class="primary">继续</button></form></section>
 <div class="columns"><section class="panel"><span class="eyebrow">01 / UNDERSTAND</span><h2>意图与计划</h2><div id="intent" class="muted">正在理解需求…</div></section><section class="panel"><span class="eyebrow">02 / CREATE</span><h2>生产进度</h2><progress id="progress" value="0" max="100"></progress><p id="progress-text" class="muted">等待生成计划</p><p id="deadline" class="muted"></p></section></div>
+<!-- 候选切换与预览：with-credentials 让模型请求携带同源匿名凭证。 -->
 <section class="panel"><div class="section-head"><div><span class="eyebrow">03 / INSPECT</span><h2>候选模型</h2></div><select id="artifact-picker" aria-label="候选模型" hidden></select><a id="download" class="button" hidden>下载 GLB</a></div><div id="empty-model">模型准备好后，将在这里出现。<span>可旋转、缩放，检查原型中的使用效果。</span></div><model-viewer id="viewer" camera-controls shadow-intensity="0.6" exposure="1" with-credentials alt="生成的静态道具模型" hidden></model-viewer><div id="report"></div><p class="muted">仅检查文件有效性、面数和体积。外观是否符合需求，请通过预览自行判断。</p></section>
+<!-- 技术报告与单次执行核验分别展示，不能代替视觉判断或完整案例评测。 -->
 <section class="panel"><span class="eyebrow">04 / EXPLAIN</span><h2>结果与单次执行核验</h2><p id="result">请求正在进行。</p><div id="evaluation"></div><p class="muted">仅核验本次执行记录中的规则，不代表案例集评测通过。</p><p id="expiry" class="muted"></p></section>
+<!-- 时间线只展示服务端已记录事实，展开内容由脚本以文本形式填充。 -->
 <section class="panel"><div class="section-head"><h2>执行时间线</h2><span class="muted">展开查看原始证据</span></div><div id="events"></div></section>
 </div>
 </main></body></html>

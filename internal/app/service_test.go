@@ -22,6 +22,8 @@ import (
 	"github.com/lkmaVanilla/tripo-3d-agent/internal/tripo"
 )
 
+// scriptModel 按运行状态和已有工具记录返回固定决策，驱动真实 Eino 工具循环。
+// 它用于验证应用编排、恢复和预算，不评估真实模型的意图理解或纠偏决策能力。
 type scriptModel struct{ clarify bool }
 
 func (m scriptModel) Generate(ctx context.Context, in []*schema.Message, opts ...model.Option) (*schema.Message, error) {
@@ -86,6 +88,8 @@ func (m scriptModel) Stream(ctx context.Context, in []*schema.Message, opts ...m
 	return schema.StreamReaderFromArray([]*schema.Message{msg}), nil
 }
 
+// fakeProvider 在内存中模拟异步任务；blocked 保持任务运行，over 让生成结果超面数，
+// alwaysOver 让纠偏也失败，unknown 模拟无法确认提交结果。锁保护并发会话共用的计数。
 type fakeProvider struct {
 	mu                     sync.Mutex
 	count                  int
@@ -131,6 +135,8 @@ func (p *fakeProvider) Download(ctx context.Context, raw string) ([]byte, error)
 func (p *fakeProvider) Count() int { p.mu.Lock(); defer p.mu.Unlock(); return p.count }
 func (p *fakeProvider) Unblock()   { p.mu.Lock(); p.blocked = false; p.mu.Unlock() }
 
+// testService 保留真实持久化、Eino Runtime 和应用工具，仅替换模型与 Tripo Provider。
+// 返回前不启动调度器，便于用例先配置额度或写入边界状态；关闭责任由调用方承担。
 func testService(t *testing.T, dir string, p *fakeProvider, clarify bool) *Service {
 	t.Helper()
 	c := DefaultConfig()
@@ -146,6 +152,8 @@ func testService(t *testing.T, dir string, p *fakeProvider, clarify bool) *Servi
 	s.modelFactory = func(context.Context) (model.BaseChatModel, error) { return scriptModel{clarify: clarify}, nil }
 	return s
 }
+
+// waitSession 以持久化状态作为异步完成依据；提前终止时输出追踪，避免单纯超时掩盖原因。
 func waitSession(t *testing.T, s *Service, id string, predicate func(Session) bool) Session {
 	t.Helper()
 	deadline := time.Now().Add(15 * time.Second)
@@ -168,6 +176,8 @@ func waitSession(t *testing.T, s *Service, id string, predicate func(Session) bo
 	return v
 }
 
+// TestEinoEndToEndCorrectionAndClarification 验收澄清、生成、实测超限、减面和交付的完整受控链路。
+// 决策来自脚本模型，产物来自合成 GLB，因此通过不等于真实 Agent 评测或视觉验收通过。
 func TestEinoEndToEndCorrectionAndClarification(t *testing.T) {
 	p := &fakeProvider{over: true}
 	s := testService(t, t.TempDir(), p, true)
@@ -177,7 +187,7 @@ func TestEinoEndToEndCorrectionAndClarification(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	waitSession(t, s, v.ID, func(v Session) bool { return v.Status == "awaiting_answer" && v.CheckpointReady })
+	waitSession(t, s, v.ID, func(v Session) bool { return v.Status == "awaiting_answer" && (v.ResumePoint != nil) })
 	if err = s.Answer(context.Background(), v.ID, "卡通风格"); err != nil {
 		t.Fatal(err)
 	}
@@ -193,12 +203,15 @@ func TestEinoEndToEndCorrectionAndClarification(t *testing.T) {
 	for _, event := range events {
 		found[event.Kind] = true
 	}
-	for _, kind := range []string{"skill_loaded", "agent_proposal", "runtime_accepted", "tool_submitted", "technical_report", "agent_finished", "checkpoint"} {
+	for _, kind := range []string{"skill_loaded", "agent_proposal", "runtime_accepted", "tool_submitted", "technical_report", "agent_finished", "checkpoint_committed"} {
 		if !found[kind] {
 			t.Errorf("missing trace event %s", kind)
 		}
 	}
 }
+
+// TestRestartReusesKnownTask 验证服务正常关闭后重启沿用远端任务 ID 和生产期限，
+// 后续模型可继续决策，但已提交生产不能重做。
 func TestRestartReusesKnownTask(t *testing.T) {
 	dir := t.TempDir()
 	p := &fakeProvider{blocked: true}
@@ -223,13 +236,16 @@ func TestRestartReusesKnownTask(t *testing.T) {
 		t.Fatalf("bad recovery: %+v count=%d", v, p.Count())
 	}
 }
+
+// TestRestartClarification 验证已发布的问题跨服务重启仍能接受答案并恢复 Eino，
+// 同一问题不增加第二次澄清计数。
 func TestRestartClarification(t *testing.T) {
 	dir := t.TempDir()
 	p := &fakeProvider{}
 	s := testService(t, dir, p, true)
 	s.Start()
 	v, _ := s.Create(context.Background(), "owner", "木箱")
-	v = waitSession(t, s, v.ID, func(v Session) bool { return v.Status == "awaiting_answer" && v.CheckpointReady })
+	v = waitSession(t, s, v.ID, func(v Session) bool { return v.Status == "awaiting_answer" && (v.ResumePoint != nil) })
 	calls := v.ModelCalls
 	_ = s.Close()
 	s = testService(t, dir, p, true)
@@ -243,6 +259,8 @@ func TestRestartClarification(t *testing.T) {
 		t.Fatalf("bad clarification recovery %+v", v)
 	}
 }
+
+// TestUnknownSubmissionStops 验证未知提交结果沿完整服务链路收敛为明确失败，且只提交一次。
 func TestUnknownSubmissionStops(t *testing.T) {
 	p := &fakeProvider{unknown: true}
 	s := testService(t, t.TempDir(), p, false)
@@ -254,6 +272,8 @@ func TestUnknownSubmissionStops(t *testing.T) {
 		t.Fatalf("bad unknown handling %+v", v)
 	}
 }
+
+// TestModelBudgetIsPersistent 验证模型调用上限记录在会话中，触顶后不继续进入生产。
 func TestModelBudgetIsPersistent(t *testing.T) {
 	p := &fakeProvider{}
 	s := testService(t, t.TempDir(), p, false)
@@ -266,6 +286,8 @@ func TestModelBudgetIsPersistent(t *testing.T) {
 		t.Fatalf("bad model budget %+v", v)
 	}
 }
+
+// TestStopDoesNotResubmit 在远端任务运行时停止会话，验证后台调度不会重新提交或占住槽位。
 func TestStopDoesNotResubmit(t *testing.T) {
 	p := &fakeProvider{blocked: true}
 	s := testService(t, t.TempDir(), p, false)
@@ -283,6 +305,8 @@ func TestStopDoesNotResubmit(t *testing.T) {
 	}
 }
 
+// TestAnonymousIsolation 用有无访问者 Cookie 的两个客户端验证会话与追踪隔离，
+// 并确认即使携带所属 Cookie，跨站修改请求仍被拒绝。
 func TestAnonymousIsolation(t *testing.T) {
 	s := testService(t, t.TempDir(), &fakeProvider{}, false)
 	defer s.Close()
@@ -332,6 +356,8 @@ func TestAnonymousIsolation(t *testing.T) {
 	}
 }
 
+// TestProductionBudgetAndConcurrentQueue 分别验收生产次数上限和并发容量边界，
+// 等待队列不提前消费次数或期限，槽位释放后应只放行最早请求。
 func TestProductionBudgetAndConcurrentQueue(t *testing.T) {
 	t.Run("three_attempts", func(t *testing.T) {
 		p := &fakeProvider{alwaysOver: true}
@@ -345,6 +371,7 @@ func TestProductionBudgetAndConcurrentQueue(t *testing.T) {
 		}
 	})
 	t.Run("three_slots_ten_queue", func(t *testing.T) {
+		// 固定远端任务为运行中，使 14 个请求稳定分成 3 个生产、10 个等待和 1 个队满。
 		p := &fakeProvider{blocked: true}
 		s := testService(t, t.TempDir(), p, false)
 		s.Start()
@@ -364,7 +391,7 @@ func TestProductionBudgetAndConcurrentQueue(t *testing.T) {
 			running = nil
 			full = 0
 			for _, v := range all {
-				if v.Status == "queued" && v.CheckpointReady {
+				if v.Status == "queued" && (v.ResumePoint != nil) {
 					queued = append(queued, v)
 				}
 				if v.HasSlot && v.Current != nil && v.Current.TaskID != "" {
@@ -398,6 +425,8 @@ func TestProductionBudgetAndConcurrentQueue(t *testing.T) {
 	})
 }
 
+// TestDeepSeekProtocolWithEinoResume 使用真实 DeepSeek SDK 和 Eino，对接本地 HTTP 响应器，
+// 核对模型选项、调用计数及恢复后 reasoning_content 的传递；不会请求真实 DeepSeek。
 func TestDeepSeekProtocolWithEinoResume(t *testing.T) {
 	var mu sync.Mutex
 	calls := 0
@@ -448,7 +477,7 @@ func TestDeepSeekProtocolWithEinoResume(t *testing.T) {
 	s.Start()
 	defer s.Close()
 	v, _ := s.Create(context.Background(), "owner", "木箱")
-	waitSession(t, s, v.ID, func(v Session) bool { return v.Status == "awaiting_answer" && v.CheckpointReady })
+	waitSession(t, s, v.ID, func(v Session) bool { return v.Status == "awaiting_answer" && (v.ResumePoint != nil) })
 	if err := s.Answer(context.Background(), v.ID, "卡通"); err != nil {
 		t.Fatal(err)
 	}
@@ -460,6 +489,7 @@ func TestDeepSeekProtocolWithEinoResume(t *testing.T) {
 	}
 }
 
+// TestExpiryAndTraceRedaction 验证闲置过期、保留期清理以及公开追踪中的凭证和签名脱敏。
 func TestExpiryAndTraceRedaction(t *testing.T) {
 	s := testService(t, t.TempDir(), &fakeProvider{}, false)
 	defer s.Close()
@@ -485,8 +515,8 @@ func TestExpiryAndTraceRedaction(t *testing.T) {
 	}
 }
 
-// A browser-only fixture server. It is never enabled by cmd/server and cannot
-// be confused with a live provider: the harness banner names the test source.
+// TestBrowserHarness 是需显式启用的浏览器夹具服务，cmd/server 不会启动它。
+// 服务标识明确注明受控测试来源，页面操作结果不能当作真实 Provider 的验证证据。
 func TestBrowserHarness(t *testing.T) {
 	if os.Getenv("TRIPO_BROWSER_TEST") != "1" {
 		t.Skip("opt-in browser fixture")
@@ -508,6 +538,8 @@ func TestBrowserHarness(t *testing.T) {
 	}
 }
 
+// TestMissingCredentials 验证未配置凭证时页面仍可读取服务就绪状态，
+// 但创建请求会被拒绝，不能留下会话或触发生产副作用。
 func TestMissingCredentials(t *testing.T) {
 	c := DefaultConfig()
 	c.DataDir = t.TempDir()
@@ -533,6 +565,7 @@ func TestMissingCredentials(t *testing.T) {
 	}
 }
 
+// batchedModel 故意在一次响应中返回两个工具调用，用于验证单步执行约束。
 type batchedModel struct{ scriptModel }
 
 func (m batchedModel) Generate(ctx context.Context, in []*schema.Message, opts ...model.Option) (*schema.Message, error) {
@@ -544,6 +577,8 @@ func (m batchedModel) Generate(ctx context.Context, in []*schema.Message, opts .
 	}
 	return msg, err
 }
+
+// TestBatchedToolsBlocked 验证批量工具提议在任何工具执行前被拒绝，不产生远端提交。
 func TestBatchedToolsBlocked(t *testing.T) {
 	p := &fakeProvider{}
 	s := testService(t, t.TempDir(), p, false)

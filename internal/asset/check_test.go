@@ -7,6 +7,8 @@ import (
 	"testing"
 )
 
+// mutate 只改 GLB 的 JSON 块并重算长度与四字节对齐，保留原始二进制几何数据。
+// 这样可隔离某个结构约束的失败，避免因文件封装损坏而掩盖待测规则。
 func mutate(data []byte, fn func(map[string]any)) []byte {
 	n := int(binary.LittleEndian.Uint32(data[12:16]))
 	var doc map[string]any
@@ -22,6 +24,9 @@ func mutate(data []byte, fn func(map[string]any)) []byte {
 	binary.LittleEndian.PutUint32(out[12:16], uint32(len(b)))
 	return out
 }
+
+// TestInspect 区分文件是否可接受（Valid）和是否满足本次资源限制（Passed）。
+// 所有数据均为本地合成或定向破坏的 GLB，仅覆盖技术检查，不包含视觉或语义评测。
 func TestInspect(t *testing.T) {
 	valid := testfixture.Cube(12)
 	tests := []struct {

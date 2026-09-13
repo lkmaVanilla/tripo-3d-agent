@@ -13,19 +13,29 @@ import (
 	"github.com/lkmaVanilla/tripo-3d-agent/internal/tripo"
 )
 
+// ErrClosed 表示会话已终止，恢复或迟到的回调不能重新推进执行。
 var ErrClosed = errors.New("请求已结束")
+
+// ErrBudget 表示新增模型调用或生产提交不能再消耗额度。
 var ErrBudget = errors.New("请求调用额度已耗尽")
 
+// Config 定义进程级配置；创建会话时会将执行上限快照到 Limits。
 type Config struct {
-	Listen, DataDir, DeepSeekKey, TripoKey                                  string
-	SecureCookie                                                            bool
+	// 凭证保留在服务端配置中，不进入 Session.View 的公开数据。
+	Listen, DataDir, DeepSeekKey, TripoKey string
+	SecureCookie                           bool
+	// 生产名额与队列容量限制全局并发，其余三个值限制单个会话。
 	ProductionSlots, QueueSize, MaxCalls, MaxSubmissions, MaxClarifications int
-	MaxDuration, PollInterval, IdleTTL, Retention, VisitorTTL               time.Duration
+	// MaxDuration 从首次生产提交开始计算；IdleTTL 用于此前的无操作等待。
+	MaxDuration, PollInterval, IdleTTL, Retention, VisitorTTL time.Duration
 }
 
+// DefaultConfig 给出静态道具 MVP 的并发、预算及数据保留默认值。
 func DefaultConfig() Config {
 	return Config{Listen: "127.0.0.1:8080", DataDir: "./data", ProductionSlots: 3, QueueSize: 10, MaxCalls: 20, MaxSubmissions: 3, MaxClarifications: 3, MaxDuration: 30 * time.Minute, PollInterval: 3 * time.Second, IdleTTL: 24 * time.Hour, Retention: 7 * 24 * time.Hour, VisitorTTL: 30 * 24 * time.Hour}
 }
+
+// ConfigFromEnv 仅覆盖已开放的环境变量，其余执行策略沿用默认配置。
 func ConfigFromEnv() (Config, error) {
 	c := DefaultConfig()
 	c.DeepSeekKey = os.Getenv("DEEPSEEK_API_KEY")
@@ -46,6 +56,8 @@ func ConfigFromEnv() (Config, error) {
 	return c, nil
 }
 
+// Intent 是模型提出、Go 校验后保存的需求与验收契约。
+// 正常执行中保存后不再重新定义，生产和技术检查都依据同一份上限。
 type Intent struct {
 	Asset        string   `json:"asset" jsonschema:"description=静态道具的名称与关键特征"`
 	Use          string   `json:"use" jsonschema:"description=用户的资产用途"`
@@ -56,42 +68,72 @@ type Intent struct {
 	Assumptions  []string `json:"assumptions" jsonschema:"description=明确列出采用的默认假设"`
 	Plan         []string `json:"plan" jsonschema:"description=生产与验收计划"`
 }
+
+// Limits 固化会话创建时的预算，进程配置变化不会重置已有请求的额度。
 type Limits struct {
 	Calls, Submissions, Clarifications int
 	Duration, Idle, Retention          time.Duration
 }
+
+// Artifact 保存已下载产物及实测报告；报告不包含视觉符合性判断。
 type Artifact struct {
-	ID        string       `json:"id"`
-	TaskID    string       `json:"task_id"`
-	Path      string       `json:"path"`
+	ID     string `json:"id"`
+	TaskID string `json:"task_id"`
+	// Path 是本地文件位置，公开视图改用受会话访问控制的下载地址。
+	Path string `json:"path"`
+	// SourceURL 保留提供方地址，供后续减面操作引用原模型。
 	SourceURL string       `json:"source_url"`
 	Report    asset.Report `json:"report"`
 }
+
+// Operation 表示当前一次生产操作，ID 同时作为产物 ID，便于恢复时去重。
+// Stage 按 ready → submitting → submitted → done 推进；明确失败也会进入 done。
 type Operation struct {
-	ID         string       `json:"id"`
-	Kind       string       `json:"kind"`
-	Params     tripo.Params `json:"params"`
-	Stage      string       `json:"stage"`
-	TaskID     string       `json:"task_id"`
-	Error      string       `json:"error,omitempty"`
-	ArtifactID string       `json:"artifact_id,omitempty"`
-}
-type Session struct {
-	ID, Owner, Request, Status                          string
-	Intent                                              *Intent
-	Question, Answer, WaitID                            string
-	Clarifications, Production, ModelCalls              int
-	Limits                                              Limits
-	Deadline, Created, LastUser, Ended, Expires, Queued time.Time
-	HasSlot, CheckpointReady, ResumeRequested           bool
-	Current                                             *Operation
-	Artifacts                                           []Artifact
-	History                                             []*schema.Message
-	Final, SelectedArtifact                             string
-	Model, Source                                       string
+	ID     string       `json:"id"`
+	Kind   string       `json:"kind"`
+	Params tripo.Params `json:"params"`
+	Stage  string       `json:"stage"`
+	// submitting 且 TaskID 为空代表提交结果未知，不能通过重发来猜测结果。
+	TaskID     string `json:"task_id"`
+	Error      string `json:"error,omitempty"`
+	ArtifactID string `json:"artifact_id,omitempty"`
 }
 
+// Session 是一个资产请求的持久化业务事实，包含对话、执行和恢复状态。
+// Eino 检查点恢复控制流，不能用其中的旧快照覆盖这里的预算与终止事实。
+type Session struct {
+	// Owner 关联匿名访客身份；Status 供界面展示，终止判断以 Ended 为准。
+	ID, Owner, Request, Status string
+	Intent                     *Intent
+	// Question/Answer 为当前展示及兼容字段；可靠重放读取 Answers[WaitID]。
+	Question, Answer, WaitID string
+	// 已消耗计数不会随重启重置；生产明确失败或结果未知也保留已扣次数。
+	Clarifications, Production, ModelCalls int
+	Limits                                 Limits
+	// Deadline 首次生产时固定，Queued 保留排队顺序，Expires 控制终止后的清理。
+	Deadline, Created, LastUser, Ended, Expires, Queued time.Time
+	// HasSlot 是请求持有的生产名额，纠偏期间保留；CheckpointReady 不能单独证明可恢复。
+	HasSlot, CheckpointReady, ResumeRequested bool
+	// 新暂停提交前保留旧 Current，避免恢复中的旧工具引用被新提议提前覆盖。
+	Current   *Operation
+	Artifacts []Artifact
+	// History 保留完整 Eino 消息协议（含推理字段），不直接暴露到公开视图。
+	History                 []*schema.Message
+	Final, SelectedArtifact string
+	Model, Source           string
+	// 恢复版本、已提交恢复点和待提交草案共同区分“已发布暂停”与“准备中的暂停”。
+	RecoverySchemaVersion int
+	ResumePoint           *ResumePoint
+	PendingPause          *PendingPause
+	// 答案按问题身份保留至会话清理，工具读取一次后仍可从旧检查点重放。
+	Answers         map[string]AnswerRecord
+	RecoveryFailure string
+}
+
+// Terminal 使用持久化结束时间判断终态，避免依赖可能扩展的状态字符串集合。
 func (s Session) Terminal() bool { return !s.Ended.IsZero() }
+
+// Finish 统一设置终态与保留期限、释放名额；调用方负责事务及幂等终止检查。
 func (s *Session) Finish(status, reason string) {
 	s.Status = status
 	s.Final = reason
@@ -100,6 +142,8 @@ func (s *Session) Finish(status, reason string) {
 	s.HasSlot = false
 	s.ResumeRequested = false
 }
+
+// View 显式构造供 HTTP/WebSocket 使用的业务视图，避免泄露本地路径和恢复材料。
 func (s Session) View() map[string]any {
 	arts := make([]map[string]any, 0, len(s.Artifacts))
 	for _, a := range s.Artifacts {
@@ -107,6 +151,8 @@ func (s Session) View() map[string]any {
 	}
 	return map[string]any{"id": s.ID, "request": s.Request, "status": s.Status, "intent": s.Intent, "question": s.Question, "clarifications": s.Clarifications, "production": s.Production, "model_calls": s.ModelCalls, "max_submissions": s.Limits.Submissions, "max_model_calls": s.Limits.Calls, "deadline": s.Deadline, "created": s.Created, "ended": s.Ended, "expires": s.Expires, "artifacts": arts, "selected_artifact": s.SelectedArtifact, "final": s.Final, "model": s.Model, "evaluation": evaluate(s)}
 }
+
+// newID 使用随机字节生成不含业务含义的标识，供会话、暂停和操作使用。
 func newID() string {
 	b := make([]byte, 24)
 	if _, err := rand.Read(b); err != nil {
@@ -115,11 +161,13 @@ func newID() string {
 	return hex.EncodeToString(b)
 }
 
+// Evaluation 记录单次执行的程序证据核验，不代表正式 Agent 评测结果。
 type Evaluation struct {
 	Scope  string        `json:"scope"`
 	Checks []asset.Check `json:"checks"`
 }
 
+// evaluate 核验硬预算和交付证据；只有宣告交付时才要求选中产物检查通过。
 func evaluate(s Session) Evaluation {
 	status := func(b bool) string {
 		if b {

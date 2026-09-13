@@ -1,4 +1,4 @@
-// Package testfixture contains synthetic assets used only by automated tests.
+// Package testfixture 提供自动化测试专用的合成资产，不代表真实 Tripo 生成质量。
 package testfixture
 
 import (
@@ -7,6 +7,8 @@ import (
 	"github.com/qmuntal/gltf/modeler"
 )
 
+// Cube 生成含指定三角面数量的 GLB，用于技术检查和生产恢复测试。
+// 超过立方体的 12 个三角面后会重复索引，因此只适合验证计数与文件结构，不能用于视觉验收。
 func Cube(triangles int) []byte {
 	doc := gltf.NewDocument()
 	positions := [][3]float32{{-1, -1, -1}, {1, -1, -1}, {1, 1, -1}, {-1, 1, -1}, {-1, -1, 1}, {1, -1, 1}, {1, 1, 1}, {-1, 1, 1}}
@@ -22,6 +24,7 @@ func Cube(triangles int) []byte {
 	doc.Nodes = []*gltf.Node{{Mesh: gltf.Index(0)}}
 	doc.Scenes[0].Nodes = []int{0}
 	var out bytes.Buffer
+	// 夹具构建失败说明测试前提无效，直接中止，避免将坏数据误当成待测业务结果。
 	if err := gltf.NewEncoder(&out).Encode(doc); err != nil {
 		panic(err)
 	}

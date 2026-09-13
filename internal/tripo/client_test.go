@@ -10,6 +10,8 @@ import (
 	"testing"
 )
 
+// TestProtocol 用本地 HTTP 服务核对认证、提交参数和查询结果的协议映射。
+// 这里没有调用 Tripo，也不能证明远端当前可用或实际生成质量。
 func TestProtocol(t *testing.T) {
 	calls := 0
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -52,6 +54,9 @@ func TestProtocol(t *testing.T) {
 		t.Fatalf("query %+v %v", result, err)
 	}
 }
+
+// TestUnknownSubmitNeverRetries 将无法解析或缺少任务 ID 的响应视为提交结果未知，
+// 验证客户端不会为获取确定响应而自动重发可能已收费的请求。
 func TestUnknownSubmitNeverRetries(t *testing.T) {
 	for _, response := range []string{`{`, `{"code":0,"data":{}}`} {
 		count := 0
@@ -66,6 +71,8 @@ func TestUnknownSubmitNeverRetries(t *testing.T) {
 		}
 	}
 }
+
+// TestDownloadRejectsPrivateResource 验证下载入口拒绝本地资源，且错误不泄漏凭证。
 func TestDownloadRejectsPrivateResource(t *testing.T) {
 	c := New("test")
 	for _, u := range []string{"http://127.0.0.1/model.glb", "https://127.0.0.1/model.glb", "file:///etc/passwd"} {
