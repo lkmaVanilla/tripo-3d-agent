@@ -78,7 +78,7 @@ func validatePending(v Session) error {
 		if p.Operation == nil || p.Operation.ID != p.Point.RefID || p.Operation.Kind != kind || p.Operation.Params != params || p.Operation.Stage != "ready" || p.Operation.TaskID != "" || p.Reason != reason {
 			return recoveryError("recovery_seed_invalid")
 		}
-		if executionVersion(v) == ConversationPromptVersion {
+		if conversationVersion(executionVersion(v)) {
 			op := p.Operation
 			if kind == "decimate" {
 				if op.InputVersionID == "" || params.Input != "version:"+op.InputVersionID || op.InputSHA256 == "" || op.ContextReferenceID != "" {
@@ -136,13 +136,13 @@ func seedProduction(v Session, seed *ReplaySeed) (string, tripo.Params, string, 
 		}
 		kind, reason = "decimate", in.Reason
 		params.FaceLimit = in.TargetTriangles
-		if executionVersion(v) == ConversationPromptVersion && v.InputVersion != nil && in.ArtifactID == v.InputVersion.ID && v.InputVersion.Report.Valid && in.TargetTriangles < v.InputVersion.Report.Triangles {
+		if conversationVersion(executionVersion(v)) && v.InputVersion != nil && in.ArtifactID == v.InputVersion.ID && v.InputVersion.Report.Valid && in.TargetTriangles < v.InputVersion.Report.Triangles {
 			params.Input = "version:" + in.ArtifactID
 		}
 		for _, a := range v.Artifacts {
 			if a.ID == in.ArtifactID && a.Report.Valid && in.TargetTriangles < a.Report.Triangles {
 				params.Input = a.SourceURL
-				if executionVersion(v) == ConversationPromptVersion {
+				if conversationVersion(executionVersion(v)) {
 					params.Input = "version:" + a.ID
 				}
 			}
@@ -156,7 +156,7 @@ func seedProduction(v Session, seed *ReplaySeed) (string, tripo.Params, string, 
 	if params.TextureQuality == "" {
 		params.TextureQuality = "standard"
 	}
-	if params.FaceLimit < 500 || params.FaceLimit > 20000 || params.FaceLimit > v.Intent.MaxTriangles {
+	if !validTarget(v, params.FaceLimit) {
 		return kind, params, reason, recoveryError("recovery_seed_invalid")
 	}
 	return kind, params, reason, nil

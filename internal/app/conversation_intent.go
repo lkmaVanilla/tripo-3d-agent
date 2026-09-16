@@ -45,22 +45,22 @@ func (s *Service) prepareConversationIntent(ctx context.Context, v Session, inpu
 		if intent.Constraints == nil {
 			intent.Constraints = append([]string(nil), prior.Constraints...)
 		}
-		if intent.MaxTriangles == 0 {
+		if intent.Optional == nil && intent.MaxTriangles == 0 {
 			intent.MaxTriangles = prior.MaxTriangles
 		}
-		if intent.MaxBytes == 0 {
+		if intent.Optional == nil && intent.MaxBytes == 0 {
 			intent.MaxBytes = prior.MaxBytes
 		}
 	}
-	if intent.MaxTriangles == 0 {
+	if intent.Optional == nil && intent.MaxTriangles == 0 {
 		intent.MaxTriangles = 5000
 		intent.Assumptions = append(intent.Assumptions, "未指定面数上限，默认5,000个三角面")
 	}
-	if intent.MaxBytes == 0 {
+	if intent.Optional == nil && intent.MaxBytes == 0 {
 		intent.MaxBytes = 10 << 20
 		intent.Assumptions = append(intent.Assumptions, "未指定文件体积上限，默认10 MiB")
 	}
-	if strings.TrimSpace(intent.Asset) == "" || len(intent.Plan) == 0 || intent.MaxTriangles < 1 || intent.MaxBytes < 1 {
+	if strings.TrimSpace(intent.Asset) == "" || len(intent.Plan) == 0 || (intent.Optional == nil && (intent.MaxTriangles < 1 || intent.MaxBytes < 1)) || (intent.Optional != nil && !intent.Optional.Valid()) {
 		return intent, "", fmt.Errorf("需要明确资产、计划和正数技术上限")
 	}
 	draft := IntentDraft{VersionID: input.ID, Action: action, Intent: intent, Changes: []IntentChange{}, Inherited: []string{}}

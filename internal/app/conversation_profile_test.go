@@ -186,7 +186,7 @@ func TestConversationUpgradeV2PauseProtocol(t *testing.T) {
 				t.Fatalf("v2 run lost wrapping conversation: %+v %v", conversation, err)
 			}
 			_, fresh, err := s.CreateAssetConversation(ctx, "owner", "另一个产品展示资产", "new-v3-"+variant)
-			if err != nil || fresh.ExecutionVersion != ConversationPromptVersion {
+			if err != nil || fresh.ExecutionVersion != OptionalPromptVersion {
 				t.Fatalf("new conversation did not use a separate v3 execution: %+v %v", fresh, err)
 			}
 			freshCalls := 0

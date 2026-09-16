@@ -78,6 +78,7 @@ type conversationScript struct{}
 func (conversationScript) Generate(_ context.Context, in []*schema.Message, _ ...model.Option) (*schema.Message, error) {
 	var state struct {
 		Request    string        `json:"request"`
+		Version    string        `json:"prompt_version"`
 		Intent     *Intent       `json:"intent"`
 		Artifacts  []Artifact    `json:"artifacts"`
 		Input      *AssetVersion `json:"input_version"`
@@ -107,7 +108,7 @@ func (conversationScript) Generate(_ context.Context, in []*schema.Message, _ ..
 				faces = 2000
 			}
 		}
-		return call("set_intent", conversationIntentInput{Action: action, Intent: Intent{Asset: "木箱", Use: "产品展示", MaxTriangles: faces, MaxBytes: 10 << 20, Plan: []string{"按明确输入制作并技术检查"}}})
+		return call("set_intent", testIntentForVersion(state.Version, action, Intent{Asset: "木箱", Use: "产品展示", MaxTriangles: faces, MaxBytes: 10 << 20, Plan: []string{"按明确输入制作并技术检查"}}))
 	}
 	if state.Assessment != nil && state.Assessment.Passed && len(state.Artifacts) == 0 {
 		return call("finish_request", conversationFinishInput{Outcome: "answer", Explanation: "现有输入满足本次技术要求，无需加工。"})
@@ -229,4 +230,24 @@ func testConversationOutcome(deliver bool) string {
 		return "delivery"
 	}
 	return "ended"
+}
+
+// 固定脚本明确选择测试约束；这里只适配工具协议，不替真实Agent填充默认。
+func testIntentForVersion(version, action string, in Intent) any {
+	if version != OptionalPromptVersion {
+		return conversationIntentInput{Action: action, Intent: in}
+	}
+	f := optionalIntentFields{Asset: in.Asset, Use: in.Use, Style: in.Style, Constraints: in.Constraints, Assumptions: in.Assumptions, Plan: in.Plan}
+	if in.MaxTriangles > 0 {
+		n := int64(in.MaxTriangles)
+		f.MaxTriangles = &LimitChange{Mode: "set", Value: &n}
+	}
+	if in.MaxBytes > 0 {
+		n := in.MaxBytes
+		f.MaxBytes = &LimitChange{Mode: "set", Value: &n}
+	}
+	if action == "decimate" {
+		f.ReductionMode = "within_limit"
+	}
+	return optionalIntentInput{Action: action, Intent: f}
 }

@@ -59,14 +59,17 @@ func ConfigFromEnv() (Config, error) {
 // Intent 是模型提出、Go 校验后保存的需求与验收契约。
 // 正常执行中保存后不再重新定义，生产和技术检查都依据同一份上限。
 type Intent struct {
-	Asset        string   `json:"asset" jsonschema:"description=静态道具的名称与关键特征"`
-	Use          string   `json:"use" jsonschema:"description=用户的资产用途"`
-	Style        string   `json:"style" jsonschema:"description=用户要求的风格"`
-	Constraints  []string `json:"constraints" jsonschema:"description=必须保留的全部用户硬约束"`
-	MaxTriangles int      `json:"max_triangles" jsonschema:"description=验收面数上限，用户未指定时为5000"`
-	MaxBytes     int64    `json:"max_bytes" jsonschema:"description=验收字节上限，用户未指定时为10485760"`
-	Assumptions  []string `json:"assumptions" jsonschema:"description=明确列出采用的默认假设"`
-	Plan         []string `json:"plan" jsonschema:"description=生产与验收计划"`
+	Optional          *asset.AcceptanceLimits     `json:"-"`
+	ConstraintSources map[string]ConstraintSource `json:"-"`
+	ReductionMode     string                      `json:"-"`
+	Asset             string                      `json:"asset" jsonschema:"description=静态道具的名称与关键特征"`
+	Use               string                      `json:"use" jsonschema:"description=用户的资产用途"`
+	Style             string                      `json:"style" jsonschema:"description=用户要求的风格"`
+	Constraints       []string                    `json:"constraints" jsonschema:"description=必须保留的全部用户硬约束"`
+	MaxTriangles      int                         `json:"max_triangles" jsonschema:"description=验收面数上限，用户未指定时为5000"`
+	MaxBytes          int64                       `json:"max_bytes" jsonschema:"description=验收字节上限，用户未指定时为10485760"`
+	Assumptions       []string                    `json:"assumptions" jsonschema:"description=明确列出采用的默认假设"`
+	Plan              []string                    `json:"plan" jsonschema:"description=生产与验收计划"`
 }
 
 // Limits 固化会话创建时的预算，进程配置变化不会重置已有请求的额度。
@@ -139,7 +142,7 @@ type Session struct {
 	// 答案按问题身份保留至会话清理，工具读取一次后仍可从旧检查点重放。
 	Answers         map[string]AnswerRecord
 	RecoveryFailure string
-	// 连续会话只给新的 v3 Run 增加上下文；旧 View 和框架恢复输入不变。
+	// 连续会话给 v3/v4 Run 增加上下文；v1/v2 View 和框架恢复输入不变。
 	InputVersion        *AssetVersion  `json:",omitempty"`
 	InputAssessment     *asset.Report  `json:",omitempty"`
 	IntentDraft         *IntentDraft   `json:",omitempty"`

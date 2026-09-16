@@ -253,7 +253,7 @@ func TestConversationUpgradeBackupRestoreDrill(t *testing.T) {
 	assertUpgradeDownload(t, s, token, completed.ID, artifactID, modelBytes)
 	// 新消息一经持久接受就越过回退边界，即使调度尚未调用模型或 Provider。
 	_, accepted, err := s.CreateAssetConversation(ctx, owner, "新的产品展示木箱", "after-upgrade-message")
-	if err != nil || accepted.ExecutionVersion != ConversationPromptVersion || accepted.ModelCalls != 0 || provider.Count() != 0 {
+	if err != nil || accepted.ExecutionVersion != OptionalPromptVersion || accepted.ModelCalls != 0 || provider.Count() != 0 {
 		t.Fatalf("new message fixture: %+v %v", accepted, err)
 	}
 	if err = s.Close(); err != nil {

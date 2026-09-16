@@ -4,11 +4,14 @@ import {versionName,technicalSummary} from './workspace-versions.mjs';
 
 const messageLabels={user:'你',clarification:'Agent · 需要补充',intent_review:'需求变化 · 保存前草案',accepted_plan:'Agent · 已保存的计划',operation_card:'制作记录',answer:'Agent 回答',run_result:'本次执行结果'};
 const operationNames={generate:'生成模型',regenerate:'重新生成模型',decimate:'模型减面'};
-const intentFields={asset:'资产主体',use:'用途',style:'风格',constraints:'硬约束',max_triangles:'三角面上限',max_bytes:'文件体积上限',assumptions:'默认假设',plan:'制作步骤',action:'制作动作'};
+const intentFields={asset:'资产主体',use:'用途',style:'风格',constraints:'硬约束',max_triangles:'三角面上限',max_bytes:'文件体积上限',assumptions:'默认假设',plan:'制作步骤',action:'制作动作',constraint_sources:'约束来源',reduction_mode:'减面目标',constraint_version:'约束规则版本'};
 export const intentFieldLabel=field=>intentFields[field]||field;
-function intentValue(value,field){
+export function intentValue(value,field){
+  if(value===null&&(field==='max_triangles'||field==='max_bytes'))return '未设置验收上限';
   if(value===null||value===undefined||value===''||(Array.isArray(value)&&!value.length))return '未记录';
   if(Array.isArray(value))return value.map(item=>typeof item==='string'?item:JSON.stringify(item)).join('；');
+  if(field==='reduction_mode')return value==='further'?'进一步降低面数':value==='within_limit'?'达到指定上限':'未记录';
+  if(field==='constraint_sources'&&typeof value==='object'){const labels={user_request:'本次要求',inherited:'继承所选版本',legacy_inherited:'继承历史验收约束',cleared:'本次明确取消',unset:'未设置'};return Object.entries(value).map(([key,source])=>`${intentFieldLabel(key)}：${labels[source.kind]||'来源未知'}`).join('；');}
   if(typeof value==='number')return value.toLocaleString('zh-CN')+(field==='max_bytes'?' 字节':'');
   return typeof value==='string'?value:JSON.stringify(value);
 }
@@ -70,6 +73,7 @@ export class ChatView {
       const intent=data.intent||{};
       if(intent.asset)content.append(node('h3',intent.asset));
       if(intent.use)content.append(node('p','用途：'+intent.use));
+      if(intent.constraint_version==='optional-v1'){for(const field of ['max_triangles','max_bytes'])content.append(node('p',`${intentFieldLabel(field)}：${intentValue(intent[field],field)}`));}
       if(intent.plan?.length){const list=node('ol');for(const step of intent.plan)list.append(node('li',step));content.append(list);}
       if(message.text)content.append(node('p',message.text));
       content.append(details('需求、约束与本次验收上限',intent,'计划是 Agent 提议并已保存，尚不代表制作完成。'));

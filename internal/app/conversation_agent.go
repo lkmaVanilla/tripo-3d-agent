@@ -84,14 +84,7 @@ func (s *Service) conversationTools(id string, c *pauseCoordinator, base []tool.
 					if e != nil {
 						return s.block(id, "invalid_intent", e.Error())
 					}
-					faces, size := in.Intent.MaxTriangles, in.Intent.MaxBytes
-					if faces == 0 {
-						faces = 5000
-					}
-					if size == 0 {
-						size = 10 << 20
-					}
-					report := asset.Inspect(b, faces, size)
+					report := inspectIntent(b, &in.Intent)
 					*assessment = &report
 				}
 				*goal = in.Action
@@ -99,6 +92,12 @@ func (s *Service) conversationTools(id string, c *pauseCoordinator, base []tool.
 			})
 			if err != nil {
 				return nil, err
+			}
+			if c.profile.Version == OptionalPromptVersion && info.Name == "set_intent" {
+				replacement, err = s.optionalIntentTool(id, replacement)
+				if err != nil {
+					return nil, err
+				}
 			}
 			base[i] = replacement
 		case "finish_request":
@@ -174,7 +173,7 @@ func (v *Session) finishAnswer(text string) error {
 	if err := checkExecution(*v, time.Now()); err != nil {
 		return err
 	}
-	if executionVersion(*v) != ConversationPromptVersion || v.Production != 0 || v.Current != nil || len(v.Artifacts) != 0 {
+	if !conversationVersion(executionVersion(*v)) || v.Production != 0 || v.Current != nil || len(v.Artifacts) != 0 {
 		return fmt.Errorf("发生生产的执行不能作为纯回答结束")
 	}
 	v.Status = "answered"
@@ -192,5 +191,5 @@ func buildAnswerResult(v Session) (*Result, string) {
 }
 
 func validAnswer(v Session) bool {
-	return executionVersion(v) == ConversationPromptVersion && v.Status == "answered" && v.Outcome != nil && v.Outcome.Kind == "answer" && v.Outcome.Source == "agent" && v.Production == 0 && v.Current == nil && len(v.Artifacts) == 0 && v.SelectedArtifact == ""
+	return conversationVersion(executionVersion(v)) && v.Status == "answered" && v.Outcome != nil && v.Outcome.Kind == "answer" && v.Outcome.Source == "agent" && v.Production == 0 && v.Current == nil && len(v.Artifacts) == 0 && v.SelectedArtifact == ""
 }

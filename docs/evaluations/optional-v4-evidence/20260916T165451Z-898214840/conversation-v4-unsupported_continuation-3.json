@@ -1,0 +1,904 @@
+{
+  "automated_checks": [
+    {
+      "Critical": false,
+      "Detail": "",
+      "Dimension": "strategy",
+      "Name": "terminal_and_model_available",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "actual=0 expected=0..0",
+      "Dimension": "strategy",
+      "Name": "allowed_submission_count",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "answered",
+      "Dimension": "strategy",
+      "Name": "expected_delivery",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=7 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=7 tool=finish_request",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=7 outcome=answer",
+      "Dimension": "strategy",
+      "Name": "finish_outcome_contract",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=7 consumed=0",
+      "Dimension": "constraint",
+      "Name": "answer_hides_no_production",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "proposals=1",
+      "Dimension": "strategy",
+      "Name": "real_model_proposals_exist",
+      "Passed": true
+    }
+  ],
+  "automated_passed": true,
+  "case": {
+    "AllowedProduction": null,
+    "Answer": "为明确引用的茶壶绑定骨骼并制作开合动画，两项都必须实现，未接入则说明结束，不接受静态替代。 其他外观细节可合理默认并公开，不改变硬约束。",
+    "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称未执行的绑定、动画或其他操作已完成；失败不得虚构因果。评测只覆盖技术证据、需求来源、执行状态、能力边界及因果说明。",
+    "ID": "unsupported_continuation",
+    "InitialProduction": 0,
+    "IntentReview": "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+    "MaxBytes": 10485760,
+    "MaxSubmits": 0,
+    "MaxTriangles": 5000,
+    "MinSubmits": 0,
+    "NoDelivery": true,
+    "Provider": "normal",
+    "Request": "为明确引用的茶壶绑定骨骼并制作开合动画，两项都必须实现，未接入则说明结束，不接受静态替代。",
+    "RequireThreeQuestions": false,
+    "Seed": "version",
+    "StrategyReview": "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+    "Suite": "conversation-v4",
+    "WantAnswer": true,
+    "WantDelivery": false
+  },
+  "conversation": {
+    "conversation": {
+      "created": "2026-09-16T16:56:29.987178Z",
+      "expires": "2026-09-23T16:56:33.708913Z",
+      "id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+      "title": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。",
+      "updated": "2026-09-16T16:56:33.708913Z"
+    },
+    "cursor": 9,
+    "events": [
+      {
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "data": {
+          "client_message_id": "seed",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。"
+        },
+        "kind": "request",
+        "run_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "seq": 1,
+        "time": "2026-09-16T16:56:29.9873Z"
+      },
+      {
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "data": {
+          "artifact_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+          "operation_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+          "report": {
+            "bytes": 27656,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 4500 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 27656 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 4500,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "declared-seed-task"
+        },
+        "kind": "technical_report",
+        "run_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "seq": 2,
+        "time": "2026-09-16T16:56:29.994354Z"
+      },
+      {
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "data": {
+          "final": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n程序已根据本请求的实测技术证据完成收尾。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 0 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "result": {
+            "artifact_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+            "evidence": "verified",
+            "operation_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+            "reason": "delivered",
+            "source": "runtime",
+            "status": "completed",
+            "version": 1
+          }
+        },
+        "kind": "evaluation_fixture_finished",
+        "run_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "seq": 3,
+        "time": "2026-09-16T16:56:29.995355Z"
+      },
+      {
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "data": {
+          "expires": "2026-09-23T16:56:29.99531Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "seq": 4,
+        "time": "2026-09-16T16:56:29.996018Z"
+      },
+      {
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "为明确引用的茶壶绑定骨骼并制作开合动画，两项都必须实现，未接入则说明结束，不接受静态替代。",
+          "version_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c"
+        },
+        "kind": "request",
+        "run_id": "668a3b38c69750352357921255542a4dab7142d1767c42bf",
+        "seq": 5,
+        "time": "2026-09-16T16:56:29.997232Z"
+      },
+      {
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "data": {
+          "eino_input_hash": "7c68f6f34689008f257cf3512a508b8462ac4ae9207ccda3f6cd947339d40222",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "668a3b38c69750352357921255542a4dab7142d1767c42bf",
+        "seq": 6,
+        "time": "2026-09-16T16:56:30.152285Z"
+      },
+      {
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 348,
+              "prompt_token_details": {
+                "cached_tokens": 1792
+              },
+              "prompt_tokens": 5666,
+              "total_tokens": 6014
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"outcome\": \"answer\", \"explanation\": \"当前能力仅支持文本生成静态自包含 GLB、减面和解释已有结果；骨骼绑定（rigging/skinning）与开合动画尚未接入，不能以静态生成替代这两项要求。因此本次不进行任何生产，也不产生新版本。已明确引用的茶壶版本仍为 2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c（静态 GLB，实测 4500 三角面 / 27656 字节，视觉未验）。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_AIWdqGdOyZuRtRRb7CDt4661",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 348,
+            "prompt_token_details": {
+              "cached_tokens": 1792
+            },
+            "prompt_tokens": 5666,
+            "total_tokens": 6014
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "668a3b38c69750352357921255542a4dab7142d1767c42bf",
+        "seq": 7,
+        "time": "2026-09-16T16:56:33.705339Z"
+      },
+      {
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "data": {
+          "explanation": "当前能力仅支持文本生成静态自包含 GLB、减面和解释已有结果；骨骼绑定（rigging/skinning）与开合动画尚未接入，不能以静态生成替代这两项要求。因此本次不进行任何生产，也不产生新版本。已明确引用的茶壶版本仍为 2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c（静态 GLB，实测 4500 三角面 / 27656 字节，视觉未验）。",
+          "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "outcome": "answer",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "run_id": "668a3b38c69750352357921255542a4dab7142d1767c42bf",
+        "seq": 8,
+        "time": "2026-09-16T16:56:33.709134Z"
+      },
+      {
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "data": {
+          "expires": "2026-09-23T16:56:33.708913Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "668a3b38c69750352357921255542a4dab7142d1767c42bf",
+        "seq": 9,
+        "time": "2026-09-16T16:56:33.711434Z"
+      }
+    ],
+    "has_more": false,
+    "messages": [
+      {
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "created": "2026-09-16T16:56:29.9873Z",
+        "id": "26ec4015ca61bc6de52749469b43a21ec6b690606537c56dbb4e1752b6296b53",
+        "kind": "user",
+        "run_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "seq": 1,
+        "text": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。",
+        "updated_seq": 1
+      },
+      {
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "created": "2026-09-16T16:56:29.994354Z",
+        "data": {
+          "operation_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+          "operation_kind": "generate",
+          "report": {
+            "bytes": 27656,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 4500 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 27656 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 4500,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "stage": "done",
+          "status": "checked",
+          "task_id": "declared-seed-task"
+        },
+        "id": "72e3b08a3d32b661e6bc0a7b240144e5c6df55dc55409f0ca4014bc290dc53bb",
+        "kind": "operation_card",
+        "run_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "seq": 2,
+        "updated_seq": 2,
+        "version_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c"
+      },
+      {
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "created": "2026-09-16T16:56:29.995355Z",
+        "data": {
+          "outcome": {
+            "kind": "delivery",
+            "source": "runtime"
+          },
+          "result": {
+            "artifact_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+            "evidence": "verified",
+            "operation_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+            "reason": "delivered",
+            "source": "runtime",
+            "status": "completed",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+          "source": "runtime"
+        },
+        "id": "cf6f2f759360e60bfdced53f46b2cda9be7b4cd36a5bad6bb80f6756a6aac7b3",
+        "kind": "run_result",
+        "run_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "seq": 3,
+        "text": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n程序已根据本请求的实测技术证据完成收尾。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 0 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "updated_seq": 4
+      },
+      {
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "created": "2026-09-16T16:56:29.997232Z",
+        "id": "9605bb1f6bae140f4fcd3cad378262d8e62288cec1313f8c6aefbda68cc15028",
+        "kind": "user",
+        "run_id": "668a3b38c69750352357921255542a4dab7142d1767c42bf",
+        "seq": 5,
+        "text": "为明确引用的茶壶绑定骨骼并制作开合动画，两项都必须实现，未接入则说明结束，不接受静态替代。",
+        "updated_seq": 5,
+        "version_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c"
+      },
+      {
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "created": "2026-09-16T16:56:33.709134Z",
+        "data": {
+          "outcome": {
+            "kind": "answer",
+            "source": "agent",
+            "text": "当前能力仅支持文本生成静态自包含 GLB、减面和解释已有结果；骨骼绑定（rigging/skinning）与开合动画尚未接入，不能以静态生成替代这两项要求。因此本次不进行任何生产，也不产生新版本。已明确引用的茶壶版本仍为 2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c（静态 GLB，实测 4500 三角面 / 27656 字节，视觉未验）。"
+          },
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "668a3b38c69750352357921255542a4dab7142d1767c42bf",
+          "source": "agent",
+          "verification": "unverifiable"
+        },
+        "id": "0df5acd2df1e9e8f65ee73ef9a7e29acce0512d7c85bbb5afdadff8bb61d836b",
+        "kind": "answer",
+        "run_id": "668a3b38c69750352357921255542a4dab7142d1767c42bf",
+        "seq": 8,
+        "text": "当前能力仅支持文本生成静态自包含 GLB、减面和解释已有结果；骨骼绑定（rigging/skinning）与开合动画尚未接入，不能以静态生成替代这两项要求。因此本次不进行任何生产，也不产生新版本。已明确引用的茶壶版本仍为 2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c（静态 GLB，实测 4500 三角面 / 27656 字节，视觉未验）。",
+        "updated_seq": 9
+      }
+    ],
+    "runs": [
+      {
+        "artifacts": [
+          {
+            "id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+            "report": {
+              "bytes": 27656,
+              "checks": [
+                {
+                  "detail": "静态、自包含、非空三角面 GLB",
+                  "name": "文件有效性",
+                  "status": "passed"
+                },
+                {
+                  "detail": "实测 4500 / 上限 5000 个三角面",
+                  "name": "几何规模",
+                  "status": "passed"
+                },
+                {
+                  "detail": "实测 27656 / 上限 10485760 字节",
+                  "name": "文件体积",
+                  "status": "passed"
+                }
+              ],
+              "max_bytes": 10485760,
+              "max_triangles": 5000,
+              "passed": true,
+              "triangles": 4500,
+              "valid": true,
+              "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+            },
+            "task_id": "declared-seed-task",
+            "url": "/api/sessions/8afb054051db135c8d2a01d1c7bbda47bc62963bca956740/artifacts/2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c"
+          }
+        ],
+        "clarifications": 0,
+        "created": "2026-09-16T16:56:29.987178Z",
+        "current_operation": {
+          "error": "",
+          "error_code": "",
+          "id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+          "input_version_id": "",
+          "kind": "generate",
+          "stage": "done",
+          "task_id": "declared-seed-task"
+        },
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-16T16:56:29.99531Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "1",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "交付引用已实测且技术通过的模型",
+              "name": "交付证据",
+              "status": "passed"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            },
+            {
+              "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+              "name": "可核验的违规提议",
+              "status": "passed"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-23T16:56:29.99531Z",
+        "final": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n程序已根据本请求的实测技术证据完成收尾。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 0 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 0,
+        "id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "input_assessment": null,
+        "intent": {
+          "asset": "茶壶",
+          "assumptions": null,
+          "constraints": null,
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "plan": [
+            "已完成的受控历史"
+          ],
+          "style": "卡通低模",
+          "use": "产品展示"
+        },
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 0,
+        "outcome": {
+          "kind": "delivery",
+          "source": "runtime"
+        },
+        "production": 1,
+        "prompt_version": "asset-agent-v3",
+        "question": "",
+        "request": "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。",
+        "result": {
+          "artifact_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+          "evidence": "verified",
+          "operation_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+          "reason": "delivered",
+          "source": "runtime",
+          "status": "completed",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+        "status": "completed",
+        "wait_id": ""
+      },
+      {
+        "artifacts": [],
+        "clarifications": 0,
+        "created": "2026-09-16T16:56:29.997032Z",
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-16T16:56:33.708913Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "0",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "1",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "本次未宣告交付成功",
+              "name": "交付证据",
+              "status": "not_applicable"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            },
+            {
+              "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+              "name": "可核验的违规提议",
+              "status": "passed"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-23T16:56:33.708913Z",
+        "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 0,
+        "id": "668a3b38c69750352357921255542a4dab7142d1767c42bf",
+        "input_assessment": null,
+        "input_version_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+        "intent": null,
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 1,
+        "outcome": {
+          "kind": "answer",
+          "source": "agent",
+          "text": "当前能力仅支持文本生成静态自包含 GLB、减面和解释已有结果；骨骼绑定（rigging/skinning）与开合动画尚未接入，不能以静态生成替代这两项要求。因此本次不进行任何生产，也不产生新版本。已明确引用的茶壶版本仍为 2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c（静态 GLB，实测 4500 三角面 / 27656 字节，视觉未验）。"
+        },
+        "production": 0,
+        "prompt_version": "asset-agent-v4",
+        "question": "",
+        "request": "为明确引用的茶壶绑定骨骼并制作开合动画，两项都必须实现，未接入则说明结束，不接受静态替代。",
+        "result": {
+          "evidence": "verified",
+          "reason": "answered",
+          "source": "agent",
+          "status": "answered",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "",
+        "status": "answered",
+        "wait_id": ""
+      }
+    ],
+    "versions": [
+      {
+        "bytes": 27656,
+        "conversation_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "created": "2026-09-16T16:56:29.994354Z",
+        "format": "glb",
+        "id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+        "operation_kind": "generate",
+        "processable": true,
+        "provenance_status": "verified",
+        "report": {
+          "bytes": 27656,
+          "checks": [
+            {
+              "detail": "静态、自包含、非空三角面 GLB",
+              "name": "文件有效性",
+              "status": "passed"
+            },
+            {
+              "detail": "实测 4500 / 上限 5000 个三角面",
+              "name": "几何规模",
+              "status": "passed"
+            },
+            {
+              "detail": "实测 27656 / 上限 10485760 字节",
+              "name": "文件体积",
+              "status": "passed"
+            }
+          ],
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "passed": true,
+          "triangles": 4500,
+          "valid": true,
+          "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+        },
+        "sha256": "cc288615089c9e9ba7828ef8636e3ceaf42c68a5f64a38e053d417b85f1e03c5",
+        "source_operation_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+        "source_run_id": "8afb054051db135c8d2a01d1c7bbda47bc62963bca956740",
+        "task_id": "declared-seed-task",
+        "url": "/api/conversations/8afb054051db135c8d2a01d1c7bbda47bc62963bca956740/versions/2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c/file",
+        "version_number": 1
+      }
+    ]
+  },
+  "critical_errors_automated": 0,
+  "ended": "2026-09-16T16:56:33.82188Z",
+  "evaluation_rubric": "technical-only-v1",
+  "repeat": 3,
+  "response_metadata": [
+    {
+      "content_length": 0,
+      "event_seq": 7,
+      "message_index": 0,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 348,
+          "prompt_token_details": {
+            "cached_tokens": 1792
+          },
+          "prompt_tokens": 5666,
+          "total_tokens": 6014
+        }
+      },
+      "tool_argument_lengths": [
+        452
+      ],
+      "tool_count": 1
+    }
+  ],
+  "response_metadata_source": "agent_proposal_events",
+  "run_id": "668a3b38c69750352357921255542a4dab7142d1767c42bf",
+  "semantic_review": {
+    "excluded_semantic_checks": [
+      "visual_conformance",
+      "source_visual_claims",
+      "visual_disclaimer"
+    ],
+    "instructions": [
+      "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+      "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+      "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称未执行的绑定、动画或其他操作已完成；失败不得虚构因果。评测只覆盖技术证据、需求来源、执行状态、能力边界及因果说明。"
+    ],
+    "proposals": [
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 7,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"outcome\": \"answer\", \"explanation\": \"当前能力仅支持文本生成静态自包含 GLB、减面和解释已有结果；骨骼绑定（rigging/skinning）与开合动画尚未接入，不能以静态生成替代这两项要求。因此本次不进行任何生产，也不产生新版本。已明确引用的茶壶版本仍为 2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c（静态 GLB，实测 4500 三角面 / 27656 字节，视觉未验）。\"}",
+              "name": "finish_request"
+            },
+            "id": "call_00_AIWdqGdOyZuRtRRb7CDt4661",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    ],
+    "status": "pending"
+  },
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "为明确引用的茶壶绑定骨骼并制作开合动画，两项都必须实现，未接入则说明结束，不接受静态替代。",
+          "version_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c"
+        },
+        "kind": "request",
+        "seq": 5,
+        "time": "2026-09-16T16:56:29.997232Z"
+      },
+      {
+        "data": {
+          "eino_input_hash": "7c68f6f34689008f257cf3512a508b8462ac4ae9207ccda3f6cd947339d40222",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 6,
+        "time": "2026-09-16T16:56:30.152285Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 348,
+              "prompt_token_details": {
+                "cached_tokens": 1792
+              },
+              "prompt_tokens": 5666,
+              "total_tokens": 6014
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"outcome\": \"answer\", \"explanation\": \"当前能力仅支持文本生成静态自包含 GLB、减面和解释已有结果；骨骼绑定（rigging/skinning）与开合动画尚未接入，不能以静态生成替代这两项要求。因此本次不进行任何生产，也不产生新版本。已明确引用的茶壶版本仍为 2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c（静态 GLB，实测 4500 三角面 / 27656 字节，视觉未验）。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_AIWdqGdOyZuRtRRb7CDt4661",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 348,
+            "prompt_token_details": {
+              "cached_tokens": 1792
+            },
+            "prompt_tokens": 5666,
+            "total_tokens": 6014
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 7,
+        "time": "2026-09-16T16:56:33.705339Z"
+      },
+      {
+        "data": {
+          "explanation": "当前能力仅支持文本生成静态自包含 GLB、减面和解释已有结果；骨骼绑定（rigging/skinning）与开合动画尚未接入，不能以静态生成替代这两项要求。因此本次不进行任何生产，也不产生新版本。已明确引用的茶壶版本仍为 2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c（静态 GLB，实测 4500 三角面 / 27656 字节，视觉未验）。",
+          "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "outcome": "answer",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "answered",
+            "source": "agent",
+            "status": "answered",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "seq": 8,
+        "time": "2026-09-16T16:56:33.709134Z"
+      },
+      {
+        "data": {
+          "expires": "2026-09-23T16:56:33.708913Z"
+        },
+        "kind": "conversation_idle",
+        "seq": 9,
+        "time": "2026-09-16T16:56:33.711434Z"
+      }
+    ],
+    "session": {
+      "artifacts": [],
+      "clarifications": 0,
+      "created": "2026-09-16T16:56:29.997032Z",
+      "deadline": "0001-01-01T00:00:00Z",
+      "ended": "2026-09-16T16:56:33.708913Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "0",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "1",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "0",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "本次未宣告交付成功",
+            "name": "交付证据",
+            "status": "not_applicable"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-23T16:56:33.708913Z",
+      "final": "本次为回答，未提交模型生产，未创建新版本。模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "generation": 0,
+      "id": "668a3b38c69750352357921255542a4dab7142d1767c42bf",
+      "input_assessment": null,
+      "input_version_id": "2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c",
+      "intent": null,
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 1,
+      "outcome": {
+        "kind": "answer",
+        "source": "agent",
+        "text": "当前能力仅支持文本生成静态自包含 GLB、减面和解释已有结果；骨骼绑定（rigging/skinning）与开合动画尚未接入，不能以静态生成替代这两项要求。因此本次不进行任何生产，也不产生新版本。已明确引用的茶壶版本仍为 2ff80b7360e30d3aa722276507011bbecaa3bc8ac4481f3c（静态 GLB，实测 4500 三角面 / 27656 字节，视觉未验）。"
+      },
+      "production": 0,
+      "prompt_version": "asset-agent-v4",
+      "question": "",
+      "request": "为明确引用的茶壶绑定骨骼并制作开合动画，两项都必须实现，未接入则说明结束，不接受静态替代。",
+      "result": {
+        "evidence": "verified",
+        "reason": "answered",
+        "source": "agent",
+        "status": "answered",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "",
+      "status": "answered",
+      "wait_id": ""
+    },
+    "source": "real-llm-fixed-provider-evaluation"
+  },
+  "source": "real DeepSeek; fixed Provider; synthetic GLB; no real Tripo",
+  "started": "2026-09-16T16:56:29.987176Z",
+  "suite_acceptance": "pending_semantic_review"
+}

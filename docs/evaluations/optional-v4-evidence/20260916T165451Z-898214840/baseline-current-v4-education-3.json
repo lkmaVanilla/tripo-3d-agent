@@ -1,0 +1,1894 @@
+{
+  "automated_checks": [
+    {
+      "Critical": false,
+      "Detail": "",
+      "Dimension": "strategy",
+      "Name": "terminal_and_model_available",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "actual=1 expected=1..1",
+      "Dimension": "strategy",
+      "Name": "allowed_submission_count",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "completed",
+      "Dimension": "strategy",
+      "Name": "expected_delivery",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=3 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=3 tool=skill",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=6 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=6 tool=set_intent",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=6 expected faces=5000 bytes=10485760; resolved={\"max_triangles\":5000,\"max_bytes\":10485760}",
+      "Dimension": "constraint",
+      "Name": "intent_numeric_hard_constraints",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=9 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=9 tool=skill",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=12 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=12 tool=generate_asset",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=12 generate_asset",
+      "Dimension": "strategy",
+      "Name": "allowed_production_proposal",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=12 consumed=0",
+      "Dimension": "constraint",
+      "Name": "production_budget_proposal",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=12 target=5000",
+      "Dimension": "constraint",
+      "Name": "proposal_face_limit",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=20 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=20 tool=finish_request",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=20 outcome=delivery",
+      "Dimension": "strategy",
+      "Name": "finish_outcome_contract",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=20 artifact=8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+      "Dimension": "constraint",
+      "Name": "delivery_has_current_run_evidence",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "proposals=5",
+      "Dimension": "strategy",
+      "Name": "real_model_proposals_exist",
+      "Passed": true
+    }
+  ],
+  "automated_passed": true,
+  "case": {
+    "AllowedProduction": [
+      "generate_asset"
+    ],
+    "Answer": "为教学展览制作一个低模火山展示模型，静态自包含GLB，最多5000三角面、10MiB。 其他外观细节可合理默认并公开，不改变硬约束。",
+    "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称未执行的绑定、动画或其他操作已完成；失败不得虚构因果。评测只覆盖技术证据、需求来源、执行状态、能力边界及因果说明。",
+    "ID": "education",
+    "InitialProduction": 0,
+    "IntentReview": "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+    "MaxBytes": 10485760,
+    "MaxSubmits": 1,
+    "MaxTriangles": 5000,
+    "MinSubmits": 1,
+    "NoDelivery": false,
+    "Provider": "normal",
+    "Request": "为教学展览制作一个低模火山展示模型，静态自包含GLB，最多5000三角面、10MiB。",
+    "RequireThreeQuestions": false,
+    "Seed": "",
+    "StrategyReview": "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+    "Suite": "baseline-current-v4",
+    "WantAnswer": false,
+    "WantDelivery": true
+  },
+  "conversation": {
+    "conversation": {
+      "created": "2026-09-16T16:54:51.667343Z",
+      "expires": "2026-09-23T16:55:12.106209Z",
+      "id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+      "title": "为教学展览制作一个低模火山展示模型，静态自包含GLB，最多5000三角面、10MiB。",
+      "updated": "2026-09-16T16:55:12.106209Z"
+    },
+    "cursor": 22,
+    "events": [
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "为教学展览制作一个低模火山展示模型，静态自包含GLB，最多5000三角面、10MiB。"
+        },
+        "kind": "request",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 1,
+        "time": "2026-09-16T16:54:51.667892Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "eino_input_hash": "0b24d7019c8146050242715e18a8b4e7c0918932f218947e4d1473f062368509",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 2,
+        "time": "2026-09-16T16:54:51.825684Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 139,
+              "prompt_token_details": {
+                "cached_tokens": 256
+              },
+              "prompt_tokens": 4188,
+              "total_tokens": 4327
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"intent\"}",
+                "name": "skill"
+              },
+              "id": "call_00_RbNkScQp6oDUIobQ7bc86487",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 139,
+            "prompt_token_details": {
+              "cached_tokens": 256
+            },
+            "prompt_tokens": 4188,
+            "total_tokens": 4327
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 3,
+        "time": "2026-09-16T16:54:53.98431Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "name": "intent",
+          "prompt_version": "asset-agent-v4",
+          "version": "627d28ebed84eabe16db7f3d3644e50f016fab93b8f3ed2735a61e0b1f609640"
+        },
+        "kind": "skill_loaded",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 4,
+        "time": "2026-09-16T16:54:53.987896Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "eino_input_hash": "e58e1dd9eec163e207bb776d3f8a42350acc0584e2477a449f0003ab8606b318",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 5,
+        "time": "2026-09-16T16:54:53.990092Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 967,
+              "prompt_token_details": {
+                "cached_tokens": 384
+              },
+              "prompt_tokens": 4927,
+              "total_tokens": 5894
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"action\": \"generate\", \"intent\": {\"asset\": \"低模火山展示模型\", \"use\": \"教学展览展示\", \"style\": \"低多边形(low-poly)\", \"constraints\": [\"静态自包含GLB\", \"最多5000三角面\", \"文件不超过10MiB\"], \"max_triangles\": {\"mode\": \"set\", \"value\": 5000}, \"max_bytes\": {\"mode\": \"set\", \"value\": 10485760}, \"assumptions\": [\"默认采用灰色火山岩与橙红岩浆的简洁低模配色，属于制作选择而非用户明确要求\"], \"plan\": [\"加载generation skill\", \"以5000三角面为目标生成低模火山静态GLB\", \"技术核验三角面数与文件体积\", \"通过后交付\"]}}",
+                "name": "set_intent"
+              },
+              "id": "call_00_GPSgUReQwz21erXxftNy6073",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 967,
+            "prompt_token_details": {
+              "cached_tokens": 384
+            },
+            "prompt_tokens": 4927,
+            "total_tokens": 5894
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 6,
+        "time": "2026-09-16T16:55:03.17649Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "asset": "低模火山展示模型",
+          "assumptions": [
+            "默认采用灰色火山岩与橙红岩浆的简洁低模配色，属于制作选择而非用户明确要求"
+          ],
+          "constraint_sources": {
+            "max_bytes": {
+              "kind": "user_request",
+              "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148"
+            },
+            "max_triangles": {
+              "kind": "user_request",
+              "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148"
+            }
+          },
+          "constraint_version": "optional-v1",
+          "constraints": [
+            "静态自包含GLB",
+            "最多5000三角面",
+            "文件不超过10MiB"
+          ],
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "plan": [
+            "加载generation skill",
+            "以5000三角面为目标生成低模火山静态GLB",
+            "技术核验三角面数与文件体积",
+            "通过后交付"
+          ],
+          "reduction_mode": "",
+          "style": "低多边形(low-poly)",
+          "use": "教学展览展示"
+        },
+        "kind": "intent_and_plan",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 7,
+        "time": "2026-09-16T16:55:03.179908Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "eino_input_hash": "7cee59bd8c4ea1a735b18077ce47b864b98c8c492ae66fa3b6d51a3cf074c85b",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 8,
+        "time": "2026-09-16T16:55:03.182272Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 53,
+              "prompt_token_details": {
+                "cached_tokens": 1920
+              },
+              "prompt_tokens": 6357,
+              "total_tokens": 6410
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"generation\"}",
+                "name": "skill"
+              },
+              "id": "call_00_fzDe8nU9GK9sXpibXS831612",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 53,
+            "prompt_token_details": {
+              "cached_tokens": 1920
+            },
+            "prompt_tokens": 6357,
+            "total_tokens": 6410
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 9,
+        "time": "2026-09-16T16:55:03.917936Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "name": "generation",
+          "prompt_version": "asset-agent-v4",
+          "version": "d300e37070a135ee140ce748fd299e72f8d24bf83167147f6306b725db20a8d5"
+        },
+        "kind": "skill_loaded",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 10,
+        "time": "2026-09-16T16:55:03.92117Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "eino_input_hash": "ed34df41f6e1d819c1bad06c44cead7dac5d80c0a576691c7ae900a0eb820f4c",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 11,
+        "time": "2026-09-16T16:55:03.923366Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 436,
+              "prompt_token_details": {
+                "cached_tokens": 1920
+              },
+              "prompt_tokens": 6882,
+              "total_tokens": 7318
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"prompt\": \"A low-poly volcano display model for teaching exhibition. Static, self-contained single GLB. Simplified geometric volcano with cone shape, crater at the top, and a stylized lava flow down one side. Gray volcanic rock body with orange-red lava accents. Clean low-poly flat-shaded style. Maximum 5000 triangles, under 10 MiB.\", \"target_triangles\": 5000, \"texture_quality\": \"standard\", \"reason\": \"按已保存目标生成低模火山静态GLB，目标面数5000，控制在10MiB内。\"}",
+                "name": "generate_asset"
+              },
+              "id": "call_00_K0G4JAnfH896vABMVpZL7921",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 436,
+            "prompt_token_details": {
+              "cached_tokens": 1920
+            },
+            "prompt_tokens": 6882,
+            "total_tokens": 7318
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 12,
+        "time": "2026-09-16T16:55:08.295744Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "kind": "generate",
+          "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "reason": "按已保存目标生成低模火山静态GLB，目标面数5000，控制在10MiB内。",
+          "state": "running",
+          "target_triangles": 5000
+        },
+        "kind": "runtime_accepted",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 13,
+        "time": "2026-09-16T16:55:08.309397Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "generation": 1,
+          "kind": "production",
+          "pause_id": "1b4dd75d0614fd6e9b3b465007d17f98b95b9c3e4f406924",
+          "ref_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702"
+        },
+        "kind": "checkpoint_committed",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 14,
+        "time": "2026-09-16T16:55:08.310001Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "kind": "generate",
+          "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "params": {
+            "face_limit": 5000,
+            "prompt": "A low-poly volcano display model for teaching exhibition. Static, self-contained single GLB. Simplified geometric volcano with cone shape, crater at the top, and a stylized lava flow down one side. Gray volcanic rock body with orange-red lava accents. Clean low-poly flat-shaded style. Maximum 5000 triangles, under 10 MiB.\nRequired: 静态自包含GLB; 最多5000三角面; 文件不超过10MiB",
+            "texture_quality": "standard"
+          }
+        },
+        "kind": "tool_submitting",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 15,
+        "time": "2026-09-16T16:55:08.318362Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "task_id": "eval-task-1"
+        },
+        "kind": "tool_submitted",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 16,
+        "time": "2026-09-16T16:55:08.319893Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "credits": 0,
+          "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "progress": 100,
+          "status": "success",
+          "task_id": "eval-task-1"
+        },
+        "kind": "tripo_progress",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 17,
+        "time": "2026-09-16T16:55:08.322856Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "artifact_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "report": {
+            "bytes": 27656,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 4500 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 27656 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "constraint_version": "optional-v1",
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 4500,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "eval-task-1"
+        },
+        "kind": "technical_report",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 18,
+        "time": "2026-09-16T16:55:08.330806Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "eino_input_hash": "ee919293fac59fb1f51a5e7d23b01005a853cb1ed4abe98a42a6887810984c2e",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 19,
+        "time": "2026-09-16T16:55:08.332641Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 320,
+              "prompt_token_details": {
+                "cached_tokens": 1792
+              },
+              "prompt_tokens": 7829,
+              "total_tokens": 8149
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"outcome\": \"delivery\", \"artifact_id\": \"8adb357b3368560e4cd383204fd57ceebcf86201fca0f702\", \"explanation\": \"已按目标生成低模火山静态GLB并交付。技术报告显示：文件有效性通过（静态、自包含、非空三角面GLB），实测4500/上限5000三角面，实测27656/上限10485760字节（约10MiB），均通过。目标采用了灰色火山岩与橙红岩浆的简洁低模配色（这是制作选择，非用户明确要求）。未进行视觉检查，火山的外观、配色、部件完整性与教学展览用途符合性无法据此确认。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_TN4c0d2agODs721BLdyv4407",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 320,
+            "prompt_token_details": {
+              "cached_tokens": 1792
+            },
+            "prompt_tokens": 7829,
+            "total_tokens": 8149
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 20,
+        "time": "2026-09-16T16:55:12.102803Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "artifact_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "deliver": true,
+          "explanation": "已按目标生成低模火山静态GLB并交付。技术报告显示：文件有效性通过（静态、自包含、非空三角面GLB），实测4500/上限5000三角面，实测27656/上限10485760字节（约10MiB），均通过。目标采用了灰色火山岩与橙红岩浆的简洁低模配色（这是制作选择，非用户明确要求）。未进行视觉检查，火山的外观、配色、部件完整性与教学展览用途符合性无法据此确认。",
+          "final": "已交付通过文件有效性与适用技术约束检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 5 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "artifact_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+            "evidence": "verified",
+            "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+            "reason": "delivered",
+            "source": "agent",
+            "status": "completed",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 21,
+        "time": "2026-09-16T16:55:12.106501Z"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "data": {
+          "expires": "2026-09-23T16:55:12.106209Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 22,
+        "time": "2026-09-16T16:55:12.110177Z"
+      }
+    ],
+    "has_more": false,
+    "messages": [
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "created": "2026-09-16T16:54:51.667892Z",
+        "id": "89217c315ddc5300906a943768fc94a1337edf62eafec9803f043078caaff0e7",
+        "kind": "user",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 1,
+        "text": "为教学展览制作一个低模火山展示模型，静态自包含GLB，最多5000三角面、10MiB。",
+        "updated_seq": 1
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "created": "2026-09-16T16:55:03.179908Z",
+        "data": {
+          "intent": {
+            "asset": "低模火山展示模型",
+            "assumptions": [
+              "默认采用灰色火山岩与橙红岩浆的简洁低模配色，属于制作选择而非用户明确要求"
+            ],
+            "constraint_sources": {
+              "max_bytes": {
+                "kind": "user_request",
+                "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148"
+              },
+              "max_triangles": {
+                "kind": "user_request",
+                "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148"
+              }
+            },
+            "constraint_version": "optional-v1",
+            "constraints": [
+              "静态自包含GLB",
+              "最多5000三角面",
+              "文件不超过10MiB"
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "plan": [
+              "加载generation skill",
+              "以5000三角面为目标生成低模火山静态GLB",
+              "技术核验三角面数与文件体积",
+              "通过后交付"
+            ],
+            "reduction_mode": "",
+            "style": "低多边形(low-poly)",
+            "use": "教学展览展示"
+          }
+        },
+        "id": "fa64043bfa64a6a539df1f32095b6a0dfaff67d4a765f9b5d92ced5f6d834d38",
+        "kind": "accepted_plan",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 7,
+        "updated_seq": 7
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "created": "2026-09-16T16:55:08.309397Z",
+        "data": {
+          "credits": 0,
+          "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "operation_kind": "generate",
+          "progress": 100,
+          "report": {
+            "bytes": 27656,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 4500 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 27656 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "constraint_version": "optional-v1",
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 4500,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "stage": "done",
+          "state": "running",
+          "status": "checked",
+          "target_triangles": 5000,
+          "task_id": "eval-task-1"
+        },
+        "id": "999ca6f0675372bf4b251fb5d1aadc0e5f0f87dba8b13078bebac1b41c850e1d",
+        "kind": "operation_card",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 13,
+        "updated_seq": 18,
+        "version_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702"
+      },
+      {
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "created": "2026-09-16T16:55:12.106501Z",
+        "data": {
+          "outcome": {
+            "kind": "delivery",
+            "source": "agent"
+          },
+          "result": {
+            "artifact_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+            "evidence": "verified",
+            "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+            "reason": "delivered",
+            "source": "agent",
+            "status": "completed",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+          "source": "runtime"
+        },
+        "id": "4667fa6ef3409ac694cd70b2862a59cbcfc8d25d9f409107d6c0084889465506",
+        "kind": "run_result",
+        "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "seq": 21,
+        "text": "已交付通过文件有效性与适用技术约束检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 5 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "updated_seq": 22
+      }
+    ],
+    "runs": [
+      {
+        "artifacts": [
+          {
+            "id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+            "report": {
+              "bytes": 27656,
+              "checks": [
+                {
+                  "detail": "静态、自包含、非空三角面 GLB",
+                  "name": "文件有效性",
+                  "status": "passed"
+                },
+                {
+                  "detail": "实测 4500 / 上限 5000 个三角面",
+                  "name": "几何规模",
+                  "status": "passed"
+                },
+                {
+                  "detail": "实测 27656 / 上限 10485760 字节",
+                  "name": "文件体积",
+                  "status": "passed"
+                }
+              ],
+              "constraint_version": "optional-v1",
+              "max_bytes": 10485760,
+              "max_triangles": 5000,
+              "passed": true,
+              "triangles": 4500,
+              "valid": true,
+              "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+            },
+            "task_id": "eval-task-1",
+            "url": "/api/sessions/283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148/artifacts/8adb357b3368560e4cd383204fd57ceebcf86201fca0f702"
+          }
+        ],
+        "clarifications": 0,
+        "created": "2026-09-16T16:54:51.667343Z",
+        "current_operation": {
+          "error": "",
+          "error_code": "",
+          "id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "input_version_id": "",
+          "kind": "generate",
+          "stage": "done",
+          "task_id": "eval-task-1"
+        },
+        "deadline": "2026-09-16T17:25:08.318214Z",
+        "ended": "2026-09-16T16:55:12.106209Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "1",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "5",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "交付引用已实测且技术通过的模型",
+              "name": "交付证据",
+              "status": "passed"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            },
+            {
+              "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+              "name": "可核验的违规提议",
+              "status": "passed"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-23T16:55:12.106209Z",
+        "final": "已交付通过文件有效性与适用技术约束检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 5 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 1,
+        "id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "input_assessment": null,
+        "intent": {
+          "asset": "低模火山展示模型",
+          "assumptions": [
+            "默认采用灰色火山岩与橙红岩浆的简洁低模配色，属于制作选择而非用户明确要求"
+          ],
+          "constraint_sources": {
+            "max_bytes": {
+              "kind": "user_request",
+              "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148"
+            },
+            "max_triangles": {
+              "kind": "user_request",
+              "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148"
+            }
+          },
+          "constraint_version": "optional-v1",
+          "constraints": [
+            "静态自包含GLB",
+            "最多5000三角面",
+            "文件不超过10MiB"
+          ],
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "plan": [
+            "加载generation skill",
+            "以5000三角面为目标生成低模火山静态GLB",
+            "技术核验三角面数与文件体积",
+            "通过后交付"
+          ],
+          "reduction_mode": "",
+          "style": "低多边形(low-poly)",
+          "use": "教学展览展示"
+        },
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 5,
+        "outcome": {
+          "kind": "delivery",
+          "source": "agent"
+        },
+        "production": 1,
+        "prompt_version": "asset-agent-v4",
+        "question": "",
+        "request": "为教学展览制作一个低模火山展示模型，静态自包含GLB，最多5000三角面、10MiB。",
+        "result": {
+          "artifact_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "evidence": "verified",
+          "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "reason": "delivered",
+          "source": "agent",
+          "status": "completed",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+        "status": "completed",
+        "wait_id": ""
+      }
+    ],
+    "versions": [
+      {
+        "bytes": 27656,
+        "conversation_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "created": "2026-09-16T16:55:08.330806Z",
+        "format": "glb",
+        "id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+        "operation_kind": "generate",
+        "processable": true,
+        "provenance_status": "verified",
+        "report": {
+          "bytes": 27656,
+          "checks": [
+            {
+              "detail": "静态、自包含、非空三角面 GLB",
+              "name": "文件有效性",
+              "status": "passed"
+            },
+            {
+              "detail": "实测 4500 / 上限 5000 个三角面",
+              "name": "几何规模",
+              "status": "passed"
+            },
+            {
+              "detail": "实测 27656 / 上限 10485760 字节",
+              "name": "文件体积",
+              "status": "passed"
+            }
+          ],
+          "constraint_version": "optional-v1",
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "passed": true,
+          "triangles": 4500,
+          "valid": true,
+          "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+        },
+        "sha256": "cc288615089c9e9ba7828ef8636e3ceaf42c68a5f64a38e053d417b85f1e03c5",
+        "source_operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+        "source_run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+        "task_id": "eval-task-1",
+        "url": "/api/conversations/283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148/versions/8adb357b3368560e4cd383204fd57ceebcf86201fca0f702/file",
+        "version_number": 1
+      }
+    ]
+  },
+  "critical_errors_automated": 0,
+  "ended": "2026-09-16T16:55:12.24543Z",
+  "evaluation_rubric": "technical-only-v1",
+  "repeat": 3,
+  "response_metadata": [
+    {
+      "content_length": 0,
+      "event_seq": 3,
+      "message_index": 0,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 139,
+          "prompt_token_details": {
+            "cached_tokens": 256
+          },
+          "prompt_tokens": 4188,
+          "total_tokens": 4327
+        }
+      },
+      "tool_argument_lengths": [
+        19
+      ],
+      "tool_count": 1
+    },
+    {
+      "content_length": 0,
+      "event_seq": 6,
+      "message_index": 1,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 967,
+          "prompt_token_details": {
+            "cached_tokens": 384
+          },
+          "prompt_tokens": 4927,
+          "total_tokens": 5894
+        }
+      },
+      "tool_argument_lengths": [
+        602
+      ],
+      "tool_count": 1
+    },
+    {
+      "content_length": 0,
+      "event_seq": 9,
+      "message_index": 2,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 53,
+          "prompt_token_details": {
+            "cached_tokens": 1920
+          },
+          "prompt_tokens": 6357,
+          "total_tokens": 6410
+        }
+      },
+      "tool_argument_lengths": [
+        23
+      ],
+      "tool_count": 1
+    },
+    {
+      "content_length": 0,
+      "event_seq": 12,
+      "message_index": 3,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 436,
+          "prompt_token_details": {
+            "cached_tokens": 1920
+          },
+          "prompt_tokens": 6882,
+          "total_tokens": 7318
+        }
+      },
+      "tool_argument_lengths": [
+        495
+      ],
+      "tool_count": 1
+    },
+    {
+      "content_length": 0,
+      "event_seq": 20,
+      "message_index": 4,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 320,
+          "prompt_token_details": {
+            "cached_tokens": 1792
+          },
+          "prompt_tokens": 7829,
+          "total_tokens": 8149
+        }
+      },
+      "tool_argument_lengths": [
+        578
+      ],
+      "tool_count": 1
+    }
+  ],
+  "response_metadata_source": "agent_proposal_events",
+  "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+  "semantic_review": {
+    "excluded_semantic_checks": [
+      "visual_conformance",
+      "source_visual_claims",
+      "visual_disclaimer"
+    ],
+    "instructions": [
+      "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+      "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+      "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称未执行的绑定、动画或其他操作已完成；失败不得虚构因果。评测只覆盖技术证据、需求来源、执行状态、能力边界及因果说明。"
+    ],
+    "proposals": [
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 3,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"skill\": \"intent\"}",
+              "name": "skill"
+            },
+            "id": "call_00_RbNkScQp6oDUIobQ7bc86487",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 6,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"action\": \"generate\", \"intent\": {\"asset\": \"低模火山展示模型\", \"use\": \"教学展览展示\", \"style\": \"低多边形(low-poly)\", \"constraints\": [\"静态自包含GLB\", \"最多5000三角面\", \"文件不超过10MiB\"], \"max_triangles\": {\"mode\": \"set\", \"value\": 5000}, \"max_bytes\": {\"mode\": \"set\", \"value\": 10485760}, \"assumptions\": [\"默认采用灰色火山岩与橙红岩浆的简洁低模配色，属于制作选择而非用户明确要求\"], \"plan\": [\"加载generation skill\", \"以5000三角面为目标生成低模火山静态GLB\", \"技术核验三角面数与文件体积\", \"通过后交付\"]}}",
+              "name": "set_intent"
+            },
+            "id": "call_00_GPSgUReQwz21erXxftNy6073",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 9,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"skill\": \"generation\"}",
+              "name": "skill"
+            },
+            "id": "call_00_fzDe8nU9GK9sXpibXS831612",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 12,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"prompt\": \"A low-poly volcano display model for teaching exhibition. Static, self-contained single GLB. Simplified geometric volcano with cone shape, crater at the top, and a stylized lava flow down one side. Gray volcanic rock body with orange-red lava accents. Clean low-poly flat-shaded style. Maximum 5000 triangles, under 10 MiB.\", \"target_triangles\": 5000, \"texture_quality\": \"standard\", \"reason\": \"按已保存目标生成低模火山静态GLB，目标面数5000，控制在10MiB内。\"}",
+              "name": "generate_asset"
+            },
+            "id": "call_00_K0G4JAnfH896vABMVpZL7921",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 1,
+        "content": "",
+        "seq": 20,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"outcome\": \"delivery\", \"artifact_id\": \"8adb357b3368560e4cd383204fd57ceebcf86201fca0f702\", \"explanation\": \"已按目标生成低模火山静态GLB并交付。技术报告显示：文件有效性通过（静态、自包含、非空三角面GLB），实测4500/上限5000三角面，实测27656/上限10485760字节（约10MiB），均通过。目标采用了灰色火山岩与橙红岩浆的简洁低模配色（这是制作选择，非用户明确要求）。未进行视觉检查，火山的外观、配色、部件完整性与教学展览用途符合性无法据此确认。\"}",
+              "name": "finish_request"
+            },
+            "id": "call_00_TN4c0d2agODs721BLdyv4407",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    ],
+    "status": "pending"
+  },
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "为教学展览制作一个低模火山展示模型，静态自包含GLB，最多5000三角面、10MiB。"
+        },
+        "kind": "request",
+        "seq": 1,
+        "time": "2026-09-16T16:54:51.667892Z"
+      },
+      {
+        "data": {
+          "eino_input_hash": "0b24d7019c8146050242715e18a8b4e7c0918932f218947e4d1473f062368509",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 2,
+        "time": "2026-09-16T16:54:51.825684Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 139,
+              "prompt_token_details": {
+                "cached_tokens": 256
+              },
+              "prompt_tokens": 4188,
+              "total_tokens": 4327
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"intent\"}",
+                "name": "skill"
+              },
+              "id": "call_00_RbNkScQp6oDUIobQ7bc86487",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 139,
+            "prompt_token_details": {
+              "cached_tokens": 256
+            },
+            "prompt_tokens": 4188,
+            "total_tokens": 4327
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 3,
+        "time": "2026-09-16T16:54:53.98431Z"
+      },
+      {
+        "data": {
+          "name": "intent",
+          "prompt_version": "asset-agent-v4",
+          "version": "627d28ebed84eabe16db7f3d3644e50f016fab93b8f3ed2735a61e0b1f609640"
+        },
+        "kind": "skill_loaded",
+        "seq": 4,
+        "time": "2026-09-16T16:54:53.987896Z"
+      },
+      {
+        "data": {
+          "eino_input_hash": "e58e1dd9eec163e207bb776d3f8a42350acc0584e2477a449f0003ab8606b318",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 5,
+        "time": "2026-09-16T16:54:53.990092Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 967,
+              "prompt_token_details": {
+                "cached_tokens": 384
+              },
+              "prompt_tokens": 4927,
+              "total_tokens": 5894
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"action\": \"generate\", \"intent\": {\"asset\": \"低模火山展示模型\", \"use\": \"教学展览展示\", \"style\": \"低多边形(low-poly)\", \"constraints\": [\"静态自包含GLB\", \"最多5000三角面\", \"文件不超过10MiB\"], \"max_triangles\": {\"mode\": \"set\", \"value\": 5000}, \"max_bytes\": {\"mode\": \"set\", \"value\": 10485760}, \"assumptions\": [\"默认采用灰色火山岩与橙红岩浆的简洁低模配色，属于制作选择而非用户明确要求\"], \"plan\": [\"加载generation skill\", \"以5000三角面为目标生成低模火山静态GLB\", \"技术核验三角面数与文件体积\", \"通过后交付\"]}}",
+                "name": "set_intent"
+              },
+              "id": "call_00_GPSgUReQwz21erXxftNy6073",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 967,
+            "prompt_token_details": {
+              "cached_tokens": 384
+            },
+            "prompt_tokens": 4927,
+            "total_tokens": 5894
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 6,
+        "time": "2026-09-16T16:55:03.17649Z"
+      },
+      {
+        "data": {
+          "asset": "低模火山展示模型",
+          "assumptions": [
+            "默认采用灰色火山岩与橙红岩浆的简洁低模配色，属于制作选择而非用户明确要求"
+          ],
+          "constraint_sources": {
+            "max_bytes": {
+              "kind": "user_request",
+              "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148"
+            },
+            "max_triangles": {
+              "kind": "user_request",
+              "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148"
+            }
+          },
+          "constraint_version": "optional-v1",
+          "constraints": [
+            "静态自包含GLB",
+            "最多5000三角面",
+            "文件不超过10MiB"
+          ],
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "plan": [
+            "加载generation skill",
+            "以5000三角面为目标生成低模火山静态GLB",
+            "技术核验三角面数与文件体积",
+            "通过后交付"
+          ],
+          "reduction_mode": "",
+          "style": "低多边形(low-poly)",
+          "use": "教学展览展示"
+        },
+        "kind": "intent_and_plan",
+        "seq": 7,
+        "time": "2026-09-16T16:55:03.179908Z"
+      },
+      {
+        "data": {
+          "eino_input_hash": "7cee59bd8c4ea1a735b18077ce47b864b98c8c492ae66fa3b6d51a3cf074c85b",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 8,
+        "time": "2026-09-16T16:55:03.182272Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 53,
+              "prompt_token_details": {
+                "cached_tokens": 1920
+              },
+              "prompt_tokens": 6357,
+              "total_tokens": 6410
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"generation\"}",
+                "name": "skill"
+              },
+              "id": "call_00_fzDe8nU9GK9sXpibXS831612",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 53,
+            "prompt_token_details": {
+              "cached_tokens": 1920
+            },
+            "prompt_tokens": 6357,
+            "total_tokens": 6410
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 9,
+        "time": "2026-09-16T16:55:03.917936Z"
+      },
+      {
+        "data": {
+          "name": "generation",
+          "prompt_version": "asset-agent-v4",
+          "version": "d300e37070a135ee140ce748fd299e72f8d24bf83167147f6306b725db20a8d5"
+        },
+        "kind": "skill_loaded",
+        "seq": 10,
+        "time": "2026-09-16T16:55:03.92117Z"
+      },
+      {
+        "data": {
+          "eino_input_hash": "ed34df41f6e1d819c1bad06c44cead7dac5d80c0a576691c7ae900a0eb820f4c",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 11,
+        "time": "2026-09-16T16:55:03.923366Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 436,
+              "prompt_token_details": {
+                "cached_tokens": 1920
+              },
+              "prompt_tokens": 6882,
+              "total_tokens": 7318
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"prompt\": \"A low-poly volcano display model for teaching exhibition. Static, self-contained single GLB. Simplified geometric volcano with cone shape, crater at the top, and a stylized lava flow down one side. Gray volcanic rock body with orange-red lava accents. Clean low-poly flat-shaded style. Maximum 5000 triangles, under 10 MiB.\", \"target_triangles\": 5000, \"texture_quality\": \"standard\", \"reason\": \"按已保存目标生成低模火山静态GLB，目标面数5000，控制在10MiB内。\"}",
+                "name": "generate_asset"
+              },
+              "id": "call_00_K0G4JAnfH896vABMVpZL7921",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 436,
+            "prompt_token_details": {
+              "cached_tokens": 1920
+            },
+            "prompt_tokens": 6882,
+            "total_tokens": 7318
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 12,
+        "time": "2026-09-16T16:55:08.295744Z"
+      },
+      {
+        "data": {
+          "kind": "generate",
+          "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "reason": "按已保存目标生成低模火山静态GLB，目标面数5000，控制在10MiB内。",
+          "state": "running",
+          "target_triangles": 5000
+        },
+        "kind": "runtime_accepted",
+        "seq": 13,
+        "time": "2026-09-16T16:55:08.309397Z"
+      },
+      {
+        "data": {
+          "generation": 1,
+          "kind": "production",
+          "pause_id": "1b4dd75d0614fd6e9b3b465007d17f98b95b9c3e4f406924",
+          "ref_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702"
+        },
+        "kind": "checkpoint_committed",
+        "seq": 14,
+        "time": "2026-09-16T16:55:08.310001Z"
+      },
+      {
+        "data": {
+          "kind": "generate",
+          "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "params": {
+            "face_limit": 5000,
+            "prompt": "A low-poly volcano display model for teaching exhibition. Static, self-contained single GLB. Simplified geometric volcano with cone shape, crater at the top, and a stylized lava flow down one side. Gray volcanic rock body with orange-red lava accents. Clean low-poly flat-shaded style. Maximum 5000 triangles, under 10 MiB.\nRequired: 静态自包含GLB; 最多5000三角面; 文件不超过10MiB",
+            "texture_quality": "standard"
+          }
+        },
+        "kind": "tool_submitting",
+        "seq": 15,
+        "time": "2026-09-16T16:55:08.318362Z"
+      },
+      {
+        "data": {
+          "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "task_id": "eval-task-1"
+        },
+        "kind": "tool_submitted",
+        "seq": 16,
+        "time": "2026-09-16T16:55:08.319893Z"
+      },
+      {
+        "data": {
+          "credits": 0,
+          "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "progress": 100,
+          "status": "success",
+          "task_id": "eval-task-1"
+        },
+        "kind": "tripo_progress",
+        "seq": 17,
+        "time": "2026-09-16T16:55:08.322856Z"
+      },
+      {
+        "data": {
+          "artifact_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "report": {
+            "bytes": 27656,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 4500 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 27656 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "constraint_version": "optional-v1",
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 4500,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "eval-task-1"
+        },
+        "kind": "technical_report",
+        "seq": 18,
+        "time": "2026-09-16T16:55:08.330806Z"
+      },
+      {
+        "data": {
+          "eino_input_hash": "ee919293fac59fb1f51a5e7d23b01005a853cb1ed4abe98a42a6887810984c2e",
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v4",
+          "protocol_attempt": 1,
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 19,
+        "time": "2026-09-16T16:55:08.332641Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "response_meta": {
+            "finish_reason": "tool_calls",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 320,
+              "prompt_token_details": {
+                "cached_tokens": 1792
+              },
+              "prompt_tokens": 7829,
+              "total_tokens": 8149
+            }
+          },
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"outcome\": \"delivery\", \"artifact_id\": \"8adb357b3368560e4cd383204fd57ceebcf86201fca0f702\", \"explanation\": \"已按目标生成低模火山静态GLB并交付。技术报告显示：文件有效性通过（静态、自包含、非空三角面GLB），实测4500/上限5000三角面，实测27656/上限10485760字节（约10MiB），均通过。目标采用了灰色火山岩与橙红岩浆的简洁低模配色（这是制作选择，非用户明确要求）。未进行视觉检查，火山的外观、配色、部件完整性与教学展览用途符合性无法据此确认。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_TN4c0d2agODs721BLdyv4407",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 320,
+            "prompt_token_details": {
+              "cached_tokens": 1792
+            },
+            "prompt_tokens": 7829,
+            "total_tokens": 8149
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 20,
+        "time": "2026-09-16T16:55:12.102803Z"
+      },
+      {
+        "data": {
+          "artifact_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "deliver": true,
+          "explanation": "已按目标生成低模火山静态GLB并交付。技术报告显示：文件有效性通过（静态、自包含、非空三角面GLB），实测4500/上限5000三角面，实测27656/上限10485760字节（约10MiB），均通过。目标采用了灰色火山岩与橙红岩浆的简洁低模配色（这是制作选择，非用户明确要求）。未进行视觉检查，火山的外观、配色、部件完整性与教学展览用途符合性无法据此确认。",
+          "final": "已交付通过文件有效性与适用技术约束检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 5 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "artifact_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+            "evidence": "verified",
+            "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+            "reason": "delivered",
+            "source": "agent",
+            "status": "completed",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "seq": 21,
+        "time": "2026-09-16T16:55:12.106501Z"
+      },
+      {
+        "data": {
+          "expires": "2026-09-23T16:55:12.106209Z"
+        },
+        "kind": "conversation_idle",
+        "seq": 22,
+        "time": "2026-09-16T16:55:12.110177Z"
+      }
+    ],
+    "session": {
+      "artifacts": [
+        {
+          "id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+          "report": {
+            "bytes": 27656,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 4500 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 27656 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "constraint_version": "optional-v1",
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 4500,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "eval-task-1",
+          "url": "/api/sessions/283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148/artifacts/8adb357b3368560e4cd383204fd57ceebcf86201fca0f702"
+        }
+      ],
+      "clarifications": 0,
+      "created": "2026-09-16T16:54:51.667343Z",
+      "current_operation": {
+        "error": "",
+        "error_code": "",
+        "id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+        "input_version_id": "",
+        "kind": "generate",
+        "stage": "done",
+        "task_id": "eval-task-1"
+      },
+      "deadline": "2026-09-16T17:25:08.318214Z",
+      "ended": "2026-09-16T16:55:12.106209Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "1",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "5",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "0",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "交付引用已实测且技术通过的模型",
+            "name": "交付证据",
+            "status": "passed"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-23T16:55:12.106209Z",
+      "final": "已交付通过文件有效性与适用技术约束检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 5 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "generation": 1,
+      "id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148",
+      "input_assessment": null,
+      "intent": {
+        "asset": "低模火山展示模型",
+        "assumptions": [
+          "默认采用灰色火山岩与橙红岩浆的简洁低模配色，属于制作选择而非用户明确要求"
+        ],
+        "constraint_sources": {
+          "max_bytes": {
+            "kind": "user_request",
+            "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148"
+          },
+          "max_triangles": {
+            "kind": "user_request",
+            "run_id": "283dc31a1bd45902463eb7619ea48ebc6cf5f538a1f38148"
+          }
+        },
+        "constraint_version": "optional-v1",
+        "constraints": [
+          "静态自包含GLB",
+          "最多5000三角面",
+          "文件不超过10MiB"
+        ],
+        "max_bytes": 10485760,
+        "max_triangles": 5000,
+        "plan": [
+          "加载generation skill",
+          "以5000三角面为目标生成低模火山静态GLB",
+          "技术核验三角面数与文件体积",
+          "通过后交付"
+        ],
+        "reduction_mode": "",
+        "style": "低多边形(low-poly)",
+        "use": "教学展览展示"
+      },
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 5,
+      "outcome": {
+        "kind": "delivery",
+        "source": "agent"
+      },
+      "production": 1,
+      "prompt_version": "asset-agent-v4",
+      "question": "",
+      "request": "为教学展览制作一个低模火山展示模型，静态自包含GLB，最多5000三角面、10MiB。",
+      "result": {
+        "artifact_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+        "evidence": "verified",
+        "operation_id": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+        "reason": "delivered",
+        "source": "agent",
+        "status": "completed",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "8adb357b3368560e4cd383204fd57ceebcf86201fca0f702",
+      "status": "completed",
+      "wait_id": ""
+    },
+    "source": "real-llm-fixed-provider-evaluation"
+  },
+  "source": "real DeepSeek; fixed Provider; synthetic GLB; no real Tripo",
+  "started": "2026-09-16T16:54:51.667343Z",
+  "suite_acceptance": "pending_semantic_review"
+}

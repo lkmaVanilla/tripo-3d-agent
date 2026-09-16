@@ -25,7 +25,7 @@ import (
 
 // skillFiles 将版本化 Skill 随二进制发布，运行时无需读取可变的外部提示文件。
 //
-//go:embed skills/*.md skills/v2/*.md skills/v3/*.md
+//go:embed skills/*.md skills/v2/*.md skills/v3/*.md skills/v4/*.md
 var skillFiles embed.FS
 
 // PromptVersion 与 instruction 冻结为 49a1364 的 v1，不能指向当前最新版本。
@@ -144,7 +144,7 @@ func (m *countedModel) Generate(ctx context.Context, in []*schema.Message, opts 
 			return nil, err
 		}
 		code, reason := "", ""
-		if profile.Version == ConversationPromptVersion && len(msg.ToolCalls) == 0 {
+		if conversationVersion(profile.Version) && len(msg.ToolCalls) == 0 {
 			code, reason = "invalid_action", "模型没有通过工具提出问题或正式收尾，本次决策无法继续"
 		} else if len(msg.ToolCalls) > 1 {
 			code, reason = "tool_batch", "每轮只能执行一个工具；本轮未执行任何工具"
@@ -153,7 +153,7 @@ func (m *countedModel) Generate(ctx context.Context, in []*schema.Message, opts 
 			if err = m.s.event(m.id, "runtime_blocked", map[string]string{"code": code, "reason": reason}); err != nil {
 				return nil, err
 			}
-			if profile.Version != ConversationPromptVersion {
+			if !conversationVersion(profile.Version) {
 				return nil, fmt.Errorf("模型在同一轮提议多个工具，已停止本地执行")
 			}
 			if attempt != 0 {
@@ -187,7 +187,7 @@ func (m *countedModel) generateAttempt(ctx context.Context, originalInput, provi
 		return nil, Session{}, err
 	}
 	callEvidence := map[string]any{"model": "deepseek-v4-pro", "prompt_version": profile.Version, "thinking": "enabled", "reasoning_effort": "high", "provider_revision": "unavailable"}
-	if profile.Version == ConversationPromptVersion {
+	if conversationVersion(profile.Version) {
 		callEvidence["protocol_attempt"] = attempt + 1
 		callEvidence["eino_input_hash"] = tokenHash(jsonString(originalInput))
 		callEvidence["max_completion_tokens"] = 8192
@@ -218,14 +218,14 @@ func (m *countedModel) generateAttempt(ctx context.Context, originalInput, provi
 	}
 	// 只修改发给提供方的消息副本；恢复种子仍匹配 Eino 原始输入协议。
 	messages := append([]*schema.Message(nil), providerInput...)
-	if profile.Version == ConversationPromptVersion {
+	if conversationVersion(profile.Version) {
 		messages, err = cloneMessages(providerInput)
 		if err != nil {
 			return nil, Session{}, err
 		}
 	}
 	stateView := v.View()
-	if executionVersion(v) == ConversationPromptVersion {
+	if conversationVersion(executionVersion(v)) {
 		stateView = conversationModelView(v)
 	}
 	state := jsonString(stateView)
@@ -238,7 +238,7 @@ func (m *countedModel) generateAttempt(ctx context.Context, originalInput, provi
 	}
 	opts = append(opts, deepseek.WithExtraFields(map[string]any{"reasoning_effort": "high"}))
 	// v3 实测存在4096输出预算用尽却没有最终动作的响应；独立提高上限，旧profile不变。
-	if profile.Version == ConversationPromptVersion {
+	if conversationVersion(profile.Version) {
 		opts = append(opts, model.WithMaxTokens(8192))
 	}
 	msg, err := m.BaseChatModel.Generate(callCtx, messages, opts...)
@@ -324,7 +324,7 @@ func (b skillBackend) List(ctx context.Context) ([]skill.FrontMatter, error) {
 	}
 	out := []skill.FrontMatter{}
 	names := []string{"intent", "generation", "correction"}
-	if profile.Version == ConversationPromptVersion {
+	if conversationVersion(profile.Version) {
 		names = append(names, "asset-editing")
 	}
 	for _, name := range names {
@@ -420,17 +420,24 @@ func (s *Service) tools(id string, c *pauseCoordinator) ([]tool.BaseTool, error)
 		if strings.TrimSpace(in.Asset) == "" || len(in.Plan) == 0 {
 			return s.block(id, "invalid_intent", "需要明确资产和计划")
 		}
-		if in.MaxTriangles == 0 {
-			in.MaxTriangles = 5000
-			in.Assumptions = append(in.Assumptions, "未指定面数上限，默认5,000个三角面")
+		if profile.Version == OptionalPromptVersion {
+			if !optionalIntentValid(in) {
+				return s.block(id, "invalid_intent", "新版意图需要可选上限及来源")
+			}
+		} else {
+			if in.MaxTriangles == 0 {
+				in.MaxTriangles = 5000
+				in.Assumptions = append(in.Assumptions, "未指定面数上限，默认5,000个三角面")
+			}
+			if in.MaxBytes == 0 {
+				in.MaxBytes = 10 << 20
+				in.Assumptions = append(in.Assumptions, "未指定文件体积上限，默认10 MiB")
+			}
+			if in.MaxTriangles < 1 || in.MaxBytes < 1 {
+				return s.block(id, "invalid_intent", "技术上限必须为正数")
+			}
 		}
-		if in.MaxBytes == 0 {
-			in.MaxBytes = 10 << 20
-			in.Assumptions = append(in.Assumptions, "未指定文件体积上限，默认10 MiB")
-		}
-		if in.MaxTriangles < 1 || in.MaxBytes < 1 {
-			return s.block(id, "invalid_intent", "技术上限必须为正数")
-		}
+
 		// 旧检查点可能再次执行同一 set_intent；只允许原意图完全相同的幂等返回。
 		if c.resuming {
 			v, err := s.store.Get(ctx, id)
@@ -452,7 +459,7 @@ func (s *Service) tools(id string, c *pauseCoordinator) ([]tool.BaseTool, error)
 				return fmt.Errorf("意图已保存，不能重新定义验收上限")
 			}
 			v.Intent = in
-			if profile.Version == ConversationPromptVersion {
+			if conversationVersion(profile.Version) {
 				if proposedDraftID != "" && (v.IntentDraft == nil || v.IntentDraft.ID != proposedDraftID) {
 					return fmt.Errorf("需求差异草案已改变，不能接受过期意图")
 				}
@@ -530,7 +537,7 @@ func (s *Service) tools(id string, c *pauseCoordinator) ([]tool.BaseTool, error)
 	})); err != nil {
 		return nil, err
 	}
-	if profile.Version == ConversationPromptVersion {
+	if conversationVersion(profile.Version) {
 		return s.conversationTools(id, c, out, &proposedGoal, &proposedAssessment, &proposedDraftID)
 	}
 	return out, nil
@@ -582,7 +589,7 @@ func (s *Service) prepareProduction(ctx context.Context, id string, c *pauseCoor
 	if v.Production >= v.Limits.Submissions || v.ModelCalls >= v.Limits.Calls {
 		return s.block(id, "budget", "已无新增生产额度，必须停止并解释")
 	}
-	if p.FaceLimit < 500 || p.FaceLimit > 20000 || p.FaceLimit > v.Intent.MaxTriangles {
+	if !validTarget(v, p.FaceLimit) {
 		return s.block(id, "constraint", "目标面数必须在500至20000之间且不得超过已确认验收上限；无法满足则停止")
 	}
 	if p.TextureQuality == "" {
@@ -592,11 +599,11 @@ func (s *Service) prepareProduction(ctx context.Context, id string, c *pauseCoor
 		return s.block(id, "invalid_parameter", "贴图质量无效")
 	}
 	// 已有合格候选时禁止继续消耗生产次数，要求模型进入交付。
-	if len(v.Artifacts) > 0 && v.Artifacts[len(v.Artifacts)-1].Report.Passed {
+	if len(v.Artifacts) > 0 && goalSatisfied(v, v.Artifacts[len(v.Artifacts)-1].Report) {
 		return s.block(id, "unnecessary_production", "当前候选已通过检查，应直接交付")
 	}
 	if kind == "generate" {
-		if executionVersion(v) == ConversationPromptVersion && v.GoalKind != "generate" && v.GoalKind != "regenerate" {
+		if conversationVersion(executionVersion(v)) && v.GoalKind != "generate" && v.GoalKind != "regenerate" {
 			return s.block(id, "constraint", "当前目标没有授权文本生成，不能用生成代替加工")
 		}
 		if strings.TrimSpace(p.Prompt) == "" {
@@ -612,11 +619,11 @@ func (s *Service) prepareProduction(ctx context.Context, id string, c *pauseCoor
 	} else {
 		// 减面只能消费当前请求的有效模型，并且必须严格降低实测面数。
 		found := false
-		if executionVersion(v) == ConversationPromptVersion {
+		if conversationVersion(executionVersion(v)) {
 			if v.GoalKind != "decimate" && len(v.Artifacts) == 0 {
 				return s.block(id, "constraint", "当前目标未接受减面")
 			}
-			if v.InputAssessment != nil && v.InputAssessment.Passed && len(v.Artifacts) == 0 {
+			if inputSatisfiesGoal(v) && len(v.Artifacts) == 0 {
 				return s.block(id, "unnecessary_production", "已有输入满足本次技术目标，应解释无需加工")
 			}
 			version, e := s.productionVersion(ctx, v, artifactID)
@@ -627,7 +634,7 @@ func (s *Service) prepareProduction(ctx context.Context, id string, c *pauseCoor
 			found = true
 		}
 		for _, a := range v.Artifacts {
-			if executionVersion(v) != ConversationPromptVersion && a.ID == artifactID && a.Report.Valid && p.FaceLimit < a.Report.Triangles {
+			if !conversationVersion(executionVersion(v)) && a.ID == artifactID && a.Report.Valid && p.FaceLimit < a.Report.Triangles {
 				p.Input = a.SourceURL
 				found = true
 			}
@@ -639,7 +646,7 @@ func (s *Service) prepareProduction(ctx context.Context, id string, c *pauseCoor
 	// 不提前替换 Current：旧检查点仍可能需要重放上一操作的确定结果。
 	opID := newID()
 	draft := &PendingPause{Point: ResumePoint{Kind: "production", RefID: opID}, Operation: &Operation{ID: opID, Kind: kind, Params: p, Stage: "ready"}, Reason: reason}
-	if executionVersion(v) == ConversationPromptVersion {
+	if conversationVersion(executionVersion(v)) {
 		if kind == "decimate" {
 			version, e := s.productionVersion(ctx, v, artifactID)
 			if e != nil {

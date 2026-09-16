@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/lkmaVanilla/tripo-3d-agent/internal/asset"
 	"github.com/lkmaVanilla/tripo-3d-agent/internal/tripo"
 )
 
@@ -218,7 +217,7 @@ func (s *Service) production(ctx context.Context, id, opID string) (string, erro
 				return s.operationResult(v, *v.Current), nil
 			}
 			// 检查使用已保存意图的上限，不接受生成参数或模型解释放宽验收标准。
-			report := asset.Inspect(data, v.Intent.MaxTriangles, v.Intent.MaxBytes)
+			report := inspectIntent(data, v.Intent)
 			a := Artifact{ID: op.ID, TaskID: op.TaskID, SourceURL: task.Output.ModelURL, Report: report}
 			dir := filepath.Join(s.Config.DataDir, "artifacts", id)
 			if _, err = s.liveOperation(opCtx, id, opID); err != nil {
@@ -293,11 +292,14 @@ func (s *Service) operationFailure(id, opID string, cause error) (string, error)
 		if x.Current.Stage == "done" {
 			return errOperationRecorded
 		}
-		if executionVersion(*x) == ConversationPromptVersion && x.Current.Stage == "ready" && x.Current.InputVersionID != "" {
+		if conversationVersion(executionVersion(*x)) && x.Current.Stage == "ready" && x.Current.InputVersionID != "" {
 			x.Current.ErrorCode = "input_preparation_failed"
 		}
-		if executionVersion(*x) == ConversationPromptVersion && errors.Is(cause, errMissingModelOutput) {
+		if conversationVersion(executionVersion(*x)) && errors.Is(cause, errMissingModelOutput) {
 			x.Current.ErrorCode = "missing_model_output"
+		}
+		if optionalVersion(*x) && errors.Is(cause, tripo.ErrDownloadLimit) {
+			x.Current.ErrorCode = "download_resource_limit"
 		}
 		x.Current.Stage = "done"
 		x.Current.Error = s.redact(cause.Error())
@@ -314,7 +316,11 @@ func (s *Service) operationFailure(id, opID string, cause error) (string, error)
 func (s *Service) operationResult(v Session, op Operation) string {
 	for _, a := range v.Artifacts {
 		if a.ID == op.ArtifactID && a.ID == op.ID && a.TaskID == op.TaskID {
-			return jsonString(map[string]any{"artifact_id": a.ID, "task_id": a.TaskID, "report": a.Report, "remaining_submissions": v.Limits.Submissions - v.Production})
+			result := map[string]any{"artifact_id": a.ID, "task_id": a.TaskID, "report": a.Report, "remaining_submissions": v.Limits.Submissions - v.Production}
+			if optionalVersion(v) {
+				result["goal_satisfied"] = goalSatisfied(v, a.Report)
+			}
+			return jsonString(result)
 		}
 	}
 	message := op.Error
@@ -322,7 +328,7 @@ func (s *Service) operationResult(v Session, op Operation) string {
 		message = "操作缺少可验证的产物报告"
 	}
 	result := map[string]any{"error": message, "remaining_submissions": v.Limits.Submissions - v.Production}
-	if executionVersion(v) == ConversationPromptVersion && op.ErrorCode != "" {
+	if conversationVersion(executionVersion(v)) && op.ErrorCode != "" {
 		result["error_code"], result["input_version_id"] = op.ErrorCode, op.InputVersionID
 		if evidence := conversationFailureEvidence(op); evidence != nil {
 			result["failure_evidence"] = evidence

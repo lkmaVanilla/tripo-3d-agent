@@ -22,6 +22,8 @@ const Model = "v3.1-20260211"
 // DownloadLimit 是防止下载消耗过多内存的保护值，不是资产验收的体积上限。
 const DownloadLimit int64 = 150 * 1024 * 1024
 
+var ErrDownloadLimit = errors.New("产物超过本地检查的 150 MiB 下载保护上限")
+
 // Params 表达一次生产输入；FaceLimit 是生成目标，不能当作实测三角面数。
 type Params struct {
 	Prompt         string `json:"prompt"`
@@ -212,7 +214,7 @@ func (c *Client) Download(ctx context.Context, rawURL string) ([]byte, error) {
 		return nil, fmt.Errorf("产物下载 HTTP %d", res.StatusCode)
 	}
 	if res.ContentLength > DownloadLimit {
-		return nil, fmt.Errorf("产物超过本地检查的 150 MiB 下载保护上限")
+		return nil, ErrDownloadLimit
 	}
 	// 即使响应未提供或错误声明 Content-Length，也以实际读取量执行保护上限。
 	b, err := io.ReadAll(io.LimitReader(res.Body, DownloadLimit+1))
@@ -220,7 +222,7 @@ func (c *Client) Download(ctx context.Context, rawURL string) ([]byte, error) {
 		return nil, fmt.Errorf("产物下载不完整")
 	}
 	if int64(len(b)) > DownloadLimit {
-		return nil, fmt.Errorf("产物超过下载保护上限")
+		return nil, ErrDownloadLimit
 	}
 	return b, nil
 }

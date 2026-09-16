@@ -12,7 +12,7 @@
 
 Go + CloudWeGo Eino ADK + DeepSeek V4 Pro + Tripo API。支持匿名多会话、并发生产、WebSocket 时间线、模型预览和执行记录导出。
 
-**当前验证状态：变更验收完成，47/47。** 按用户授权，以[非视觉范围 `technical-only-v1`](docs/evaluations/2026-09-14-technical-only-evaluation-scope.md)重新审核第五批全部 84 例、344 条原始提议：基线解释 55/58（94.83%），连续创作解释 22/24（91.67%），两组意图和策略均超过 90%，关键错误均为 0，见[新审核报告](docs/evaluations/2026-09-14-technical-only-reassessment-results.md)。仍保留 6 项非关键失败，没有宣称全部案例零错误。本次没有新增模型或 Tripo 调用；结合[系统回归 8/8](docs/verification/input-binding-acceptance/system-checks.md)、浏览器、恢复与真实加工证据，完成 `10.6`、`11.2`，详见[阶段验证](docs/verification/conversation-workspace.md)。旧成绩完整保留，6 个能力规格已同步并完成归档，尚未部署。
+**历史连续创作阶段验证状态：变更验收完成，47/47。** 按用户授权，以[非视觉范围 `technical-only-v1`](docs/evaluations/2026-09-14-technical-only-evaluation-scope.md)重新审核第五批全部 84 例、344 条原始提议：基线解释 55/58（94.83%），连续创作解释 22/24（91.67%），两组意图和策略均超过 90%，关键错误均为 0，见[新审核报告](docs/evaluations/2026-09-14-technical-only-reassessment-results.md)。仍保留 6 项非关键失败，没有宣称全部案例零错误。本次没有新增模型或 Tripo 调用；结合[系统回归 8/8](docs/verification/input-binding-acceptance/system-checks.md)、浏览器、恢复与真实加工证据，完成 `10.6`、`11.2`，详见[阶段验证](docs/verification/conversation-workspace.md)。旧成绩完整保留，6 个能力规格已同步并完成归档，尚未部署。
 
 历史[两例局部复测](docs/evaluations/2026-09-14-critical-cases-retest.md)保留 `product/1` 通过、`missing_output/3` 未通过的原始结果。此后完成[缺文件反馈证据修复](docs/verification/2026-09-14-failure-evidence-fix.md)与[输入版本绑定修复](docs/verification/2026-09-14-input-binding-fix.md)，分别运行第四、第五批完整评测；修复和局部通过均不代替整批验收。
 
@@ -61,7 +61,7 @@ go build -o bin/tripo-agent ./cmd/server
 ## 演示步骤
 
 1. 提交“给我的俯视角游戏原型做一个低模木箱。”
-2. 若 Agent 发起澄清，回答卡通风格、静态 GLB、最多 5,000 个三角面、10 MiB；最多澄清三轮。
+2. 若 Agent 发起澄清，按需要补充用途和风格；最多澄清三轮。可明确要求最多 5,000 个三角面、10 MiB，也可不设置这两个上限。
 3. 查看确认意图、默认假设、计划、实际工具提交与异步进度。Agent 依据检查报告选择纠偏或结束，首次通过就直接交付。
 4. 查看最终候选的三类技术报告，旋转/缩放预览，下载 GLB，导出执行记录。可以切换查看此前未通过的候选。
 5. 在版本列表中明确引用 v1，发送“将这个模型减面至最多 3,000 个三角面”，得到新版本；再次引用 v1 提出另一目标时，父版本仍是 v1。预览其他模型不会改变引用。
@@ -85,7 +85,7 @@ go build -o bin/tripo-agent ./cmd/server
 | --- | --- |
 | `cmd/server` | 配置、启动和退出 |
 | `internal/app/agent.go` | Eino Runner、模型调用计数、工具约束和检查点中断/恢复 |
-| `internal/app/skills` | 按协议版本冻结的只读 Skill；v3 增加资产加工指引 |
+| `internal/app/skills` | 按协议版本冻结的只读 Skill；v3 增加资产加工指引，v4 支持可选技术上限 |
 | `internal/app/service.go` | FIFO 调度、生产状态、轮询、纠偏结果和停止/恢复 |
 | `internal/app/store.go`、`conversation_store.go`、`conversation_projection.go` | SQLite 会话/Run/版本、幂等消息、公开事件投影和 Eino 检查点 |
 | `internal/tripo` | Tripo 生成、内部 GLB 上传、减面、任务查询及下载适配 |
@@ -117,3 +117,9 @@ TRIPO_BROWSER_TEST=1 go test ./internal/app -run '^TestBrowserHarness$' -v -coun
 浏览器契约、真实 Go/Eino 配合固定 Provider 的操作记录及截图见[浏览器验证](docs/verification/conversation-browser/README.md)；真实供应商链路见[Tripo 验证](docs/verification/conversation-tripo/README.md)。升级前遵循[停写备份与回退说明](docs/conversation-upgrade.md)，数据库与模型目录须一起处理。
 
 项目范围以 [PROJECT_BRIEF.md](PROJECT_BRIEF.md)、[CONTEXT.md](CONTEXT.md) 和 [ADR](docs/adr/) 为准。现行行为见 [主规格](openspec/specs/)，本次规格与任务见 [add-conversational-asset-workspace 归档](openspec/changes/archive/2026-09-14-add-conversational-asset-workspace/)。历史 [first-asset-demo](openspec/changes/first-asset-demo/) 保持原验收记录，不随本变更自动归档。
+
+## 可选技术约束变更
+
+新版聊天目标不再强制补全 5,000 面、10 MiB；仅验收用户明确或继承的上限。没有上限仍会检查文件并展示实测值，下载与解析保护保持。旧执行和旧单请求 API 保留原协议。实施及验证进度见 [任务清单](openspec/changes/make-asset-limits-optional/tasks.md)，不能以历史 84 次评测代替新版结果。
+
+2026-09-17 已完成新版 **84 次主评测 + 18 次补充评测**及全部 **423 条原始提议**的非视觉审核，四组分别达到原定门槛，关键错误均为 0；仍保留 1 次响应截断导致的失败，详见[本次结果](docs/evaluations/2026-09-17-optional-v4-evaluation-results.md)。随后完成[真实 Tripo 无上限生成与相对减面](docs/verification/optional-asset-limits/tripo-live.md)，实测 **11,344→6,544 面**，旧版本与父关系验证通过。当前进度 **24/24**，变更验收完成，尚未提交、归档或部署。

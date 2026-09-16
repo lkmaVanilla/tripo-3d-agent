@@ -1,0 +1,48 @@
+{"output":"/var/folders/q3/mjkwj6m52j96mlt63l4bgh940000gn/T/tripo-go-workspace-browser-FZk2jI","conversationID":"280f188d658bbcd494196a34a90dfc088a44d4815e5f23cd","checks":["real-eino-question-answer-and-busy-draft","real-intent-review-precedes-accepted-plan-and-preserves-source-limits","real-go-three-runs-4500-3000-2000-and-v1-branch-parent","real-answer-zero-production-no-version","refresh-and-authenticated-glb-preview","conversation-and-individual-run-export-match","stop-preserves-history-and-conversation-continues","real-websocket-cross-run-reconnect","legacy-session-hash-opens-wrapped-conversation","390px-responsive-workspace","optional-clear-inherits-input-retains-history-and-renders-null-and-not-applicable"],"errors":[],"failure":"/var/folders/q3/mjkwj6m52j96mlt63l4bgh940000gn/T/tripo-go-workspace-browser-FZk2jI/failure.png"}
+/opt/homebrew/lib/node_modules/playwright/lib/matchers/expect.js:213
+        return matcher.call(target, ...args);
+                       ^
+
+A [Error]: expect(locator).toContainText(expected) failed
+
+Locator: locator('#connection')
+Expected substring: "重连"
+Received string:    "进度已连接"
+Timeout: 10000ms
+
+Call log:
+  - Expect "to.have.text" with timeout 10000ms
+  - waiting for locator('#connection')
+    13 × locator resolved to <span id="connection" class="connection">进度已连接</span>
+       - unexpected value "进度已连接"
+
+    at Proxy.<anonymous> (/opt/homebrew/lib/node_modules/playwright/lib/matchers/expect.js:213:24)
+    at file:///Users/lk_ma/code/tripo-3d-agent/internal/web/tests/workspace.go-browser.mjs:45:270 {
+  matcherResult: {
+    name: 'toContainText',
+    expected: '重连',
+    message: 'expect(locator).toContainText(expected) failed\n' +
+      '\n' +
+      "Locator: locator('#connection')\n" +
+      'Expected substring: "重连"\n' +
+      'Received string:    "进度已连接"\n' +
+      'Timeout: 10000ms\n' +
+      '\n' +
+      'Call log:\n' +
+      '  - Expect "to.have.text" with timeout 10000ms\n' +
+      "  - waiting for locator('#connection')\n" +
+      '    13 × locator resolved to <span id="connection" class="connection">进度已连接</span>\n' +
+      '       - unexpected value "进度已连接"\n',
+    pass: false,
+    actual: '进度已连接',
+    log: [
+      '  - Expect "to.have.text" with timeout 10000ms',
+      "  - waiting for locator('#connection')",
+      '    13 × locator resolved to <span id="connection" class="connection">进度已连接</span>',
+      '       - unexpected value "进度已连接"'
+    ],
+    timeout: 10000
+  }
+}
+
+Node.js v22.22.1

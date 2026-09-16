@@ -5,7 +5,8 @@
     python3 scripts/summarize-conversation-evaluation.py EVIDENCE_DIR --output NEW_FILE
     python3 scripts/summarize-conversation-evaluation.py EVIDENCE_DIR --check-against SUMMARY
 
-校验 manifest 声明的 20 + 8 场景、每例 3 次，共 84 个目标。
+校验 current-v3/current-v4 的 20 + 8 场景（三次，共84个目标）；
+optional-v4 补充组为 3 + 3 场景（三次，共18个目标），独立汇总。
 semantic-review.json 必须逐个覆盖完整目标，
 每个维度提供 passed/failed，只有经审核的未知提交解释可用 not_applicable。
 自动失败与语义失败取交集，正式结果或 Runtime 恢复不能覆盖原始提议的失败。
@@ -245,12 +246,16 @@ def aggregate(rows, thresholds):
 def summarize(directory):
     directory = Path(directory)
     manifest = load_json(directory / "manifest.json")
-    require(manifest.get("evaluation_profile") == "current-v3", "此汇总器只处理 current-v3 独立评测批次")
+    profile = manifest.get("evaluation_profile")
+    require(profile in ("current-v3", "current-v4", "optional-v4"), "未知独立评测 profile")
     expected = expected_records(manifest)
     suite_sizes = {suite: sum(case["Suite"] == suite for case in manifest["cases"])
                    for suite in {case["Suite"] for case in manifest["cases"]}}
-    require(manifest["repetitions"] == 3 and suite_sizes == {"baseline-current-v3": 20, "conversation-v3": 8},
-            "manifest 必须包含当前 v3 的 20 + 8 场景、每例 3 次，共 84 个目标")
+    expected_sizes = {"current-v3": {"baseline-current-v3": 20, "conversation-v3": 8},
+                      "current-v4": {"baseline-current-v4": 20, "conversation-v4": 8},
+                      "optional-v4": {"baseline-optional-v4": 3, "conversation-optional-v4": 3}}[profile]
+    require(manifest["repetitions"] == 3 and suite_sizes == expected_sizes,
+            f"manifest 必须覆盖两组各三次、共 {sum(expected_sizes.values()) * 3} 个目标")
     actual = raw_record_names(directory)
     same_keys(actual, set(expected), "原始记录覆盖不完整")
     reviewed = load_json(directory / "semantic-review.json")
@@ -284,6 +289,9 @@ def summarize(directory):
     if rubric is not None:
         result["scope"] = TECHNICAL_ONLY_SCOPE
         result["evaluation_rubric"] = rubric
+    if profile != "current-v3":
+        result["scope"] = result["scope"].replace("当前v3", "当前v4")
+        result["evaluation_profile"] = profile
     return result
 
 

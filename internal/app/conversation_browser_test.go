@@ -48,6 +48,9 @@ func (m conversationBrowserModel) Generate(ctx context.Context, in []*schema.Mes
 			_ = json.Unmarshal([]byte(strings.Split(msg.Content[i+15:], "</runtime_state>")[0]), &state)
 		}
 	}
+	if strings.Contains(state.Request, "可选上限验收") {
+		return (optionalScript{}).Generate(ctx, in, opts...)
+	}
 	if strings.Contains(state.Request, "澄清") && state.Clarifications == 0 {
 		return protocolProposal("ask_user", newID(), questionInput{Question: "请确认本次模型的用途和风格。"}), nil
 	}

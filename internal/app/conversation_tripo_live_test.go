@@ -150,6 +150,7 @@ type tripoLiveInputModel struct{}
 
 func (m tripoLiveInputModel) Generate(_ context.Context, in []*schema.Message, _ ...model.Option) (*schema.Message, error) {
 	var state struct {
+		Version    string        `json:"prompt_version"`
 		Request    string        `json:"request"`
 		Intent     *Intent       `json:"intent"`
 		Input      *AssetVersion `json:"input_version"`
@@ -180,7 +181,7 @@ func (m tripoLiveInputModel) Generate(_ context.Context, in []*schema.Message, _
 				target = 3000
 			}
 		}
-		return call("set_intent", conversationIntentInput{Action: action, Intent: Intent{Asset: "木箱", Use: "产品展示", MaxTriangles: target, MaxBytes: 10 << 20, Plan: []string{"按明确输入制作并技术检查"}}})
+		return call("set_intent", testIntentForVersion(state.Version, action, Intent{Asset: "木箱", Use: "产品展示", MaxTriangles: target, MaxBytes: 10 << 20, Plan: []string{"按明确输入制作并技术检查"}}))
 	}
 	if len(state.Artifacts) > 0 {
 		a := state.Artifacts[len(state.Artifacts)-1]

@@ -143,7 +143,7 @@ func TestConversationInputBindingClarificationResumesSameRun(t *testing.T) {
 						return nil, err
 					}
 					if state.Intent == nil {
-						return protocolProposal("set_intent", newID(), conversationIntentInput{Action: "decimate", Intent: Intent{Asset: "茶壶", Use: "产品展示", MaxTriangles: 2000, MaxBytes: 10 << 20, Plan: []string{"先核对所选输入是否需要减面"}}}), nil
+						return protocolProposal("set_intent", newID(), testIntentForVersion(OptionalPromptVersion, "decimate", Intent{Asset: "茶壶", Use: "产品展示", MaxTriangles: 2000, MaxBytes: 10 << 20, Plan: []string{"先核对所选输入是否需要减面"}})), nil
 					}
 					if state.Assessment == nil || !state.Assessment.Passed || state.Assessment.Triangles != 12 {
 						return nil, fmt.Errorf("selected input assessment was not evaluated: %+v", state.Assessment)
@@ -199,19 +199,25 @@ func TestConversationInputBindingAllowsCurrentRunCorrection(t *testing.T) {
 			if err = checkBindingTestState(state, "not_selected", ""); err != nil || state.Input != nil {
 				return nil, fmt.Errorf("current output became historical selection: %+v: %v", state.Input, err)
 			}
+			if state.Intent == nil {
+				return protocolProposal("set_intent", newID(), optionalIntentInput{Action: "generate", Intent: optionalIntentFields{Asset: "木箱", Use: "产品展示", Plan: []string{"生成并检查，超限则减面"}, MaxTriangles: &LimitChange{Mode: "set", Value: number(4500)}}}), nil
+			}
 			if len(state.Artifacts) > 0 && !state.Artifacts[len(state.Artifacts)-1].Report.Passed {
 				return protocolProposal("decimate_asset", newID(), decimationInput{ArtifactID: state.Artifacts[len(state.Artifacts)-1].ID, TargetTriangles: 4000, Reason: "当前候选实测超限，在原生成目标内减面。"}), nil
 			}
 			return (conversationScript{}).Generate(ctx, in)
 		}}, nil
 	}
-	_, run, err := s.CreateAssetConversation(context.Background(), "owner", "产品展示木箱", "first")
+	_, run, err := s.CreateAssetConversation(context.Background(), "owner", "产品展示木箱，面数最多4500，文件体积不限", "first")
 	if err != nil {
 		t.Fatal(err)
 	}
 	done := waitSession(t, s, run.ID, func(v Session) bool { return v.Terminal() })
 	if done.Status != "completed" || done.GoalKind != "generate" || done.InputVersion != nil || done.Clarifications != 0 || done.Production != 2 || len(done.Artifacts) != 2 || done.Artifacts[1].Report.Triangles != 4000 {
 		t.Fatalf("unselected initial input blocked legal generation/correction: %s", jsonString(conversationRunView(done)))
+	}
+	if done.Intent.Optional == nil || done.Intent.Optional.MaxBytes != nil || done.Artifacts[0].Report.Passed || *done.Intent.Optional.MaxTriangles != 4500 {
+		t.Fatal("correction changed accepted optional constraints")
 	}
 	assertStoreEventCount(t, s.store, run.ID, "runtime_blocked", 0)
 }

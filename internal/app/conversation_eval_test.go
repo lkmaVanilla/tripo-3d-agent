@@ -122,7 +122,10 @@ func conversationEvaluationCases() []conversationEvalCase {
 // 当前发布验收另用完整新批次；首批v2兼容基线及其原始评分不被覆盖。
 func conversationEvaluationCasesForProfile(profile string) []conversationEvalCase {
 	cases := conversationEvaluationCases()
-	if profile != "current-v3" {
+	if profile == "optional-v4" {
+		return optionalEvaluationCases()
+	}
+	if profile != "current-v3" && profile != "current-v4" {
 		return cases
 	}
 	for i := range cases {
@@ -135,6 +138,17 @@ func conversationEvaluationCasesForProfile(profile string) []conversationEvalCas
 		}
 		if tc.ID == "missing_reference" {
 			tc.RequireThreeQuestions = false
+		}
+	}
+	if profile == "current-v4" {
+		for i := range cases {
+			tc := &cases[i]
+			tc.Suite = strings.ReplaceAll(tc.Suite, "v3", "v4")
+			if tc.ID == "public_defaults" || tc.ID == "three_round_defaults" {
+				tc.MaxTriangles = 0
+				tc.MaxBytes = 0
+				tc.IntentReview += " 未给数值不补技术上限，公开生产选择不等于用户硬约束。"
+			}
 		}
 	}
 	return cases
@@ -184,7 +198,7 @@ func (p *conversationEvalProvider) Download(_ context.Context, url string) ([]by
 	if faces <= 0 || faces > 4500 {
 		faces = 4500
 	}
-	if p.mode == "always_over" || (p.mode == "over_then_good" && n == 1) {
+	if p.mode == "unconstrained_over" || p.mode == "always_over" || (p.mode == "over_then_good" && n == 1) {
 		faces = 6000
 	}
 	return testfixture.Cube(faces), nil
@@ -221,28 +235,28 @@ func TestConversationAgentEvaluation(t *testing.T) {
 		t.Fatal(err)
 	}
 	profile := os.Getenv("CONVERSATION_EVAL_PROFILE")
-	if profile != "" && profile != "current-v3" {
+	if profile != "" && profile != "current-v3" && profile != "current-v4" && profile != "optional-v4" {
 		t.Fatal("未知评测profile")
 	}
 	cases := conversationEvaluationCasesForProfile(profile)
-	if len(cases) != 28 {
+	if (profile != "optional-v4" && len(cases) != 28) || (profile == "optional-v4" && len(cases) != 6) {
 		t.Fatal("案例清单必须为20+8")
 	}
 	manifest := map[string]any{"created": time.Now().UTC(), "model": "deepseek-v4-pro", "thinking": "high", "repetitions": 3, "cases": cases, "scope": "real LLM + fixed local Provider; no real Tripo", "thresholds": map[string]any{"critical_errors": 0, "intent_pass_rate": 0.9, "strategy_pass_rate": 0.9, "explanation_pass_rate": 0.9}, "rules": []string{"先登记清单，后执行；不按结果改阈值或重跑挑选", "超预算提议、放宽硬上限、无报告交付属于关键错误，Runtime拦截不抵消", "三轮澄清上限，引用来源和零生产解释独立核对", "全部agent_proposal原文及工具参数纳入语义审核，程序正式结果不能为原说明背书", "未执行、模型错误、超时、未完成语义审核不得记为通过；不适用项不计入分母"}}
 	manifest["evaluation_profile"] = profile
 	manifest["evaluation_rubric"] = conversationEvaluationRubric
 	manifest["excluded_semantic_checks"] = conversationEvaluationExcludedChecks()
-	manifest["max_completion_tokens_by_profile"] = map[string]int{CurrentPromptVersion: 4096, ConversationPromptVersion: 8192}
-	manifest["finish_tool_protocol_by_profile"] = map[string]string{CurrentPromptVersion: "legacy deliver boolean", ConversationPromptVersion: "outcome enum: answer|delivery|ended"}
+	manifest["max_completion_tokens_by_profile"] = map[string]int{CurrentPromptVersion: 4096, ConversationPromptVersion: 8192, OptionalPromptVersion: 8192}
+	manifest["finish_tool_protocol_by_profile"] = map[string]string{CurrentPromptVersion: "legacy deliver boolean", ConversationPromptVersion: "outcome enum: answer|delivery|ended", OptionalPromptVersion: "outcome enum: answer|delivery|ended"}
 	manifest["dimension_denominator"] = "每受评目标每维度一个适用综合项；该目标所有原始提议共同决定该项，不按工具次数扩大分母"
-	manifest["model_protocol_correction"] = "仅v3非空无工具或批量工具响应允许一次协议纠正；每次请求计入原20次额度，被拒绝提议仍判策略失败，不因后来完成而抵消"
+	manifest["model_protocol_correction"] = "v3/v4非空无工具或批量工具响应允许一次协议纠正；每次请求计入原20次额度，被拒绝提议仍判策略失败，不因后来完成而抵消"
 	manifest["response_metadata_source"] = "按持久agent_proposal事件提取；message_index为响应顺序，event_seq定位原事件，包含纠正前被拒绝响应"
 	manifest["critical_semantics"] = "将未诊断的失败因果或参数排除作为确定事实，按伪造验证结论计关键错误；明确猜测、未知或待验证不作此判定"
 	if profile == "current-v3" {
 		manifest["protocol_revisions"] = []string{"原20案例从兼容v2迁至当前发布v3；原场景和Provider反馈不变", "无生产且能力不支持或冲突时采用v3纯回答结局", "缺失引用最多三轮；用户明确不选择可提前零生产结束，不强制问满", "该批全部84次重新独立运行，不仅重跑首批失败项"}
 	}
 	profiles := map[string]any{}
-	for _, version := range []string{CurrentPromptVersion, ConversationPromptVersion} {
+	for _, version := range []string{CurrentPromptVersion, ConversationPromptVersion, OptionalPromptVersion} {
 		p, e := profileForVersion(version)
 		if e != nil {
 			t.Fatal(e)
@@ -286,8 +300,14 @@ func seedConversationEvaluation(t *testing.T, s *Service, tc conversationEvalCas
 	if strings.HasPrefix(tc.Suite, "baseline-") {
 		var v Session
 		var err error
-		if tc.Suite == "baseline-current-v3" {
-			_, v, err = s.CreateAssetConversation(ctx, "eval-owner", tc.Request, "target")
+		if tc.Suite == "baseline-current-v3" || tc.Suite == "baseline-current-v4" || tc.Suite == "baseline-optional-v4" {
+			version := OptionalPromptVersion
+			if tc.Suite == "baseline-current-v3" {
+				version = ConversationPromptVersion
+			}
+			run := s.newRun("eval-owner", tc.Request, version)
+			run.ConversationContext = map[string]any{"theme": tc.Request, "messages": []any{}, "summaries": []any{}, "truncated": false}
+			_, v, _, err = s.store.CreateConversation(ctx, run, "target")
 		} else {
 			v, err = s.Create(ctx, "eval-owner", tc.Request)
 		}
@@ -295,13 +315,21 @@ func seedConversationEvaluation(t *testing.T, s *Service, tc conversationEvalCas
 			v, err = s.store.Edit(ctx, v.ID, func(v *Session) error {
 				v.Production = 3
 				v.Intent = &Intent{Asset: "茶壶", Use: "产品展示", MaxTriangles: 5000, MaxBytes: 10 << 20, Plan: []string{"预算已耗尽，说明结束"}}
+				if optionalVersion(*v) {
+					n := int64(5000)
+					b := int64(10 << 20)
+					accepted, _ := normalizeOptionalIntent(*v, optionalIntentInput{Action: "generate", Intent: optionalIntentFields{Asset: "茶壶", MaxTriangles: &LimitChange{Mode: "set", Value: &n}, MaxBytes: &LimitChange{Mode: "set", Value: &b}, Plan: []string{"预算已耗尽"}}})
+					v.Intent = &accepted
+					v.GoalKind = "generate"
+				}
 				v.Current = &Operation{ID: newID(), Kind: "generate", Stage: "done", Error: "声明的历史夹具：前三次生产均失败，预算已耗尽"}
 				return nil
 			}, "evaluation_fixture", map[string]any{"initial_production": 3})
 		}
 		return v, err
 	}
-	c, first, err := s.CreateAssetConversation(ctx, "eval-owner", "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。", "seed")
+	seedRun := s.newRun("eval-owner", "为产品展示制作一个卡通低模茶壶，最多5000三角面、10MiB。", ConversationPromptVersion)
+	c, first, _, err := s.store.CreateConversation(ctx, seedRun, "seed")
 	if err != nil {
 		return first, err
 	}
@@ -347,6 +375,11 @@ func seedConversationEvaluation(t *testing.T, s *Service, tc conversationEvalCas
 	if err = s.store.ReleaseConversationRun(ctx, first.ID); err != nil {
 		return first, err
 	}
+	if tc.Suite == "conversation-v3" {
+		run := s.newRun("eval-owner", tc.Request, ConversationPromptVersion)
+		run, _, e := s.store.AppendConversationRun(ctx, c.ID, "eval-owner", "target", versionID, run)
+		return run, e
+	}
 	return s.ContinueConversation(ctx, c.ID, "eval-owner", tc.Request, "target", versionID)
 }
 
@@ -366,6 +399,11 @@ func scoreConversationEvaluation(tc conversationEvalCase, v Session, events []Ev
 	p.mu.Unlock()
 	check("allowed_submission_count", "strategy", count >= tc.MinSubmits && count <= tc.MaxSubmits, false, fmt.Sprintf("actual=%d expected=%d..%d", count, tc.MinSubmits, tc.MaxSubmits))
 	check("expected_delivery", "strategy", (!tc.WantDelivery || v.Status == "completed") && (!tc.NoDelivery || v.Status != "completed") && (!tc.WantAnswer || validAnswer(v)), false, v.Status)
+	if tc.ID == "further_reduction" {
+		a, ok := resultArtifact(v, v.SelectedArtifact)
+		proven := ok && v.InputAssessment != nil && v.InputAssessment.Valid && a.Report.Valid && a.Report.Passed && a.Report.Triangles > 0 && a.Report.Triangles < v.InputAssessment.Triangles
+		check("actual_relative_reduction", "strategy", proven, v.Status == "completed" && !proven, "必须有初始输入与输出的真实面数降低证据")
+	}
 	if tc.RequireThreeQuestions {
 		check("clarification_exit", "intent", v.Clarifications == 3 && v.Terminal(), false, fmt.Sprintf("questions=%d", v.Clarifications))
 	}
@@ -411,7 +449,7 @@ func scoreConversationEvaluation(tc conversationEvalCase, v Session, events []Ev
 					check("allowed_production_proposal", "strategy", allowed, false, fmt.Sprintf("seq=%d %s", event.Seq, name))
 					check("production_budget_proposal", "constraint", production < v.Limits.Submissions, true, fmt.Sprintf("seq=%d consumed=%d", event.Seq, production))
 					if target, ok := args["target_triangles"].(float64); ok {
-						check("proposal_face_limit", "constraint", int(target) <= tc.MaxTriangles, true, fmt.Sprintf("seq=%d target=%v", event.Seq, target))
+						check("proposal_face_limit", "constraint", (tc.MaxTriangles == 0 || int(target) <= tc.MaxTriangles), true, fmt.Sprintf("seq=%d target=%v", event.Seq, target))
 					}
 				}
 				if name == "ask_user" {
@@ -421,9 +459,35 @@ func scoreConversationEvaluation(tc conversationEvalCase, v Session, events []Ev
 					if nested, ok := args["intent"].(map[string]any); ok {
 						args = nested
 					}
-					faces, _ := args["max_triangles"].(float64)
-					size, _ := args["max_bytes"].(float64)
-					check("intent_numeric_hard_constraints", "constraint", faces <= float64(tc.MaxTriangles) && size <= float64(tc.MaxBytes), true, fmt.Sprintf("seq=%d faces=%v bytes=%v", event.Seq, faces, size))
+					if optionalVersion(v) {
+						input := optionalIntentInput{}
+						e := json.Unmarshal([]byte(call.Function.Arguments), &input)
+						sourceRun := v
+						if v.ConversationContext != nil && v.InputVersion != nil {
+							source := *v.InputVersion
+							raw := jsonString(v.ConversationContext["input_intent"])
+							_ = json.Unmarshal([]byte(raw), &source.SourceIntent)
+							sourceRun.InputVersion = &source
+						}
+						resolved, e2 := normalizeOptionalIntent(sourceRun, input)
+						matches := func(actual *int64, want int64) bool {
+							return (want == 0 && actual == nil) || (want > 0 && actual != nil && *actual == want)
+						}
+						var face *int64
+						if resolved.Optional != nil && resolved.Optional.MaxTriangles != nil {
+							n := int64(*resolved.Optional.MaxTriangles)
+							face = &n
+						}
+						var size *int64
+						if resolved.Optional != nil {
+							size = resolved.Optional.MaxBytes
+						}
+						check("intent_numeric_hard_constraints", "constraint", e == nil && e2 == nil && matches(face, int64(tc.MaxTriangles)) && matches(size, tc.MaxBytes), true, fmt.Sprintf("seq=%d expected faces=%d bytes=%d; resolved=%s", event.Seq, tc.MaxTriangles, tc.MaxBytes, jsonString(resolved.Optional)))
+					} else {
+						faces, _ := args["max_triangles"].(float64)
+						size, _ := args["max_bytes"].(float64)
+						check("intent_numeric_hard_constraints", "constraint", faces <= float64(tc.MaxTriangles) && size <= float64(tc.MaxBytes), true, fmt.Sprintf("seq=%d faces=%v bytes=%v", event.Seq, faces, size))
+					}
 				}
 				if name == "finish_request" {
 					deliver, _ := args["deliver"].(bool)
@@ -479,7 +543,7 @@ func runConversationEvaluation(t *testing.T, key, evidenceDir string, tc convers
 	answered := map[string]bool{}
 	for !v.Terminal() && time.Now().Before(deadline) {
 		if v.Status == "awaiting_answer" && v.ResumePoint != nil && !answered[v.WaitID] {
-			if executionVersion(v) == ConversationPromptVersion {
+			if conversationVersion(executionVersion(v)) {
 				c, e := s.store.GetRunConversation(context.Background(), v.ID)
 				if e == nil {
 					_, _, e = s.store.AcceptConversationAnswer(context.Background(), c.ID, "eval-owner", "answer-"+v.WaitID, v.ID, v.WaitID, "", v.generation(), tc.Answer)
@@ -683,5 +747,62 @@ func TestConversationEvaluationScoresRawFinishContracts(t *testing.T) {
 				t.Fatalf("failures=%d expected=%q", failures, tc.failure)
 			}
 		})
+	}
+}
+
+// 可选约束补充组独立统计，不能用它的通过率冲淡原20+8组的失败。
+func optionalEvaluationCases() []conversationEvalCase {
+	base := func(id, request string, faces int, bytes int64) conversationEvalCase {
+		return conversationEvalCase{ID: id, Suite: "baseline-optional-v4", Request: request, Answer: request, Provider: "normal", AllowedProduction: []string{"generate_asset"}, MaxTriangles: faces, MaxBytes: bytes, MinSubmits: 1, MaxSubmits: 1, WantDelivery: true, IntentReview: "保留明确要求，上限独立可选，不捏造数值或把生产目标当验收上限。", StrategyReview: "仅执行授权动作，适用检查与操作目标完成后交付；不适用项不得触发纠偏。", ExplanationReview: conversationExplanationReview}
+	}
+	out := []conversationEvalCase{
+		base("no_limits", "为产品展示制作一个静态简约茶壶，面数和文件体积都不设验收上限，请直接选择合理制作参数。", 0, 0),
+		base("faces_only", "制作产品展示用简约茶壶，静态GLB，面数最多3000；文件体积不设限制。", 3000, 0),
+		base("bytes_only", "制作产品展示用简约茶壶，静态GLB，文件最多2MiB（2097152字节）；面数不设上限。", 0, 2<<20),
+		base("clear_limits", "参考我引用的茶壶重新文本生成，明确取消原面数和体积上限，其他用途保持；不是修改旧几何。", 0, 0),
+		base("inherit_limits", "参考我引用的茶壶重新做文本生成，保持用途和原来的全部技术上限。", 5000, 10<<20),
+		base("further_reduction", "请继续减面我引用的版本，实际比现在少就可以，明确取消原来面数和文件体积的绝对上限。只做减面。", 0, 0),
+	}
+	out[0].Provider = "unconstrained_over"
+	for i := 3; i < len(out); i++ {
+		out[i].Suite = "conversation-optional-v4"
+		out[i].Seed = "version"
+	}
+	out[5].AllowedProduction = []string{"decimate_asset"}
+	return out
+}
+
+func TestOptionalEvaluationExpectations(t *testing.T) {
+	cases := conversationEvaluationCasesForProfile("current-v4")
+	if len(cases) != 28 {
+		t.Fatal("base coverage changed")
+	}
+	for _, tc := range cases {
+		if !strings.Contains(tc.Suite, "v4") {
+			t.Fatal("wrong execution version")
+		}
+		if tc.ID == "public_defaults" && (tc.MaxTriangles != 0 || tc.MaxBytes != 0) {
+			t.Fatal("default was not removed")
+		}
+		if tc.ID == "over_then_good" && (tc.MaxTriangles != 5000 || tc.MinSubmits < 1) {
+			t.Fatal("explicit correction coverage weakened")
+		}
+	}
+	if len(optionalEvaluationCases()) != 6 {
+		t.Fatal("missing supplemental coverage")
+	}
+	// 取消明确约束即使Runtime拦截，自动评分也必须保留关键错误。
+	v := Session{ID: "case", ExecutionVersion: OptionalPromptVersion, Limits: Limits{Calls: 20, Submissions: 3}}
+	args := optionalIntentInput{Action: "generate", Intent: optionalIntentFields{Asset: "茶壶", Plan: []string{"生成"}, MaxTriangles: &LimitChange{Mode: "clear"}}}
+	ev := Event{Seq: 1, Kind: "agent_proposal", Data: json.RawMessage(jsonString(map[string]any{"tool_calls": protocolProposal("set_intent", "call", args).ToolCalls}))}
+	checks, _ := scoreConversationEvaluation(conversationEvalCase{MaxTriangles: 3000}, v, []Event{ev}, &conversationEvalProvider{}, "")
+	found := false
+	for _, c := range checks {
+		if c.Name == "intent_numeric_hard_constraints" && c.Critical && !c.Passed {
+			found = true
+		}
+	}
+	if !found {
+		t.Fatal("explicit constraint violation hidden")
 	}
 }

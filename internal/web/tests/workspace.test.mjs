@@ -105,3 +105,13 @@ test('reconnection uses the latest conversation cursor across multiple Runs',asy
 test('expired conversation stops reconnect attempts',async()=>{
  const f=connectionFixture(()=>Promise.reject({status:404}));await f.connection.open('gone');assert.equal(f.connection.id,null);assert.equal(f.timers.length,0);assert.equal(f.statuses.at(-1),404);
 });
+
+// 空值是明确的无上限，缺失数据仍为未知，不能混淆。
+test('optional constraint values retain their meaning',async()=>{
+ const {intentValue}=await import('../static/workspace-chat.mjs');
+ assert.equal(intentValue(null,'max_triangles'),'未设置验收上限');
+ assert.equal(intentValue(undefined,'max_triangles'),'未记录');
+ assert.equal(intentValue(3000,'max_triangles'),'3,000');
+ assert.equal(intentValue('further','reduction_mode'),'进一步降低面数');
+ assert.match(intentValue({max_bytes:{kind:'cleared'}},'constraint_sources'),/本次明确取消/);
+});

@@ -44,6 +44,10 @@ func conversationInputBinding(v Session) map[string]any {
 // 工具反馈和下一轮上下文共享此投影，恢复后仍保持相同来源和不确定性。
 // 不枚举动态工具权限；是否可继续仍由目标、实时预算、截止时间和工具门禁决定。
 func conversationFailureEvidence(op Operation) map[string]any {
+	if op.Stage == "done" && op.ErrorCode == "download_resource_limit" {
+		return map[string]any{"operation_id": op.ID, "task_id": op.TaskID, "cause": "system_download_limit", "observed": map[string]any{"file_inspection": "not_performed", "download_limit_bytes": 150 << 20}, "decision_basis": "文件超出系统下载保护，未取得完整文件，不能确认实际面数或体积，不属于用户验收上限失败。"}
+	}
+
 	if op.Stage != "done" || op.ErrorCode != "missing_model_output" {
 		return nil
 	}

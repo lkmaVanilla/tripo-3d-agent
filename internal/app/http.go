@@ -83,7 +83,7 @@ func (s *Service) Handler() http.Handler {
 		if !ok {
 			return
 		}
-		if executionVersion(v) == ConversationPromptVersion {
+		if conversationVersion(executionVersion(v)) {
 			s.fail(w, 409, fmt.Errorf("聊天回答必须携带当前Run、问题和暂停代次，经会话消息入口提交"))
 			return
 		}
@@ -275,7 +275,7 @@ func (s *Service) sanitize(v any) any {
 // Runtime 拦截违规提议仍算行为证据，不能因为成功拦截就替 Agent 宣告通过。
 func (s *Service) snapshot(v Session, events []Event) map[string]any {
 	view := v.View()
-	if executionVersion(v) == ConversationPromptVersion {
+	if conversationVersion(executionVersion(v)) {
 		view = conversationRunView(v)
 	}
 	e := evaluate(v)

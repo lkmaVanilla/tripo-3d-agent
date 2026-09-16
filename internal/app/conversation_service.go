@@ -29,7 +29,7 @@ func (s *Service) CreateAssetConversation(ctx context.Context, owner, text, key 
 	if err := s.acceptReady(); err != nil {
 		return Conversation{}, Session{}, err
 	}
-	v := s.newRun(owner, text, ConversationPromptVersion)
+	v := s.newRun(owner, text, OptionalPromptVersion)
 	v.ConversationContext = map[string]any{"theme": text, "messages": []any{}, "summaries": []any{}, "truncated": false}
 	c, v, _, err := s.store.CreateConversation(ctx, v, key)
 	return c, v, err
@@ -88,7 +88,7 @@ func (s *Service) ContinueConversation(ctx context.Context, id, owner, text, key
 		}
 	}
 	contextData["summaries"] = summaries
-	v := s.newRun(owner, text, ConversationPromptVersion)
+	v := s.newRun(owner, text, OptionalPromptVersion)
 	v.ConversationContext = contextData
 	v, _, err = s.store.AppendConversationRun(ctx, id, owner, key, versionID, v)
 	return v, err

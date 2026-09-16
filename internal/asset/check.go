@@ -23,14 +23,16 @@ type Check struct {
 // Report 同时保存实测值与验收上限，避免把生成目标误当作实际结果。
 // Valid 表示文件处于可检查的支持范围，Passed 还要求面数与体积均合格。
 type Report struct {
-	Valid        bool    `json:"valid"`
-	Passed       bool    `json:"passed"`
-	Triangles    int     `json:"triangles"`
-	Bytes        int64   `json:"bytes"`
-	MaxTriangles int     `json:"max_triangles"`
-	MaxBytes     int64   `json:"max_bytes"`
-	Checks       []Check `json:"checks"`
-	Visual       string  `json:"visual"`
+	Limits          *AcceptanceLimits `json:"-"`
+	ResourceLimited bool              `json:"resource_limited,omitempty"`
+	Valid           bool              `json:"valid"`
+	Passed          bool              `json:"passed"`
+	Triangles       int               `json:"triangles"`
+	Bytes           int64             `json:"bytes"`
+	MaxTriangles    int               `json:"max_triangles"`
+	MaxBytes        int64             `json:"max_bytes"`
+	Checks          []Check           `json:"checks"`
+	Visual          string            `json:"visual"`
 }
 
 // Inspect 只检查文件有效性、所有网格的总三角面数和实际文件体积。
@@ -115,7 +117,7 @@ func geometry(data []byte) (triangles int, err error) {
 		}
 		width := a.ComponentType.ByteSize() * a.Type.Components()
 		if width <= 0 || a.Count > remaining/width {
-			return 0, fmt.Errorf("展开后的网格数据超过 256 MiB 检查资源上限，无法验证")
+			return 0, ErrInspectionResourceLimit
 		}
 		remaining -= a.Count * width
 		if _, e := modeler.ReadAccessor(&doc, a, nil); e != nil {

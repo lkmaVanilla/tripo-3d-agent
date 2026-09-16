@@ -47,7 +47,7 @@ type ResultHistoricalReport struct {
 // 早期候选可以交付，但同一资产 ID 出现歧义或与当前操作矛盾时不能通过。
 func deliverable(s Session, artifactID string) bool {
 	a, ok := resultArtifact(s, artifactID)
-	return ok && reportComplete(s, a) && a.Report.Valid && a.Report.Passed
+	return ok && reportComplete(s, a) && goalSatisfied(s, a.Report)
 }
 
 func resultArtifact(s Session, id string) (Artifact, bool) {
@@ -80,6 +80,24 @@ func reportComplete(s Session, a Artifact) bool {
 		return false
 	}
 	r := a.Report
+	if optionalVersion(s) {
+		if !validAcceptedIntent(s) || r.Limits == nil || !r.Limits.Equal(*s.Intent.Optional) || r.Bytes < 0 || (r.ResourceLimited && r.Valid) || (r.Valid && (r.Bytes <= 0 || r.Triangles <= 0)) || (!r.Valid && r.Triangles != 0) {
+			return false
+		}
+		checks, passed := asset.OptionalChecks(r)
+		if r.Passed != passed || len(r.Checks) != len(checks) {
+			return false
+		}
+		for i, check := range checks {
+			if r.Checks[i].Name != check.Name || r.Checks[i].Status != check.Status {
+				return false
+			}
+		}
+		return true
+	}
+	if r.Limits != nil {
+		return false
+	}
 	if r.Bytes < 0 || r.MaxBytes <= 0 || r.MaxTriangles <= 0 || r.MaxBytes != s.Intent.MaxBytes || r.MaxTriangles != s.Intent.MaxTriangles || len(r.Checks) != 3 {
 		return false
 	}
@@ -118,6 +136,10 @@ func publicReport(s Session, a Artifact) asset.Report {
 	}
 	r := a.Report
 	r.Visual = resultVisualBoundary
+	if optionalVersion(s) {
+		r.Checks, r.Passed = asset.OptionalChecks(r)
+		return r
+	}
 	r.Checks = nil
 	if r.Valid {
 		r.Checks = append(r.Checks,
@@ -159,7 +181,11 @@ func buildResult(s Session, source, reason string) (*Result, string) {
 			lines = append(lines, "交付证据不足，不能确认技术通过；本地执行已结束。")
 		} else {
 			r.ArtifactID = s.SelectedArtifact
-			lines = append(lines, "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。")
+			if optionalVersion(s) {
+				lines = append(lines, "已交付通过文件有效性与适用技术约束检查的静态 GLB。")
+			} else {
+				lines = append(lines, "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。")
+			}
 			if r.Source == "agent" {
 				r.Reason = "delivered"
 			}
@@ -179,10 +205,16 @@ func buildResult(s Session, source, reason string) (*Result, string) {
 		if r.Status != "completed" {
 			lines = append(lines, "已有候选未被选作本次交付，检查结果如下：")
 		}
+		if optionalVersion(s) && s.GoalKind == "decimate" && s.Intent != nil && s.Intent.ReductionMode == "further" && s.InputAssessment != nil && reportComplete(s, a) && a.Report.Valid {
+			lines = append(lines, fmt.Sprintf("减面目标：初始输入 %d 面，输出 %d 面；目标完成：%t。", s.InputAssessment.Triangles, a.Report.Triangles, goalSatisfied(s, a.Report)))
+		}
 		projected := publicReport(s, a)
 		for _, check := range projected.Checks {
 			lines = append(lines, check.Name+"："+check.Detail)
 		}
+	}
+	if optionalVersion(s) && s.Current != nil && s.Current.ErrorCode == "download_resource_limit" {
+		lines = append(lines, "文件超出系统 150 MiB 下载保护上限，未取得完整文件，面数和实际体积未核验；这不是用户验收上限失败。")
 	}
 	if s.Production >= 0 && s.ModelCalls >= 0 && s.Limits.Submissions > 0 && s.Limits.Calls > 0 {
 		lines = append(lines, fmt.Sprintf("累计生产提交 %d / %d 次，模型调用 %d / %d 次。", s.Production, s.Limits.Submissions, s.ModelCalls, s.Limits.Calls))

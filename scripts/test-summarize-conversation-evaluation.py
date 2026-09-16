@@ -208,6 +208,49 @@ class ConversationSummaryTests(unittest.TestCase):
         with self.assertRaisesRegex(summary.EvidenceError, "共 84 个目标"):
             summary.summarize(self.directory)
 
+    def convert_profile_fixture(self, supplemental=False):
+        # 仅转换临时评分器夹具，不产生或冒充新的真实模型证据。
+        replacements = {"baseline-current-v3": "baseline-optional-v4" if supplemental else "baseline-current-v4",
+                        "conversation-v3": "conversation-optional-v4" if supplemental else "conversation-v4",
+                        '"current-v3"': '"optional-v4"' if supplemental else '"current-v4"'}
+        files = list(self.directory.glob("*.json"))
+        for path in files:
+            text, name = path.read_text(), path.name
+            for old, new in replacements.items():
+                text, name = text.replace(old, new), name.replace(old, new)
+            path.unlink()
+            (self.directory / name).write_text(text)
+        if supplemental:
+            manifest = self.read("manifest.json")
+            kept, counts = [], {}
+            for case in manifest["cases"]:
+                suite = case["Suite"]
+                counts[suite] = counts.get(suite, 0) + 1
+                if counts[suite] <= 3:
+                    kept.append(case)
+            manifest["cases"] = kept
+            self.write("manifest.json", manifest)
+            names = set(summary.expected_records(manifest))
+            for name in summary.raw_record_names(self.directory) - names:
+                (self.directory / name).unlink()
+            review = self.read("semantic-review.json")
+            review["reviews"] = {name: value for name, value in review["reviews"].items() if name in names}
+            self.write("semantic-review.json", review)
+
+    def test_current_v4_keeps_all_eighty_four_targets(self):
+        self.convert_profile_fixture()
+        result = summary.summarize(self.directory)
+        self.assertEqual(result["evaluation_profile"], "current-v4")
+        self.assertEqual(len(result["rows"]), 84)
+        self.assertIn("当前v4", result["scope"])
+
+    def test_supplemental_eighteen_targets_are_independent(self):
+        self.convert_profile_fixture(supplemental=True)
+        result = summary.summarize(self.directory)
+        self.assertEqual(result["evaluation_profile"], "optional-v4")
+        self.assertEqual(len(result["rows"]), 18)
+        self.assertEqual(set(result["counts"]), {"all", "baseline-optional-v4", "conversation-optional-v4"})
+
     def test_each_constraint_failure_maps_to_its_actual_dimension_and_remains_critical(self):
         name = "baseline-current-v3-product-1.json"
         original = self.read(name)

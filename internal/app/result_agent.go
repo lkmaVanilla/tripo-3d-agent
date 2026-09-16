@@ -30,7 +30,7 @@ func (s *Session) finishVerified(status, source, reason string) error {
 	s.Ended = time.Now().UTC()
 	s.Expires = s.Ended.Add(s.Limits.Retention)
 	s.HasSlot, s.ResumeRequested = false, false
-	if executionVersion(*s) == ConversationPromptVersion {
+	if conversationVersion(executionVersion(*s)) {
 		kind := "ended"
 		if status == "completed" {
 			kind = "delivery"
