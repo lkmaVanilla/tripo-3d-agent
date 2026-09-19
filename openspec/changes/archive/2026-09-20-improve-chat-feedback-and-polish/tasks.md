@@ -49,4 +49,6 @@
 
 2026-09-19：17/17 已完成。Node 测试 22/22、前端受控浏览器检查 20/20、真实 Go 受控集成检查 13/13 全部通过；静态依赖构建、Go 全量测试、最终 server 构建及 OpenSpec 严格校验通过。
 
-范围和证据见 [验收记录](../../../docs/verification/chat-feedback-and-polish.md)。本轮没有真实 API 调用、模型视觉评测、部署、commit、push 或归档。
+范围和证据见 [验收记录](../../../../docs/verification/chat-feedback-and-polish.md)。本轮没有真实 API 调用、模型视觉评测、部署、commit、push 或归档。
+
+2026-09-20：已将本变更的 2 项修订与 4 项新增要求同步到 `chat-asset-workspace` 主规格，并完成归档；主规格严格校验 8/8 通过。上述未提交、未归档说明记录的是实施验收时点，实施提交为 `7356c0e`。
