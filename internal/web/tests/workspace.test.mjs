@@ -2,12 +2,31 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createWorkspace,mergeSnapshot,mergeMessages,sortedMessages,composerSlot,currentQuestion,canSubmit,changeDraft,startSubmission,submissionFailed,submissionAccepted,previewVersion,referenceVersion,parseRoute} from '../static/workspace-state.mjs';
 import {ConversationConnection} from '../static/workspace-connection.mjs';
-import {operationStage,intentReviewRows,intentFieldLabel} from '../static/workspace-chat.mjs';
+import {operationStage,operationError,intentReviewRows,intentFieldLabel} from '../static/workspace-chat.mjs';
 import {fileURL} from '../static/workspace-api.mjs';
 
 const snapshot=(id,cursor,active='',extra={})=>({conversation:{id,title:'木箱',active_run_id:active},messages:[],runs:[],versions:[],events:[],cursor,...extra});
 const version=(id,number)=>({id,conversation_id:'c1',version_number:number,source_run_id:'r1',source_operation_id:id,processable:true,report:{valid:true,passed:true,triangles:4500,bytes:2048}});
 const questionRun=(id,waitID,generation)=>({id,status:'awaiting_answer',question:'请明确用途',wait_id:waitID,generation});
+
+test('unknown production shows backend evidence without becoming a retry action',()=>{
+ const state=createWorkspace('c1'),data={stage:'submitting',status:'submission_unknown',diagnostic:{phase:'submit',category:'timeout',message:'提交 Tripo：请求超时。'}};
+ const card={id:'operation-1',conversation_id:'c1',run_id:'r1',kind:'operation_card',seq:4,updated_seq:8,data};
+ mergeSnapshot(state,snapshot('c1',8,'',{messages:[card],runs:[{id:'r1',status:'failed'}]}));
+ mergeSnapshot(state,snapshot('c1',8,'',{messages:[card]}));
+ assert.equal(state.messages.size,1);assert.equal(operationStage(data),'提交结果未知 · 未自动重试');
+ assert.match(operationError(data),/请求超时/);assert.match(operationError(data),/无法确认/);assert.match(operationError(data),/没有自动重试/);
+ assert.equal(state.draft.submission,null);
+ assert.match(operationError({status:'submission_unknown'}),/没有记录更详细的调用诊断/);
+ assert.match(operationError({status:'failed',error_summary:'历史执行失败。'}),/历史执行失败。没有记录/);
+});
+test('resolved intermediate errors cannot override delivery or a user stop',()=>{
+ const prior={diagnostic:{message:'下载模型文件：网络连接失败。'},error_summary:'旧错误'};
+ assert.equal(operationError({...prior,status:'checked',report:{passed:true}}),'');
+ assert.equal(operationStage({...prior,report:{passed:true}}),'远端完成 · 技术检查通过');
+ assert.equal(operationStage({stage:'submitted',run_status:'stopped'}),'本地执行已停止');
+ assert.equal(operationError({stage:'done',status:'failed',diagnostic:prior.diagnostic,error_summary:'远端任务已成功；下载失败。'}),'远端任务已成功；下载失败。');
+});
 
 test('stopped Run retains busy gate until its active pointer is released',()=>{
  const state=createWorkspace('c1');changeDraft(state.draft,'下一次减面');

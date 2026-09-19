@@ -19,6 +19,9 @@ export function intentValue(value,field){
 export function intentReviewRows(draft){return (draft.changes||[]).map(change=>({field:intentFieldLabel(change.field),before:intentValue(change.before,change.field),after:intentValue(change.after,change.field)}));}
 export function operationStage(data) {
   if(data.report)return data.report.passed?'远端完成 · 技术检查通过':'远端完成 · 技术检查未通过';
+  if(data.status==='submission_unknown')return '提交结果未知 · 未自动重试';
+  if(data.run_status==='stopped')return '本地执行已停止';
+  if(data.run_status==='failed')return '本地执行已结束';
   if(data.status==='success')return '远端完成 · 等待文件检查';
   if(data.status==='failed')return '本次操作失败';
   if(data.stage==='submitting')return '正在提交远端任务';
@@ -26,6 +29,14 @@ export function operationStage(data) {
   if(data.status==='queue_full')return '等待队列已满';
   if(data.status==='queued')return '等待制作名额';
   return '准备制作';
+}
+// 只呈现后端持久化的安全说明，不从 HTTP/错误分类决定重试权限。
+export function operationError(data) {
+  if(data.report)return '';
+  let text=data.error_summary||data.diagnostic?.message||'';
+  if(!data.error_summary && data.status==='submission_unknown')text+='本次本地执行已停止；远端是否创建任务无法确认，系统没有自动重试。';
+  if(!data.diagnostic && (data.status==='failed'||data.status==='submission_unknown'||data.run_status==='failed'))text+='没有记录更详细的调用诊断。';
+  return text;
 }
 function details(title,value,explanation='') {
   const element=node('details',undefined,'evidence');element.append(node('summary',title));
@@ -120,6 +131,7 @@ export class ChatView {
     }
     if(data.task_id)content.append(node('div','远端任务：'+data.task_id,'operation-facts'));
     if(data.report)content.append(node('div',technicalSummary(data.report),'report-summary'));
+    const failure=operationError(data);if(failure)content.append(node('p',failure,'answer-warning'));
     const version=state.versions.get(message.version_id);
     if(version)this.versionButton(content,version,'查看 '+versionName(version));
     content.append(details('查看操作证据',data,'供应商状态与本次技术检查分别记录。'));

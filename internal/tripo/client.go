@@ -3,16 +3,14 @@
 package tripo
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"io"
 	"net"
 	"net/http"
 	"net/url"
-	"strings"
 	"time"
 )
 
@@ -34,12 +32,14 @@ type Params struct {
 
 // Task 保存当前静态模型流程会用到的远端状态；不把所有任务类型都解释为模型文件。
 type Task struct {
-	ID           string  `json:"task_id"`
-	Status       string  `json:"status"`
-	Progress     int     `json:"progress"`
-	ErrorCode    int     `json:"error_code,omitempty"`
-	ErrorMessage string  `json:"error_message,omitempty"`
-	Credits      float64 `json:"credits_consumed,omitempty"` // 任务累计用量，不能按轮询次数求和。
+	// Call 只携带查询元数据，不进入供应商协议或原始任务序列化。
+	Call         Diagnostic `json:"-"`
+	ID           string     `json:"task_id"`
+	Status       string     `json:"status"`
+	Progress     int        `json:"progress"`
+	ErrorCode    int        `json:"error_code,omitempty"`
+	ErrorMessage string     `json:"error_message,omitempty"`
+	Credits      float64    `json:"credits_consumed,omitempty"` // 任务累计用量，不能按轮询次数求和。
 	Output       struct {
 		ModelURL string `json:"model_url"`
 	} `json:"output"`
@@ -59,21 +59,22 @@ type Client struct {
 	DownloadHTTP    *http.Client
 }
 
-// APIError.Unknown 表示无法确认生产是否已创建，调用方应保留扣额且禁止自动重发。
-type APIError struct {
-	Status, Code int
-	Unknown      bool
-}
-
-func (e *APIError) Error() string {
-	return fmt.Sprintf("Tripo 请求失败（HTTP %d，code %d，提交结果未知=%t）", e.Status, e.Code, e.Unknown)
-}
-
 // IsUnknown 允许业务层在错误被包装后仍识别提交结果未知的情况。
 func IsUnknown(err error) bool { var e *APIError; return errors.As(err, &e) && e.Unknown }
 
 // New 建立供应商客户端。下载地址来自外部响应，因此下载路径另外限制协议和目标 IP。
 func New(key string) *Client {
+	apiTransport := http.DefaultTransport.(*http.Transport).Clone()
+	// HTTP/2 即使 GetBody=nil，仍会为尚未写入的不可用连接自动换连接再试。
+	// 带凭证 API 固定 HTTP/1.1，使一次尝试及其诊断严格对应一次传输尝试。
+	apiTransport.Protocols = new(http.Protocols)
+	apiTransport.Protocols.SetHTTP1(true)
+	// Clone 会继承默认传输已初始化的 ALPN 列表；同时移除 h2 通告，
+	// 避免服务端选中 h2，而本地却按 HTTP/1.1 解析响应。
+	if apiTransport.TLSClientConfig == nil {
+		apiTransport.TLSClientConfig = new(tls.Config)
+	}
+	apiTransport.TLSClientConfig.NextProtos = []string{"http/1.1"}
 	transport := http.DefaultTransport.(*http.Transport).Clone()
 	// 下载直接连接已核对的目标 IP，避免代理替代本地地址校验。
 	transport.Proxy = nil
@@ -90,7 +91,7 @@ func New(key string) *Client {
 		// 先核对本次解析出的全部地址，再直接拨号这些地址，避免校验后重新解析。
 		for _, ip := range ips {
 			if !publicIP(ip.IP) {
-				return nil, fmt.Errorf("产物地址必须使用公共网络地址")
+				return nil, Failure("download", "local_validation", fmt.Errorf("产物地址必须使用公共网络地址"))
 			}
 		}
 		for _, ip := range ips {
@@ -102,7 +103,7 @@ func New(key string) *Client {
 		}
 		return nil, err
 	}
-	return &Client{BaseURL: "https://openapi.tripo3d.ai/v3", APIKey: key, HTTP: &http.Client{Timeout: 45 * time.Second}, DownloadHTTP: &http.Client{Transport: transport, Timeout: 2 * time.Minute, CheckRedirect: func(req *http.Request, via []*http.Request) error {
+	return &Client{BaseURL: DefaultBaseURL, APIKey: key, HTTP: &http.Client{Transport: apiTransport, Timeout: 45 * time.Second}, DownloadHTTP: &http.Client{Transport: transport, Timeout: 2 * time.Minute, CheckRedirect: func(req *http.Request, via []*http.Request) error {
 		if len(via) > 3 {
 			return fmt.Errorf("产物重定向次数超限")
 		}
@@ -133,12 +134,13 @@ func (c *Client) Submit(ctx context.Context, kind string, p Params) (string, err
 		body = map[string]any{"model": "v2.0", "input": p.Input, "face_limit": p.FaceLimit, "quad": false, "bake": true}
 	}
 	var data Task
-	if err := c.request(ctx, http.MethodPost, path, body, &data); err != nil {
+	detail, err := c.request(ctx, "submit", http.MethodPost, path, body, &data)
+	if err != nil {
 		return "", err
 	}
 	if data.ID == "" {
 		// HTTP 成功但缺少任务 ID，也不能证明没有发生收费生产。
-		return "", &APIError{Status: 200, Unknown: true}
+		return "", failure(detail, "protocol", nil, true)
 	}
 	return data.ID, nil
 }
@@ -146,83 +148,57 @@ func (c *Client) Submit(ctx context.Context, kind string, p Params) (string, err
 // Query 读取一个已知任务；它不创建新生产，也不自行决定轮询间隔。
 func (c *Client) Query(ctx context.Context, id string) (Task, error) {
 	var t Task
-	err := c.request(ctx, http.MethodGet, "/tasks/"+url.PathEscape(id), nil, &t)
+	detail, err := c.request(ctx, "query", http.MethodGet, "/tasks/"+url.PathEscape(id), nil, &t)
+	t.Call = detail
 	return t, err
 }
 
-// request 统一解码供应商信封格式，并对 POST 的不确定结果作保守分类。
-func (c *Client) request(ctx context.Context, method, path string, body any, out any) error {
-	var reader io.Reader
-	if body != nil {
-		b, err := json.Marshal(body)
-		if err != nil {
-			return err
-		}
-		reader = bytes.NewReader(b)
-	}
-	req, err := http.NewRequestWithContext(ctx, method, strings.TrimRight(c.BaseURL, "/")+path, reader)
-	if err != nil {
-		return err
-	}
-	req.Header.Set("Authorization", "Bearer "+c.APIKey)
-	req.Header.Set("Content-Type", "application/json")
-	res, err := c.HTTP.Do(req)
-	if err != nil {
-		if method == http.MethodPost {
-			// 网络错误可能发生在远端接收之后，不能把它当作安全重发的证据。
-			return &APIError{Unknown: true}
-		}
-		return fmt.Errorf("Tripo 查询网络失败")
-	}
-	defer res.Body.Close()
-	var envelope struct {
-		Code *int            `json:"code"`
-		Data json.RawMessage `json:"data"`
-	}
-	err = json.NewDecoder(io.LimitReader(res.Body, 2<<20)).Decode(&envelope)
-	if err != nil || envelope.Code == nil {
-		return &APIError{Status: res.StatusCode, Unknown: method == http.MethodPost}
-	}
-	if res.StatusCode < 200 || res.StatusCode >= 300 || *envelope.Code != 0 {
-		return &APIError{Status: res.StatusCode, Code: *envelope.Code, Unknown: method == http.MethodPost && res.StatusCode >= 500}
-	}
-	if err = json.Unmarshal(envelope.Data, out); err != nil {
-		return &APIError{Status: res.StatusCode, Unknown: method == http.MethodPost}
-	}
-	return nil
-}
-
 // Download 获取供本地技术检查的完整字节；下载成功本身不代表模型合格。
-func (c *Client) Download(ctx context.Context, rawURL string) ([]byte, error) {
-	u, err := url.Parse(rawURL)
-	if err != nil {
-		return nil, fmt.Errorf("无效产物地址")
+func (c *Client) Download(ctx context.Context, rawURL string) (data []byte, err error) {
+	start := time.Now()
+	d := Diagnostic{Phase: "download"}
+	defer func() {
+		if err != nil {
+			e, ok := err.(*APIError)
+			if !ok {
+				e = failure(d, "", err, false)
+			}
+			e.Detail.OccurredAt, e.Detail.DurationMS = time.Now().UTC(), time.Since(start).Milliseconds()
+			e.Detail = e.Detail.Safe(c.APIKey)
+			err = e
+		}
+	}()
+	u, parseErr := url.Parse(rawURL)
+	if parseErr != nil {
+		return nil, failure(d, "local_validation", parseErr, false)
 	}
-	if err = checkURL(u); err != nil {
-		return nil, err
+	if checkErr := checkURL(u); checkErr != nil {
+		return nil, failure(d, "local_validation", checkErr, false)
 	}
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, rawURL, nil)
-	if err != nil {
-		return nil, err
+	req, reqErr := http.NewRequestWithContext(ctx, http.MethodGet, rawURL, nil)
+	if reqErr != nil {
+		return nil, failure(d, "local_validation", reqErr, false)
 	}
-	res, err := c.DownloadHTTP.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("产物下载失败")
+	d.RequestStarted = true
+	res, callErr := c.DownloadHTTP.Do(req)
+	if callErr != nil {
+		return nil, failure(d, "", callErr, false)
 	}
 	defer res.Body.Close()
+	d.HTTPStatus = &res.StatusCode
+	d.ProviderTraceID = res.Header.Get("X-Tripo-Trace-ID")
 	if res.StatusCode != 200 {
-		return nil, fmt.Errorf("产物下载 HTTP %d", res.StatusCode)
+		return nil, failure(d, "http", nil, false)
 	}
 	if res.ContentLength > DownloadLimit {
-		return nil, ErrDownloadLimit
+		return nil, failure(d, "local_validation", ErrDownloadLimit, false)
 	}
-	// 即使响应未提供或错误声明 Content-Length，也以实际读取量执行保护上限。
-	b, err := io.ReadAll(io.LimitReader(res.Body, DownloadLimit+1))
+	data, err = io.ReadAll(io.LimitReader(res.Body, DownloadLimit+1))
 	if err != nil {
-		return nil, fmt.Errorf("产物下载不完整")
+		return nil, failure(d, "", err, false)
 	}
-	if int64(len(b)) > DownloadLimit {
-		return nil, ErrDownloadLimit
+	if int64(len(data)) > DownloadLimit {
+		return nil, failure(d, "local_validation", ErrDownloadLimit, false)
 	}
-	return b, nil
+	return data, nil
 }

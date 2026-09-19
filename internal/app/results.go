@@ -200,6 +200,9 @@ func buildResult(s Session, source, reason string) (*Result, string) {
 	} else if r.Status == "completed" && r.Source != "agent" {
 		lines = append(lines, resultReasonText(s, r))
 	}
+	if diagnostic := providerFailureText(s); diagnostic != "" {
+		lines = append(lines, diagnostic)
+	}
 	if a, ok := resultEvidenceArtifact(s, r); ok {
 		r.ArtifactID = a.ID
 		if r.Status != "completed" {

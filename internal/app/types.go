@@ -23,6 +23,7 @@ var ErrBudget = errors.New("请求调用额度已耗尽")
 type Config struct {
 	// 凭证保留在服务端配置中，不进入 Session.View 的公开数据。
 	Listen, DataDir, DeepSeekKey, TripoKey string
+	TripoBaseURL                           string
 	SecureCookie                           bool
 	// 生产名额与队列容量限制全局并发，其余三个值限制单个会话。
 	ProductionSlots, QueueSize, MaxCalls, MaxSubmissions, MaxClarifications int
@@ -32,7 +33,7 @@ type Config struct {
 
 // DefaultConfig 给出静态道具 MVP 的并发、预算及数据保留默认值。
 func DefaultConfig() Config {
-	return Config{Listen: "127.0.0.1:8080", DataDir: "./data", ProductionSlots: 3, QueueSize: 10, MaxCalls: 20, MaxSubmissions: 3, MaxClarifications: 3, MaxDuration: 30 * time.Minute, PollInterval: 3 * time.Second, IdleTTL: 24 * time.Hour, Retention: 7 * 24 * time.Hour, VisitorTTL: 30 * 24 * time.Hour}
+	return Config{Listen: "127.0.0.1:8080", DataDir: "./data", TripoBaseURL: tripo.DefaultBaseURL, ProductionSlots: 3, QueueSize: 10, MaxCalls: 20, MaxSubmissions: 3, MaxClarifications: 3, MaxDuration: 30 * time.Minute, PollInterval: 3 * time.Second, IdleTTL: 24 * time.Hour, Retention: 7 * 24 * time.Hour, VisitorTTL: 30 * 24 * time.Hour}
 }
 
 // ConfigFromEnv 仅覆盖已开放的环境变量，其余执行策略沿用默认配置。
@@ -40,6 +41,11 @@ func ConfigFromEnv() (Config, error) {
 	c := DefaultConfig()
 	c.DeepSeekKey = os.Getenv("DEEPSEEK_API_KEY")
 	c.TripoKey = os.Getenv("TRIPO_API_KEY")
+	base, err := tripo.NormalizeBaseURL(os.Getenv("TRIPO_BASE_URL"))
+	if err != nil {
+		return c, err
+	}
+	c.TripoBaseURL = base
 	if v := os.Getenv("LISTEN_ADDR"); v != "" {
 		c.Listen = v
 	}
@@ -97,10 +103,12 @@ type Operation struct {
 	Params tripo.Params `json:"params"`
 	Stage  string       `json:"stage"`
 	// submitting 且 TaskID 为空代表提交结果未知，不能通过重发来猜测结果。
-	TaskID     string `json:"task_id"`
-	Error      string `json:"error,omitempty"`
-	ErrorCode  string `json:"error_code,omitempty"`
-	ArtifactID string `json:"artifact_id,omitempty"`
+	TaskID    string `json:"task_id"`
+	Error     string `json:"error,omitempty"`
+	ErrorCode string `json:"error_code,omitempty"`
+	// LastFailure 是当前未解决的安全摘要，逐次历史保存在执行事件中。
+	LastFailure *tripo.Diagnostic `json:"last_failure,omitempty"`
+	ArtifactID  string            `json:"artifact_id,omitempty"`
 	// v3 的语义输入保持固定，临时上传凭证单独保存，避免重放时改变加工对象。
 	InputVersionID     string         `json:"input_version_id,omitempty"`
 	ContextReferenceID string         `json:"context_reference_id,omitempty"`

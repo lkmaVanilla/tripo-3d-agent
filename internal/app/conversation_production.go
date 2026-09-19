@@ -79,6 +79,7 @@ func (s *Service) prepareVersionInput(ctx context.Context, id, opID string) (tri
 	if !ok {
 		return params, fmt.Errorf("供应商未提供历史模型输入准备能力")
 	}
+	group := newID()
 	for {
 		v, err = s.store.Edit(ctx, id, func(x *Session) error {
 			if err := checkOperation(*x, opID); err != nil {
@@ -104,9 +105,11 @@ func (s *Service) prepareVersionInput(ctx context.Context, id, opID string) (tri
 			deadline = v.Deadline
 		}
 		upCtx, cancel := context.WithDeadline(ctx, deadline)
+		started := time.Now()
 		token, e := uploader.UploadModel(upCtx, data)
 		cancel()
 		if e != nil {
+			e = s.recordProviderFailure(id, opID, "", "upload", group, v.Current.PreparedInput.Attempts, started, e)
 			if ctx.Err() != nil {
 				return params, ctx.Err()
 			}
@@ -119,7 +122,8 @@ func (s *Service) prepareVersionInput(ctx context.Context, id, opID string) (tri
 			continue
 		}
 		if token == "" {
-			return params, fmt.Errorf("模型输入上传未返回引用")
+			e := tripo.Failure("upload", "protocol", nil)
+			return params, s.recordProviderFailure(id, opID, "", "upload", group, v.Current.PreparedInput.Attempts, started, e)
 		}
 		_, err = s.store.Edit(ctx, id, func(x *Session) error {
 			if err := checkOperation(*x, opID); err != nil {
@@ -129,6 +133,7 @@ func (s *Service) prepareVersionInput(ctx context.Context, id, opID string) (tri
 				return fmt.Errorf("生产阶段已改变")
 			}
 			x.Current.PreparedInput.Token = token
+			x.Current.LastFailure = nil
 			return nil
 		}, "input_prepared", map[string]any{"operation_id": opID, "version_id": version.ID})
 		if err != nil {

@@ -1,0 +1,675 @@
+{
+  "date": "2026-09-19",
+  "scope": "国内 ECS 真实验收：一次生成、一个包含两次减面生产提交的目标；用户已接受原预算内自动纠偏后的实际链路",
+  "acceptance": {
+    "status": "accepted",
+    "date": "2026-09-19",
+    "user_confirmation": "接受",
+    "completed_tasks": 23,
+    "total_tasks": 23,
+    "generation_submissions": 1,
+    "decimation_submissions": 2,
+    "total_production_submissions": 3,
+    "final_version": 3,
+    "note": "v2 实测 1839 面未满足 1500 面上限，原失败报告保留；Agent 在既有预算内自动纠偏后，v3 实测 1473 面通过。本次确认仅更新验收登记，未新增模型或供应商调用，未更改预算或未知提交不重试规则。"
+  },
+  "live": {
+    "conversation_id": "c54015618826ba10be5ebc3b5bbb9ea5fd68a522346c5929",
+    "runs": [
+      {
+        "id": "c54015618826ba10be5ebc3b5bbb9ea5fd68a522346c5929",
+        "status": "completed",
+        "production": 1,
+        "model_calls": 5,
+        "result": {
+          "artifact_id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+          "evidence": "verified",
+          "operation_id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+          "reason": "delivered",
+          "source": "agent",
+          "status": "completed",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "final": "已交付通过文件有效性与适用技术约束检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 2696 个三角面；未设置验收上限\n文件体积：实测 947460 字节；未设置验收上限\n累计生产提交 1 / 3 次，模型调用 5 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+      },
+      {
+        "id": "28707de5c7cc63226e4fc6c0efb4ba52ec5423e28955745b",
+        "status": "completed",
+        "production": 2,
+        "model_calls": 6,
+        "result": {
+          "artifact_id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+          "evidence": "verified",
+          "operation_id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+          "reason": "delivered",
+          "source": "agent",
+          "status": "completed",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "final": "已交付通过文件有效性与适用技术约束检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 1473 / 上限 1500 个三角面\n文件体积：实测 2166452 字节；未设置验收上限\n累计生产提交 2 / 3 次，模型调用 6 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+      }
+    ],
+    "versions": [
+      {
+        "version": 1,
+        "id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+        "parent": null,
+        "task_id": "b27d1d22-047a-4c84-906c-3c667f364876",
+        "report": {
+          "bytes": 947460,
+          "checks": [
+            {
+              "detail": "静态、自包含、非空三角面 GLB",
+              "name": "文件有效性",
+              "status": "passed"
+            },
+            {
+              "detail": "实测 2696 个三角面；未设置验收上限",
+              "name": "几何规模",
+              "status": "not_applicable"
+            },
+            {
+              "detail": "实测 947460 字节；未设置验收上限",
+              "name": "文件体积",
+              "status": "not_applicable"
+            }
+          ],
+          "constraint_version": "optional-v1",
+          "max_bytes": null,
+          "max_triangles": null,
+          "passed": true,
+          "triangles": 2696,
+          "valid": true,
+          "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+        },
+        "loaded": true,
+        "file": {
+          "status": 200,
+          "bytes": 947460,
+          "magic": "glTF",
+          "sha256": "63f5eacb67ca5d3ce2e4a3b7d43fe7db92f6972343c5af7590f675a6e4dda224"
+        },
+        "file_matches_record": true
+      },
+      {
+        "version": 2,
+        "id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+        "parent": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+        "task_id": "8d60b07c-83ee-47ad-a7e6-015a1c560ee5",
+        "report": {
+          "bytes": 2119412,
+          "checks": [
+            {
+              "detail": "静态、自包含、非空三角面 GLB",
+              "name": "文件有效性",
+              "status": "passed"
+            },
+            {
+              "detail": "实测 1839 / 上限 1500 个三角面",
+              "name": "几何规模",
+              "status": "failed"
+            },
+            {
+              "detail": "实测 2119412 字节；未设置验收上限",
+              "name": "文件体积",
+              "status": "not_applicable"
+            }
+          ],
+          "constraint_version": "optional-v1",
+          "max_bytes": null,
+          "max_triangles": 1500,
+          "passed": false,
+          "triangles": 1839,
+          "valid": true,
+          "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+        },
+        "loaded": true,
+        "file": {
+          "status": 200,
+          "bytes": 2119412,
+          "magic": "glTF",
+          "sha256": "ee6d2f57e94db51fd3504345939d7f65fe365b98cf860f93b4b3e71d2c2c5f64"
+        },
+        "file_matches_record": true
+      },
+      {
+        "version": 3,
+        "id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+        "parent": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+        "task_id": "a4842650-4819-4ee4-9ab7-21fc20f1b281",
+        "report": {
+          "bytes": 2166452,
+          "checks": [
+            {
+              "detail": "静态、自包含、非空三角面 GLB",
+              "name": "文件有效性",
+              "status": "passed"
+            },
+            {
+              "detail": "实测 1473 / 上限 1500 个三角面",
+              "name": "几何规模",
+              "status": "passed"
+            },
+            {
+              "detail": "实测 2166452 字节；未设置验收上限",
+              "name": "文件体积",
+              "status": "not_applicable"
+            }
+          ],
+          "constraint_version": "optional-v1",
+          "max_bytes": null,
+          "max_triangles": 1500,
+          "passed": true,
+          "triangles": 1473,
+          "valid": true,
+          "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+        },
+        "loaded": true,
+        "file": {
+          "status": 200,
+          "bytes": 2166452,
+          "magic": "glTF",
+          "sha256": "763f3a15fdacef24e0af09d6eb7da74b7036973d4c69c6b14f55a971fa6c1ff6"
+        },
+        "file_matches_record": true
+      }
+    ]
+  },
+  "consistency": {
+    "conversation_id": "c54015618826ba10be5ebc3b5bbb9ea5fd68a522346c5929",
+    "before": {
+      "cursor": 109,
+      "runs": [
+        {
+          "id": "c54015618826ba10be5ebc3b5bbb9ea5fd68a522346c5929",
+          "status": "completed",
+          "production": 1
+        },
+        {
+          "id": "28707de5c7cc63226e4fc6c0efb4ba52ec5423e28955745b",
+          "status": "completed",
+          "production": 2
+        }
+      ],
+      "versions": [
+        {
+          "id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+          "parent": null,
+          "sha256": "63f5eacb67ca5d3ce2e4a3b7d43fe7db92f6972343c5af7590f675a6e4dda224"
+        },
+        {
+          "id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+          "parent": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+          "sha256": "ee6d2f57e94db51fd3504345939d7f65fe365b98cf860f93b4b3e71d2c2c5f64"
+        },
+        {
+          "id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+          "parent": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+          "sha256": "763f3a15fdacef24e0af09d6eb7da74b7036973d4c69c6b14f55a971fa6c1ff6"
+        }
+      ]
+    },
+    "after": {
+      "cursor": 109,
+      "runs": [
+        {
+          "id": "c54015618826ba10be5ebc3b5bbb9ea5fd68a522346c5929",
+          "status": "completed",
+          "production": 1
+        },
+        {
+          "id": "28707de5c7cc63226e4fc6c0efb4ba52ec5423e28955745b",
+          "status": "completed",
+          "production": 2
+        }
+      ],
+      "versions": [
+        {
+          "id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+          "parent": null,
+          "sha256": "63f5eacb67ca5d3ce2e4a3b7d43fe7db92f6972343c5af7590f675a6e4dda224"
+        },
+        {
+          "id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+          "parent": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+          "sha256": "ee6d2f57e94db51fd3504345939d7f65fe365b98cf860f93b4b3e71d2c2c5f64"
+        },
+        {
+          "id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+          "parent": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+          "sha256": "763f3a15fdacef24e0af09d6eb7da74b7036973d4c69c6b14f55a971fa6c1ff6"
+        }
+      ]
+    },
+    "trace": {
+      "cursor": 109,
+      "runs": [
+        {
+          "id": "c54015618826ba10be5ebc3b5bbb9ea5fd68a522346c5929",
+          "status": "completed",
+          "production": 1
+        },
+        {
+          "id": "28707de5c7cc63226e4fc6c0efb4ba52ec5423e28955745b",
+          "status": "completed",
+          "production": 2
+        }
+      ],
+      "versions": [
+        {
+          "id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+          "parent": null,
+          "sha256": "63f5eacb67ca5d3ce2e4a3b7d43fe7db92f6972343c5af7590f675a6e4dda224"
+        },
+        {
+          "id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+          "parent": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+          "sha256": "ee6d2f57e94db51fd3504345939d7f65fe365b98cf860f93b4b3e71d2c2c5f64"
+        },
+        {
+          "id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+          "parent": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+          "sha256": "763f3a15fdacef24e0af09d6eb7da74b7036973d4c69c6b14f55a971fa6c1ff6"
+        }
+      ]
+    },
+    "websockets": [
+      {
+        "cursor": 109,
+        "runs": [
+          {
+            "id": "c54015618826ba10be5ebc3b5bbb9ea5fd68a522346c5929",
+            "status": "completed",
+            "production": 1
+          },
+          {
+            "id": "28707de5c7cc63226e4fc6c0efb4ba52ec5423e28955745b",
+            "status": "completed",
+            "production": 2
+          }
+        ],
+        "versions": [
+          {
+            "id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+            "parent": null,
+            "sha256": "63f5eacb67ca5d3ce2e4a3b7d43fe7db92f6972343c5af7590f675a6e4dda224"
+          },
+          {
+            "id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+            "parent": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+            "sha256": "ee6d2f57e94db51fd3504345939d7f65fe365b98cf860f93b4b3e71d2c2c5f64"
+          },
+          {
+            "id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+            "parent": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+            "sha256": "763f3a15fdacef24e0af09d6eb7da74b7036973d4c69c6b14f55a971fa6c1ff6"
+          }
+        ]
+      },
+      {
+        "cursor": 109,
+        "runs": [
+          {
+            "id": "c54015618826ba10be5ebc3b5bbb9ea5fd68a522346c5929",
+            "status": "completed",
+            "production": 1
+          },
+          {
+            "id": "28707de5c7cc63226e4fc6c0efb4ba52ec5423e28955745b",
+            "status": "completed",
+            "production": 2
+          }
+        ],
+        "versions": [
+          {
+            "id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+            "parent": null,
+            "sha256": "63f5eacb67ca5d3ce2e4a3b7d43fe7db92f6972343c5af7590f675a6e4dda224"
+          },
+          {
+            "id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+            "parent": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+            "sha256": "ee6d2f57e94db51fd3504345939d7f65fe365b98cf860f93b4b3e71d2c2c5f64"
+          },
+          {
+            "id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+            "parent": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+            "sha256": "763f3a15fdacef24e0af09d6eb7da74b7036973d4c69c6b14f55a971fa6c1ff6"
+          }
+        ]
+      }
+    ],
+    "unchanged_after_reload": true,
+    "trace_matches": true,
+    "websockets_match": true,
+    "operation_cards": 3,
+    "anonymous_trace_status": 404,
+    "sensitive_patterns_found": false
+  },
+  "execution_evidence": [
+    {
+      "id": "c54015618826ba10be5ebc3b5bbb9ea5fd68a522346c5929",
+      "status": 200,
+      "top_keys": [
+        "events",
+        "session",
+        "source"
+      ],
+      "calls": [
+        {
+          "seq": 13,
+          "kind": "runtime_accepted",
+          "data": {
+            "kind": "generate",
+            "operation_id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+            "reason": "已接受生成目标：低模木箱，静态自包含GLB，无面数/体积验收上限；选择2000三角面作为低模生产策略（非验收上限），纹理质量standard。",
+            "state": "running",
+            "target_triangles": 2000
+          }
+        },
+        {
+          "seq": 15,
+          "kind": "tool_submitting",
+          "data": {
+            "kind": "generate",
+            "operation_id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+            "params": {
+              "face_limit": 2000,
+              "prompt": "A low-poly wooden crate prop for a 3D asset library, intended as a static scene prop for further editing in Blender. Single enclosed box shape built from wooden planks with simple metal corner brackets. Standard PBR textures, natural wood color with metal corner pieces. No skeleton, no animation. Output as a self-contained static GLB.\nRequired: 单个封闭箱体; 木板和简单金属包角; 标准 PBR 纹理; 无骨骼、无动画; 输出自包含 GLB",
+              "texture_quality": "standard"
+            }
+          }
+        },
+        {
+          "seq": 16,
+          "kind": "tool_submitted",
+          "data": {
+            "operation_id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+            "task_id": "b27d1d22-047a-4c84-906c-3c667f364876"
+          }
+        },
+        {
+          "seq": 53,
+          "kind": "technical_report",
+          "data": {
+            "artifact_id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+            "operation_id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+            "report": {
+              "bytes": 947460,
+              "checks": [
+                {
+                  "detail": "静态、自包含、非空三角面 GLB",
+                  "name": "文件有效性",
+                  "status": "passed"
+                },
+                {
+                  "detail": "实测 2696 个三角面；未设置验收上限",
+                  "name": "几何规模",
+                  "status": "not_applicable"
+                },
+                {
+                  "detail": "实测 947460 字节；未设置验收上限",
+                  "name": "文件体积",
+                  "status": "not_applicable"
+                }
+              ],
+              "constraint_version": "optional-v1",
+              "max_bytes": null,
+              "max_triangles": null,
+              "passed": true,
+              "triangles": 2696,
+              "valid": true,
+              "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+            },
+            "task_id": "b27d1d22-047a-4c84-906c-3c667f364876"
+          }
+        }
+      ],
+      "diagnostic_count": 0,
+      "sensitive_patterns_found": false
+    },
+    {
+      "id": "28707de5c7cc63226e4fc6c0efb4ba52ec5423e28955745b",
+      "status": 200,
+      "top_keys": [
+        "events",
+        "session",
+        "source"
+      ],
+      "calls": [
+        {
+          "seq": 68,
+          "kind": "runtime_accepted",
+          "data": {
+            "kind": "decimate",
+            "operation_id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+            "reason": "用户要求对已引用的 v1 做一次减面，目标最多 1500 个三角面，保留现有贴图与其他要求，文件体积不设上限；以 v1 为加工输入生成新版本。",
+            "state": "running",
+            "target_triangles": 1500
+          }
+        },
+        {
+          "seq": 70,
+          "kind": "input_preparing",
+          "data": {
+            "operation_id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+            "version_id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259"
+          }
+        },
+        {
+          "seq": 71,
+          "kind": "input_prepared",
+          "data": {
+            "operation_id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+            "version_id": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259"
+          }
+        },
+        {
+          "seq": 72,
+          "kind": "tool_submitting",
+          "data": {
+            "kind": "decimate",
+            "operation_id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+            "params": {
+              "face_limit": 1500,
+              "input": "[REDACTED_PROVIDER_INPUT]",
+              "prompt": "",
+              "texture_quality": "standard"
+            }
+          }
+        },
+        {
+          "seq": 73,
+          "kind": "tool_submitted",
+          "data": {
+            "operation_id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+            "task_id": "8d60b07c-83ee-47ad-a7e6-015a1c560ee5"
+          }
+        },
+        {
+          "seq": 84,
+          "kind": "technical_report",
+          "data": {
+            "artifact_id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+            "operation_id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+            "report": {
+              "bytes": 2119412,
+              "checks": [
+                {
+                  "detail": "静态、自包含、非空三角面 GLB",
+                  "name": "文件有效性",
+                  "status": "passed"
+                },
+                {
+                  "detail": "实测 1839 / 上限 1500 个三角面",
+                  "name": "几何规模",
+                  "status": "failed"
+                },
+                {
+                  "detail": "实测 2119412 字节；未设置验收上限",
+                  "name": "文件体积",
+                  "status": "not_applicable"
+                }
+              ],
+              "constraint_version": "optional-v1",
+              "max_bytes": null,
+              "max_triangles": 1500,
+              "passed": false,
+              "triangles": 1839,
+              "valid": true,
+              "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+            },
+            "task_id": "8d60b07c-83ee-47ad-a7e6-015a1c560ee5"
+          }
+        },
+        {
+          "seq": 90,
+          "kind": "runtime_accepted",
+          "data": {
+            "kind": "decimate",
+            "operation_id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+            "reason": "首轮减面输出实测 1839 个三角面，超过用户明确上限 1500（几何规模检查 failed）。以该有效候选继续减面，目标 1200 个三角面，使结果低于 1500 上限。",
+            "state": "running",
+            "target_triangles": 1200
+          }
+        },
+        {
+          "seq": 92,
+          "kind": "input_preparing",
+          "data": {
+            "operation_id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+            "version_id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b"
+          }
+        },
+        {
+          "seq": 93,
+          "kind": "input_prepared",
+          "data": {
+            "operation_id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+            "version_id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b"
+          }
+        },
+        {
+          "seq": 94,
+          "kind": "tool_submitting",
+          "data": {
+            "kind": "decimate",
+            "operation_id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+            "params": {
+              "face_limit": 1200,
+              "input": "[REDACTED_PROVIDER_INPUT]",
+              "prompt": "",
+              "texture_quality": "standard"
+            }
+          }
+        },
+        {
+          "seq": 95,
+          "kind": "tool_submitted",
+          "data": {
+            "operation_id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+            "task_id": "a4842650-4819-4ee4-9ab7-21fc20f1b281"
+          }
+        },
+        {
+          "seq": 105,
+          "kind": "technical_report",
+          "data": {
+            "artifact_id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+            "operation_id": "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4",
+            "report": {
+              "bytes": 2166452,
+              "checks": [
+                {
+                  "detail": "静态、自包含、非空三角面 GLB",
+                  "name": "文件有效性",
+                  "status": "passed"
+                },
+                {
+                  "detail": "实测 1473 / 上限 1500 个三角面",
+                  "name": "几何规模",
+                  "status": "passed"
+                },
+                {
+                  "detail": "实测 2166452 字节；未设置验收上限",
+                  "name": "文件体积",
+                  "status": "not_applicable"
+                }
+              ],
+              "constraint_version": "optional-v1",
+              "max_bytes": null,
+              "max_triangles": 1500,
+              "passed": true,
+              "triangles": 1473,
+              "valid": true,
+              "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+            },
+            "task_id": "a4842650-4819-4ee4-9ab7-21fc20f1b281"
+          }
+        }
+      ],
+      "diagnostic_count": 0,
+      "sensitive_patterns_found": false
+    }
+  ],
+  "database": {
+    "integrity": [
+      [
+        "ok"
+      ]
+    ],
+    "old_run_present": false,
+    "runs": [
+      {
+        "id": "c54015618826ba10be5ebc3b5bbb9ea5fd68a522346c5929",
+        "status": "completed",
+        "production": 1,
+        "task_id": "b27d1d22-047a-4c84-906c-3c667f364876",
+        "last_input_version_id": null,
+        "last_input_sha256": null,
+        "last_input_matches_parent": true,
+        "last_upload_attempts": null
+      },
+      {
+        "id": "28707de5c7cc63226e4fc6c0efb4ba52ec5423e28955745b",
+        "status": "completed",
+        "production": 2,
+        "task_id": "a4842650-4819-4ee4-9ab7-21fc20f1b281",
+        "last_input_version_id": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+        "last_input_sha256": "ee6d2f57e94db51fd3504345939d7f65fe365b98cf860f93b4b3e71d2c2c5f64",
+        "last_input_matches_parent": true,
+        "last_upload_attempts": 1
+      }
+    ],
+    "versions": {
+      "41c93efacc08793fe613176fb855e8a67c37becd37a9e259": {
+        "parent": null,
+        "sha256": "63f5eacb67ca5d3ce2e4a3b7d43fe7db92f6972343c5af7590f675a6e4dda224",
+        "matches_record": true,
+        "bytes": 947460
+      },
+      "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b": {
+        "parent": "41c93efacc08793fe613176fb855e8a67c37becd37a9e259",
+        "sha256": "ee6d2f57e94db51fd3504345939d7f65fe365b98cf860f93b4b3e71d2c2c5f64",
+        "matches_record": true,
+        "bytes": 2119412
+      },
+      "94b2deaee96f8f06101eab83151b0aa12f012e0c2027cbe4": {
+        "parent": "3db815ca690d63ca10f0df1cb94ffa9b5322d8c4b266a22b",
+        "sha256": "763f3a15fdacef24e0af09d6eb7da74b7036973d4c69c6b14f55a971fa6c1ff6",
+        "matches_record": true,
+        "bytes": 2166452
+      }
+    },
+    "event_counts": {
+      "tool_submitting": 3,
+      "tool_submitted": 3,
+      "input_preparing": 2,
+      "input_prepared": 2,
+      "provider_call_failed": 0
+    },
+    "running_binary_sha256": "26ecaae4d987b5324cac943435d992065ea29816ef27e72773595959fc0a16cf"
+  }
+}

@@ -44,12 +44,17 @@ type Service struct {
 
 // New 打开存储并组装依赖；Start 完成恢复对账后才开始调度。
 func New(c Config) (*Service, error) {
+	provider, err := tripo.NewWithBaseURL(c.TripoKey, c.TripoBaseURL)
+	if err != nil {
+		return nil, err
+	}
+	c.TripoBaseURL = provider.BaseURL
 	store, err := OpenStore(c.DataDir)
 	if err != nil {
 		return nil, err
 	}
 	ctx, cancel := context.WithCancel(context.Background())
-	s := &Service{Config: c, store: store, provider: tripo.New(c.TripoKey), ctx: ctx, cancel: cancel, active: map[string]context.CancelFunc{}, ready: c.DeepSeekKey != "" && c.TripoKey != ""}
+	s := &Service{Config: c, store: store, provider: provider, ctx: ctx, cancel: cancel, active: map[string]context.CancelFunc{}, ready: c.DeepSeekKey != "" && c.TripoKey != ""}
 	s.modelFactory = s.deepSeekModel
 	s.source = "live"
 	s.blocked = map[string]bool{}

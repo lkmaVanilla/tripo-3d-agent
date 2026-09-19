@@ -51,12 +51,15 @@ go build -o bin/tripo-agent ./cmd/server
 | 配置 | 默认值 / 说明 |
 | --- | --- |
 | `DEEPSEEK_API_KEY` | DeepSeek API 密钥，模型固定为 `deepseek-v4-pro` |
-| `TRIPO_API_KEY` | Tripo API 密钥，生成模型固定为 `v3.1-20260211` |
+| `TRIPO_API_KEY` | 与所选站点匹配的 Tripo API 密钥，生成模型固定为 `v3.1-20260211` |
+| `TRIPO_BASE_URL` | `https://openapi.tripo3d.com/v3`，国内站 V3；仅接受官方 V3 HTTPS 地址，不自动回退 |
 | `LISTEN_ADDR` | `127.0.0.1:8080` |
 | `DATA_DIR` | `./data`，包含 SQLite 和模型文件，重启时继续使用同一目录 |
 | `COOKIE_SECURE` | `false`，HTTPS 部署时设置为 `true` |
 
 请仅运行一个服务进程管理同一数据目录。当前调度器的执行互斥属于单进程，SQLite 不承担多实例任务认领。
+
+生产前可运行 `go run ./cmd/check-tripo` 做只读余额鉴权预检；它复用服务配置，不创建 Run 或付费任务。API V3、生成模型 H3.1、减面算法 `v2.0` 是不同层次的版本。配置、诊断字段和本次 ECS 切换步骤见[国内站发布说明](docs/tripo-china-deployment.md)，实施证据见[验证记录](docs/verification/tripo-china-access/verification.md)。
 
 ## 演示步骤
 

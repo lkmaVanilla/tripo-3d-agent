@@ -3,9 +3,7 @@ package tripo
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
-	"io"
 	"mime/multipart"
 	"net/http"
 	"strings"
@@ -22,39 +20,34 @@ type FileUploader interface {
 // UploadModel 仅做一次上传；次数、停止和恢复控制属于应用层。
 func (c *Client) UploadModel(ctx context.Context, data []byte) (string, error) {
 	if len(data) < 12 || len(data) > UploadLimit || string(data[:4]) != "glTF" {
-		return "", fmt.Errorf("上传需要不超过150 MB的GLB文件")
+		return "", Failure("upload", "local_validation", fmt.Errorf("上传需要不超过150 MB的GLB文件"))
 	}
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
 	part, err := writer.CreateFormFile("file", "model.glb")
 	if err != nil {
-		return "", err
+		return "", Failure("upload", "local_validation", err)
 	}
 	if _, err = part.Write(data); err != nil {
-		return "", err
+		return "", Failure("upload", "local_validation", err)
 	}
 	if err = writer.Close(); err != nil {
-		return "", err
+		return "", Failure("upload", "local_validation", err)
 	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, strings.TrimRight(c.BaseURL, "/")+"/files", &body)
 	if err != nil {
+		return "", Failure("upload", "local_validation", err)
+	}
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+	var result struct {
+		Token string `json:"file_token"`
+	}
+	detail, err := c.doAPI(req, "upload", &result)
+	if err != nil {
 		return "", err
 	}
-	req.Header.Set("Authorization", "Bearer "+c.APIKey)
-	req.Header.Set("Content-Type", writer.FormDataContentType())
-	resp, err := c.HTTP.Do(req)
-	if err != nil {
-		return "", fmt.Errorf("模型输入上传失败")
+	if result.Token == "" {
+		return "", failure(detail, "protocol", nil, false)
 	}
-	defer resp.Body.Close()
-	var envelope struct {
-		Code *int `json:"code"`
-		Data struct {
-			Token string `json:"file_token"`
-		} `json:"data"`
-	}
-	if err = json.NewDecoder(io.LimitReader(resp.Body, 2<<20)).Decode(&envelope); err != nil || resp.StatusCode < 200 || resp.StatusCode >= 300 || envelope.Code == nil || *envelope.Code != 0 || envelope.Data.Token == "" {
-		return "", fmt.Errorf("模型输入上传响应无效（HTTP %d）", resp.StatusCode)
-	}
-	return envelope.Data.Token, nil
+	return result.Token, nil
 }

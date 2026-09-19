@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"time"
@@ -65,8 +66,14 @@ func (s *Service) production(ctx context.Context, id, opID string) (string, erro
 	// 先扣生产次数并写 submitting，再访问提供方；失败和未知结果都保留这次消耗。
 	if op.Stage == "ready" {
 		if op.InputVersionID != "" {
+			started := time.Now()
 			params, e := s.prepareVersionInput(ctx, id, opID)
 			if e != nil {
+				var recorded *recordedProviderError
+				if !errors.As(e, &recorded) {
+					e = tripo.Failure("upload", "local_validation", e)
+				}
+				e = s.recordProviderFailure(id, opID, "", "upload", newID(), 1, started, e)
 				return s.operationFailure(id, opID, e)
 			}
 			op.Params = params
@@ -114,15 +121,19 @@ func (s *Service) production(ctx context.Context, id, opID string) (string, erro
 		if v.Current.Stage != "submitting" || v.Current.TaskID != "" {
 			return "", fmt.Errorf("生产操作已推进，不能重复提交")
 		}
+		started := time.Now()
 		taskID, e := s.provider.Submit(opCtx, op.Kind, op.Params)
 		if e != nil {
+			e = s.recordProviderFailure(id, opID, "", "submit", newID(), 1, started, e)
 			if tripo.IsUnknown(e) {
-				return "", fmt.Errorf("提交结果未知，保留已消耗额度并停止自动执行")
+				return "", fmt.Errorf("提交结果未知，保留已消耗额度并停止自动执行：%w", e)
 			}
 			return s.operationFailure(id, op.ID, e)
 		}
 		if taskID == "" {
-			return "", fmt.Errorf("提交结果未知，未收到任务 ID，不能重新提交")
+			e := tripo.Failure("submit", "protocol", nil)
+			e.Unknown, e.Detail.RequestStarted = true, true
+			return "", s.recordProviderFailure(id, opID, "", "submit", newID(), 1, started, e)
 		}
 		// 停止或超时后才到达的任务 ID 仍是远端提交证据，使用独立上下文保存。
 		// 只补录操作证据，不重置会话状态、额度、截止时间或生产名额。
@@ -138,9 +149,12 @@ func (s *Service) production(ctx context.Context, id, opID string) (string, erro
 			}
 			x.Current.TaskID = taskID
 			x.Current.Stage = "submitted"
+			x.Current.LastFailure = nil
 			return nil
 		}, "tool_submitted", map[string]string{"operation_id": op.ID, "task_id": taskID})
 		if err != nil && !errors.Is(err, errOperationRecorded) {
+			d := (tripo.Diagnostic{Phase: "submit", Category: "local_validation", RunID: id, OperationID: opID, TaskID: taskID}).Safe(s.Config.DeepSeekKey, s.Config.TripoKey)
+			slog.Error("保存已返回 TaskID 失败，禁止重提", "diagnostic", d)
 			return "", err
 		}
 		if v, err = s.liveOperation(opCtx, id, opID); err != nil {
@@ -155,20 +169,30 @@ func (s *Service) production(ctx context.Context, id, opID string) (string, erro
 	lastProgress, lastStatus := -1, ""
 	for {
 		var task tripo.Task
+		group, attempt := newID(), 0
+		var queryStarted time.Time
 		err = retry(opCtx, func() error {
 			if _, e := s.liveTask(opCtx, id, opID, op.TaskID); e != nil {
 				return e
 			}
 			var e error
+			attempt++
+			queryStarted = time.Now()
 			task, e = s.provider.Query(opCtx, op.TaskID)
-			return e
+			if e != nil {
+				return s.recordProviderFailure(id, opID, op.TaskID, "query", group, attempt, queryStarted, e)
+			}
+			s.resolveProviderFailure(opCtx, id, opID, "query")
+			return nil
 		})
 		if err != nil {
 			return "", err
 		}
 		// 仅接受当前操作的任务结果，避免错误响应被当作本请求的生产证据。
 		if task.ID != "" && task.ID != op.TaskID {
-			return "", fmt.Errorf("查询结果与原任务 ID 不匹配")
+			d := task.Call
+			d.Phase, d.Category = "query", "protocol"
+			return "", s.recordProviderFailure(id, opID, op.TaskID, "query", group, attempt, queryStarted, tripo.WithDiagnostic(nil, d))
 		}
 		if v, err = s.liveOperation(opCtx, id, opID); err != nil {
 			return "", err
@@ -189,20 +213,36 @@ func (s *Service) production(ctx context.Context, id, opID string) (string, erro
 				return "", err
 			}
 		case "failed", "cancelled":
-			return s.operationFailure(id, op.ID, fmt.Errorf("Tripo 任务 %s（code %d）：%s", task.Status, task.ErrorCode, s.redact(task.ErrorMessage)))
+			d := task.Call
+			d.Phase, d.Category = "query", "task_failed"
+			if task.ErrorCode != 0 {
+				d.TaskErrorCode = &task.ErrorCode
+			}
+			e := s.recordProviderFailure(id, opID, op.TaskID, "query", group, attempt, queryStarted, tripo.WithDiagnostic(nil, d))
+			return s.operationFailure(id, op.ID, e)
 		case "success":
 			// 远端 success 只代表任务完成；下载并通过技术检查后才有交付依据。
 			if task.Output.ModelURL == "" {
-				return s.operationFailure(id, op.ID, errMissingModelOutput)
+				d := task.Call
+				d.Phase, d.Category = "query", "protocol"
+				e := s.recordProviderFailure(id, opID, op.TaskID, "query", group, attempt, queryStarted, tripo.WithDiagnostic(errMissingModelOutput, d))
+				return s.operationFailure(id, op.ID, e)
 			}
 			var data []byte
+			downloadGroup, downloadAttempt := newID(), 0
 			err = retry(opCtx, func() error {
 				if _, e := s.liveTask(opCtx, id, opID, op.TaskID); e != nil {
 					return e
 				}
 				var e error
+				downloadAttempt++
+				started := time.Now()
 				data, e = s.provider.Download(opCtx, task.Output.ModelURL)
-				return e
+				if e != nil {
+					return s.recordProviderFailure(id, opID, op.TaskID, "download", downloadGroup, downloadAttempt, started, e)
+				}
+				s.resolveProviderFailure(opCtx, id, opID, "download")
+				return nil
 			})
 			if err != nil {
 				if opCtx.Err() != nil {
@@ -236,7 +276,10 @@ func (s *Service) production(ctx context.Context, id, opID string) (string, erro
 			}
 			return s.saveOperationArtifact(opCtx, id, opID, a)
 		default:
-			return s.operationFailure(id, op.ID, fmt.Errorf("Tripo 返回未知任务状态"))
+			d := task.Call
+			d.Phase, d.Category = "query", "protocol"
+			e := s.recordProviderFailure(id, opID, op.TaskID, "query", group, attempt, queryStarted, tripo.WithDiagnostic(nil, d))
+			return s.operationFailure(id, op.ID, e)
 		}
 	}
 }
@@ -271,6 +314,7 @@ func (s *Service) saveOperationArtifact(ctx context.Context, id, opID string, a 
 		x.Artifacts = append(x.Artifacts, a)
 		x.Current.Stage = "done"
 		x.Current.ArtifactID = a.ID
+		x.Current.LastFailure = nil
 		return nil
 	}, "technical_report", map[string]any{"operation_id": opID, "task_id": a.TaskID, "artifact_id": a.ID, "report": a.Report})
 	if err != nil && !errors.Is(err, errOperationRecorded) {

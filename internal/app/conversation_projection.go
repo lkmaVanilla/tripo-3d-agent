@@ -201,6 +201,35 @@ func cacheConversationRun(ctx context.Context, tx *sql.Tx, v Session, seq int64)
 }
 
 func projectConversationResult(ctx context.Context, tx *sql.Tx, c Conversation, v Session, e Event) error {
+	// 结束时刷新原操作卡，不能把未知提交永远显示成“正在提交”。
+	if v.Current != nil {
+		var body []byte
+		key := "operation:" + v.Current.ID
+		err := tx.QueryRowContext(ctx, "SELECT data FROM conversation_messages WHERE conversation_id=? AND source_key=?", c.ID, key).Scan(&body)
+		if err == nil {
+			var card ConversationMessage
+			if err = json.Unmarshal(body, &card); err != nil {
+				return err
+			}
+			if card.Data == nil {
+				card.Data = map[string]any{}
+			}
+			card.UpdatedSeq = e.Seq
+			card.Data["run_status"] = v.Status
+			if v.Current.Stage == "submitting" && v.Current.TaskID == "" {
+				card.Data["status"] = "submission_unknown"
+				card.Data["error_summary"] = "本次本地执行已停止；远端是否创建任务无法确认，系统没有自动重试。"
+			}
+			if summary := providerFailureText(v); summary != "" {
+				card.Data["error_summary"] = summary
+			}
+			if err = saveConversationMessage(ctx, tx, key, card); err != nil {
+				return err
+			}
+		} else if !errors.Is(err, sql.ErrNoRows) {
+			return err
+		}
+	}
 	view := conversationRunView(v)
 	text, _ := view["final"].(string)
 	kind := "run_result"
@@ -251,7 +280,7 @@ func projectConversationEvent(ctx context.Context, tx *sql.Tx, v Session, c Conv
 		m.Data = data
 		m.VersionID = conversationString(data, "version_id")
 		key = "intent-review:" + v.ID + ":" + conversationString(data, "id")
-	case "runtime_accepted", "tool_submitting", "tool_submitted", "tripo_progress", "technical_report", "tool_failed", "production_slot", "queued":
+	case "runtime_accepted", "tool_submitting", "tool_submitted", "tripo_progress", "technical_report", "tool_failed", "production_slot", "queued", "provider_call_failed", "provider_call_recovered", "input_prepared":
 		opID := conversationString(data, "operation_id")
 		if opID == "" && !legacy && v.Current != nil {
 			opID = v.Current.ID
@@ -290,10 +319,25 @@ func projectConversationEvent(ctx context.Context, tx *sql.Tx, v Session, c Conv
 			m.Data["stage"] = "submitting"
 		case "tool_submitted", "tripo_progress":
 			m.Data["stage"] = "submitted"
+			if e.Kind == "tool_submitted" {
+				delete(m.Data, "diagnostic")
+				delete(m.Data, "error_summary")
+			}
 		case "tool_failed":
+			m.Data["error_summary"] = conversationString(data, "error")
 			m.Data["stage"] = "done"
 			m.Data["status"] = "failed"
+		case "provider_call_failed":
+			m.Data["diagnostic"] = data
+			if unknown, _ := data["submission_unknown"].(bool); unknown {
+				m.Data["status"] = "submission_unknown"
+			}
+		case "provider_call_recovered", "input_prepared":
+			delete(m.Data, "diagnostic")
+			delete(m.Data, "error_summary")
 		case "technical_report":
+			delete(m.Data, "diagnostic")
+			delete(m.Data, "error_summary")
 			m.Data["stage"] = "done"
 			m.Data["status"] = "checked"
 			artifactID := conversationString(data, "artifact_id")
