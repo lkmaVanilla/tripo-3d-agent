@@ -16,6 +16,9 @@ const date='2026-09-13T12:00:00Z',expiry='2026-09-20T12:00:00Z';
 let cursor=0,runNumber=0,abortCreation=true;
 const conversations=new Map(),commands=[],creationKeys=new Map(),messageKeys=new Map(),sockets=new Set(),pageErrors=[];
 const screenshots=[],checks=[];
+let postGate=null,deferAnswer=false,pauseSnapshots=false;
+function holdPost(){let release;const wait=new Promise(done=>{release=done;});postGate=wait;return release;}
+function event(state,kind,data={},runID=state.conversation.active_run_id){const seq=tick();state.events.push({seq,conversation_id:state.conversation.id,run_id:runID,kind,data});state.cursor=seq;}
 const tick=()=>++cursor;
 function envelope(id,title='低模木箱') {return {conversation:{id,title,created:date,updated:date,expires:expiry,active_run_id:''},messages:[],versions:[],runs:[],events:[],cursor:tick(),has_more:false};}
 function addMessage(state,kind,text,runID,data={},versionID='',waitID='') {
@@ -29,10 +32,10 @@ function newRun(state,text,versionID='',clarification=false) {
  return run;
 }
 function startOperation(state,run) {
- run.status='running';run.production=1;
+ run.status='running';run.production=1;run.current_operation={id:'op-'+run.id,kind:run.input_version_id?'decimate':'generate',stage:'submitted',task_id:'fixture-'+run.id};
  if(run.input_version_id){const source=state.versions.find(version=>version.id===run.input_version_id),target=run.request.includes('2000')?2000:3000;addMessage(state,'intent_review','已记录拟采用的需求变化；展示时尚未接受为本次正式意图。',run.id,{version_id:run.input_version_id,action:'decimate',intent:{asset:'木箱',use:'产品展示',max_triangles:target,max_bytes:10485760,plan:['按明确输入减面并进行技术检查']},changes:[{field:'max_triangles',before:source?.report.triangles,after:target}],inherited:['asset','use','max_bytes']});}
  addMessage(state,'accepted_plan','',run.id,{intent:{asset:'木箱',use:'产品展示',max_triangles:4500,max_bytes:10485760,plan:['依据明确引用制作','下载并检查真实文件']}});
- addMessage(state,'operation_card','',run.id,{operation_id:'op-'+run.id,operation_kind:run.input_version_id?'decimate':'generate',stage:'submitted',status:'running',progress:24,task_id:'fixture-'+run.id});
+ addMessage(state,'operation_card','',run.id,{operation_id:'op-'+run.id,operation_kind:run.input_version_id?'decimate':'generate',stage:'submitted',status:'running',progress:24,task_id:'fixture-'+run.id});event(state,'tripo_progress',{operation_id:'op-'+run.id,status:'running',progress:24});
 }
 function glb(faces) {
  const positions=Buffer.from(new Float32Array([-.5,-.5,-.5,.5,-.5,-.5,.5,.5,-.5,-.5,.5,-.5,-.5,-.5,.5,.5,-.5,.5,.5,.5,.5,-.5,.5,.5]).buffer);
@@ -51,17 +54,18 @@ function finish(state,faces=4500,parent='') {
  const card=state.messages.find(message=>message.kind==='operation_card'&&message.run_id===run.id);card.data={...card.data,stage:'done',status:'checked',progress:100,report};card.version_id=id;card.updated_seq=tick();
  addMessage(state,'run_result',run.final,run.id,{source:'runtime',outcome:run.outcome,result:run.result});state.conversation.active_run_id='';state.cursor=tick();publish(state);return version;
 }
-function publish(state){for(const item of sockets)if(item.id===state.conversation.id)item.socket.send(JSON.stringify(state));}
+function publish(state){if(pauseSnapshots)return;for(const item of sockets)if(item.id===state.conversation.id)item.socket.send(JSON.stringify(state));}
 const other=envelope('other','路灯');conversations.set('other',other);
 const browser=await chromium.launch({headless:true,args:['--enable-unsafe-swiftshader']});
 const context=await browser.newContext({viewport:{width:1440,height:1000},deviceScaleFactor:1});
 // loaded 在首帧绘制前就可能为 true；等待当前 URL 对应的公开 load 事件。
 await context.addInitScript(()=>{document.addEventListener('load',event=>{if(event.target?.tagName==='MODEL-VIEWER')window.__fixtureLoadedModelURL=new URL(event.detail.url,location.href).href;},true);});
 const page=await context.newPage();page.on('pageerror',error=>pageErrors.push(error.stack||error.message));
-await page.routeWebSocket('**/api/conversations/*/events*',socket=>{const id=new URL(socket.url()).pathname.split('/')[3];const item={id,socket};sockets.add(item);socket.onClose(()=>sockets.delete(item));const state=conversations.get(id);if(state)socket.send(JSON.stringify(state));});
+await page.routeWebSocket('**/api/conversations/*/events*',socket=>{const id=new URL(socket.url()).pathname.split('/')[3];const item={id,socket};sockets.add(item);socket.onClose(()=>sockets.delete(item));const state=conversations.get(id);if(state&&!pauseSnapshots)socket.send(JSON.stringify(state));});
 await page.route('**/*',async route=>{
  const request=route.request(),url=new URL(request.url()),parts=url.pathname.split('/').filter(Boolean);
  if(url.origin!==base)return route.abort();
+ if(request.method()==='POST'&&postGate){const gate=postGate;postGate=null;await gate;}
  const json=value=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(value)});
  if(url.pathname==='/api/config')return json({ready:true,mode:'controlled-test',model:'fixture'});
  if(url.pathname==='/api/conversations'&&request.method()==='GET')return json([...conversations.values()].map(state=>state.conversation));
@@ -75,7 +79,7 @@ await page.route('**/*',async route=>{
   if(parts[3]==='messages'&&request.method()==='POST'){
    const payload=request.postDataJSON();commands.push(payload);const key=state.conversation.id+payload.client_message_id;
    if(messageKeys.has(key))return json(state);messageKeys.set(key,true);
-   if(payload.kind==='answer') {const run=state.runs.find(item=>item.id===payload.run_id);assert.equal(payload.wait_id,run.wait_id);assert.equal(payload.generation,run.generation);addMessage(state,'user',payload.text,run.id,{},payload.version_id,payload.wait_id);startOperation(state,run);}
+   if(payload.kind==='answer') {const run=state.runs.find(item=>item.id===payload.run_id);assert.equal(payload.wait_id,run.wait_id);assert.equal(payload.generation,run.generation);addMessage(state,'user',payload.text,run.id,{},payload.version_id,payload.wait_id);if(deferAnswer){run.status='understanding';event(state,'model_call');}else startOperation(state,run);}
    else if(payload.text.includes('解释')){const run=newRun(state,payload.text,payload.version_id);state.messages=state.messages.filter(message=>message.run_id!==run.id||message.kind==='user');Object.assign(run,{production:0,status:'answered',model_calls:1,ended:date,final:'本次仅回答，未创建模型。',outcome:{kind:'answer',text:'该版本的面数来自文件实测，未检查外观。',source:'agent'}});addMessage(state,'answer',run.outcome.text,run.id,{source:'agent',verification:'unverifiable',outcome:run.outcome});state.conversation.active_run_id='';}
    else newRun(state,payload.text,payload.version_id);
    state.cursor=tick();publish(state);return json(state);
@@ -91,12 +95,13 @@ await page.route('**/*',async route=>{
 });
 try {
  await page.goto(base);await expect(page.locator('#home')).toBeVisible();
+ await expect(page.locator('#request')).toHaveValue('');assert.doesNotMatch(await page.locator('#request').getAttribute('placeholder'),/5,?000|最多/);
  const homeImage=resolve(output,'home-desktop.png');await page.screenshot({path:homeImage});screenshots.push(homeImage);
- await page.locator('#request').fill('为产品展示制作一个低模木箱，最多 4500 个三角面。');await page.locator('#submit').click();
- await expect(page.locator('#submit')).toHaveText('确认原提交');await expect(page.locator('#request')).toHaveValue('为产品展示制作一个低模木箱，最多 4500 个三角面。');
- await page.locator('#submit').click();await expect(page.locator('#workspace')).toBeVisible();await expect(page.locator('#question-context')).toBeVisible();assert.equal(commands[0].client_message_id,commands[1].client_message_id);assert.equal(conversations.size,2);checks.push('first-response-loss-preserves-creation-identity');
+ const releaseHome=holdPost();await page.locator('#request').fill('为产品展示制作一个低模木箱，最多 5000 个三角面。');await page.locator('#submit').click();await expect(page.locator('#home-hint')).toHaveText('正在发送…');await expect(page.locator('#submit')).toBeDisabled();releaseHome();
+ await expect(page.locator('#submit')).toHaveText('确认原提交');await expect(page.locator('#request')).toHaveValue('为产品展示制作一个低模木箱，最多 5000 个三角面。');
+ await page.locator('#submit').click();await expect(page.locator('#workspace')).toBeVisible();await expect(page.locator('#question-context')).toBeVisible();assert.equal(commands[0].client_message_id,commands[1].client_message_id);assert.equal(conversations.size,2);assert.equal(commands[0].request,'为产品展示制作一个低模木箱，最多 5000 个三角面。');checks.push('first-response-loss-preserves-creation-identity');checks.push('placeholder-empty-sending-feedback-explicit-5000-retained');
  await page.locator('#draft-mode').click();await page.locator('#message').fill('稍后把这个版本减到 3000 个三角面。');await expect(page.locator('#send')).toBeDisabled();
- await page.locator('#answer-mode').click();await page.locator('#message').fill('用于电商产品展示，静态模型。');await page.locator('#send').click();await expect(page.locator('#message')).toHaveValue('稍后把这个版本减到 3000 个三角面。');await expect(page.locator('#send')).toBeDisabled();checks.push('answer-and-future-draft-isolation');
+ await page.locator('#answer-mode').click();await page.locator('#message').fill('用于电商产品展示，静态模型。');deferAnswer=true;const releaseAnswer=holdPost();await page.locator('#send').click();await expect(page.locator('#chat-activity')).toHaveAttribute('data-kind','sending');releaseAnswer();await expect(page.locator('#chat-activity')).toHaveAttribute('data-kind','thinking');deferAnswer=false;const answering=conversations.get('crate');startOperation(answering,answering.runs[0]);answering.cursor=tick();publish(answering);await expect(page.locator('#chat-activity')).toHaveAttribute('data-kind','generating');checks.push('clarification-sending-thinking-generating-continuity');await expect(page.locator('#message')).toHaveValue('稍后把这个版本减到 3000 个三角面。');await expect(page.locator('#send')).toBeDisabled();checks.push('answer-and-future-draft-isolation');
  await page.locator('[data-conversation-id="other"]').click();await page.locator('[data-conversation-id="crate"]').click();await expect(page.locator('#message')).toHaveValue('稍后把这个版本减到 3000 个三角面。');
  const state=conversations.get('crate');finish(state);await expect(page.locator('#versions-total')).toHaveText('1');await expect(page.locator('#send')).toBeEnabled();assert.equal(state.runs.length,1);checks.push('draft-survives-switch-and-is-not-auto-sent');
  await page.getByRole('button',{name:'预览 v1',exact:true}).click();await page.getByRole('button',{name:'引用 v1 到聊天',exact:true}).click();await expect(page.locator('#reference-label')).toHaveText('本条引用：v1');await page.locator('#send').click();assert.equal(commands.at(-1).version_id,'v1');
@@ -113,5 +118,7 @@ try {
  state.conversation.active_run_id='';state.cursor=tick();publish(state);await expect(page.locator('#send')).toBeEnabled();await expect(page.locator('#message')).toHaveValue('停止后保留的草稿');checks.push('stop-waits-for-worker-idle');
  const beforeReconnect=await page.locator('.message').count();for(const item of [...sockets])if(item.id==='crate')item.socket.close({code:1001,reason:'fixture disconnect'});await expect(page.locator('#connection')).toHaveText('进度已连接',{timeout:6000});await expect(page.locator('.message')).toHaveCount(beforeReconnect);checks.push('websocket-reconnect-keeps-messages-unique');
  await page.setViewportSize({width:390,height:844});await expect(page.locator('#tab-chat')).toBeVisible();await page.locator('#tab-chat').click();await expect(page.locator('#chat-pane')).toBeVisible();await page.locator('#tab-model').click();await expect(page.locator('#model-pane')).toBeVisible();await expect(page.locator('#chat-pane')).toBeHidden();const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);assert.equal(overflow,false);const mobile=resolve(output,'workspace-mobile.png');await page.screenshot({path:mobile});screenshots.push(mobile);await page.locator('#tab-chat').click();await expect(page.locator('#message')).toHaveValue('停止后保留的草稿');checks.push('390px-tabs-and-no-horizontal-overflow');
+ const {verifyFeedback}=await import('./workspace-feedback.browser.mjs');
+ await verifyFeedback({page,expect,assert,conversations,envelope,addMessage,event,tick,publish,sockets,commands,holdPost,setPaused:value=>{pauseSnapshots=value;},output,screenshots,checks,base});
  assert.deepEqual(pageErrors,[]);const report={scope:'frontend-contract-only',backend:'mock HTTP and WebSocket',provider:'not called',passed:checks.length,checks,screenshots,page_errors:pageErrors};await writeFile(resolve(output,'report.json'),JSON.stringify(report,null,2));console.log(JSON.stringify({output,...report},null,2));
 } catch(error){const failure=resolve(output,'failure.png');await page.screenshot({path:failure});console.error(JSON.stringify({output,checks,pageErrors,failure}));throw error;}finally{await browser.close();}

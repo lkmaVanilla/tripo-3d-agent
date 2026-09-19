@@ -1,3 +1,4 @@
+import {workspaceActivity,progressValue} from './workspace-activity.mjs';
 import {node,shortTime,checks} from './workspace-dom.mjs';
 import {sortedMessages,statusLabels} from './workspace-state.mjs';
 import {versionName,technicalSummary} from './workspace-versions.mjs';
@@ -46,9 +47,18 @@ function details(title,value,explanation='') {
 
 // 按持久消息身份复用 DOM，轮询只更新对应操作卡，不追加重复聊天行。
 export class ChatView {
-  constructor({container,scroll,onPreview}) {Object.assign(this,{container,scroll,onPreview});this.items=new Map();this.conversationID='';}
+  constructor({container,scroll,activity,onPreview}) {Object.assign(this,{container,scroll,activity,onPreview});this.items=new Map();this.conversationID='';}
+  clearActivity() {if(this.activity){this.activity.hidden=true;this.activity.querySelector('.activity-text').textContent='';delete this.activity.dataset.kind;}}
+  renderActivity(state) {
+    if(!this.activity)return;
+    const value=workspaceActivity(state);
+    if(!value){this.clearActivity();return;}
+    // 相同阶段不改 live region 的内容，避免每个心跳都向读屏重复播报。
+    if(this.activity.dataset.kind!==value.kind){this.activity.dataset.kind=value.kind;this.activity.querySelector('.activity-text').textContent=value.text;}
+    this.activity.classList.toggle('animated',value.animated);this.activity.hidden=false;
+  }
   render(state,{history=false}={}) {
-    if(this.conversationID!==state.id){this.items.clear();this.container.replaceChildren();this.conversationID=state.id;}
+    if(this.conversationID!==state.id){this.items.clear();this.container.replaceChildren();this.clearActivity();this.conversationID=state.id;}
     const nearBottom=this.scroll.scrollHeight-this.scroll.scrollTop-this.scroll.clientHeight<100;
     const oldHeight=this.scroll.scrollHeight;
     const ordered=sortedMessages(state);
@@ -62,14 +72,20 @@ export class ChatView {
       if(!entry){entry={element:node('article',undefined,'message'+(message.kind==='user'?' user':''))};entry.element.dataset.messageId=message.id;entry.element.dataset.runId=message.run_id;this.items.set(message.id,entry);}
       if(entry.signature!==signature) {
         const openDetails=[...entry.element.querySelectorAll('details')].map(item=>item.open);
+        const focused=entry.element.ownerDocument.activeElement;
+        const focusTag=entry.element.contains(focused)?focused.tagName:null;
+        const focusIndex=focusTag?[...entry.element.querySelectorAll(focusTag)].indexOf(focused):-1;
         entry.element.replaceChildren(...this.contents(state,message,run,evidence));
         [...entry.element.querySelectorAll('details')].forEach((item,index)=>{item.open=!!openDetails[index];});
+        // 登记模型时会新增预览按钮；按元素类型定位，避免证据焦点跳到新按钮。
+        if(focusIndex>=0)entry.element.querySelectorAll(focusTag)[focusIndex]?.focus({preventScroll:true});
         entry.signature=signature;
       }
       children.push(entry.element);
     }
     // 不移动顺序已经正确的节点，以免轮询夺走证据展开项的键盘焦点。
     children.forEach((element,index)=>{if(this.container.children[index]!==element)this.container.insertBefore(element,this.container.children[index]||null);});
+    this.renderActivity(state);
     if(history)this.scroll.scrollTop+=this.scroll.scrollHeight-oldHeight;
     else if(nearBottom)this.scroll.scrollTop=this.scroll.scrollHeight;
   }
@@ -124,10 +140,10 @@ export class ChatView {
     const meta=node('div',undefined,'card-meta');meta.append(node('span',operationNames[data.operation_kind]||'模型制作'),node('span',operationStage(data)));content.append(meta);
     if(data.stage==='submitted'||data.report) {
       const progress=node('progress');progress.max=100;
-      if(Number.isFinite(Number(data.progress)))progress.value=Math.min(100,Math.max(0,Number(data.progress)));
+      if(progressValue(data.progress)!==null)progress.value=data.progress;
       else if(data.report)progress.value=100;
       content.append(progress);
-      if(data.progress!==undefined)content.append(node('div',`远端进度 ${data.progress}%`,'operation-facts'));
+      if(progressValue(data.progress)!==null)content.append(node('div',`远端进度 ${data.progress}%`,'operation-facts'));
     }
     if(data.task_id)content.append(node('div','远端任务：'+data.task_id,'operation-facts'));
     if(data.report)content.append(node('div',technicalSummary(data.report),'report-summary'));

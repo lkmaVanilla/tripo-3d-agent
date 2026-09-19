@@ -4,7 +4,7 @@ export const statusLabels = {understanding:'理解需求中',awaiting_answer:'�
 export function newDraft() { return {text:'',versionID:'',submission:null,submitting:false,uncertain:false}; }
 export function createWorkspace(id) {
   return {id,conversation:null,runs:new Map(),messages:new Map(),versions:new Map(),events:new Map(),cursor:0,hasMore:false,loaded:false,unavailable:false,canSend:false,
-    draft:newDraft(),answers:new Map(),composerMode:'auto',questionKey:'',pendingSlot:null,previewID:'',manualPreview:false,pane:'chat',stopPending:false};
+    connection:{phase:'syncing',generation:0,lastSnapshotAt:null},draft:newDraft(),answers:new Map(),composerMode:'auto',questionKey:'',pendingSlot:null,previewID:'',manualPreview:false,pane:'chat',stopPending:false};
 }
 export function activeRun(state) { return state.runs.get(state.conversation?.active_run_id) || null; }
 export function currentQuestion(state) {

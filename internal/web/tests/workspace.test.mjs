@@ -104,9 +104,10 @@ test('intent review preserves explicit before/after facts and precedes accepted 
 });
 
 function connectionFixture(load){
- const sockets=[],seen=[],statuses=[],timers=[];
- const connection=new ConversationConnection({load,onSnapshot:value=>seen.push(value),onStatus:value=>statuses.push(value),onUnavailable:error=>statuses.push(error.status),origin:()=> 'http://example.test',createSocket:url=>{const socket={url,close(){this.closed=true;}};sockets.push(socket);return socket;},setTimer:fn=>{timers.push(fn);return timers.length;},clearTimer:()=>{}});
- return {connection,sockets,seen,statuses,timers};
+ const sockets=[],seen=[],statuses=[],timers=new Map();let time=0,serial=0;
+ const connection=new ConversationConnection({load,onSnapshot:value=>seen.push(value),onStatus:value=>statuses.push(value),onUnavailable:error=>statuses.push(error.status),origin:()=> 'http://example.test',createSocket:url=>{const socket={url,close(){this.closed=true;}};sockets.push(socket);return socket;},now:()=>time,setTimer:(fn,delay)=>{const id=++serial;timers.set(id,{fn,at:time+delay});return id;},clearTimer:id=>timers.delete(id)});
+ async function advance(ms){time+=ms;for(const [id,timer] of [...timers])if(timer.at<=time){timers.delete(id);await timer.fn();}await Promise.resolve();}
+ return {connection,sockets,seen,statuses,timers,advance,jump:ms=>{time+=ms;}};
 }
 test('late HTTP and WS from a previously selected conversation cannot affect current page',async()=>{
  let resolveFirst;const first=new Promise(resolve=>{resolveFirst=resolve;});
@@ -118,11 +119,11 @@ test('late HTTP and WS from a previously selected conversation cannot affect cur
 });
 test('reconnection uses the latest conversation cursor across multiple Runs',async()=>{
  let server=snapshot('c1',12,'r1');const f=connectionFixture(()=>Promise.resolve(server));await f.connection.open('c1');
- f.sockets[0].onmessage({data:JSON.stringify(snapshot('c1',28,'r2'))});server=snapshot('c1',35,'r2');f.sockets[0].onclose();await f.timers[0]();
+ f.sockets[0].onmessage({data:JSON.stringify(snapshot('c1',28,'r2'))});server=snapshot('c1',35,'r2');f.sockets[0].onclose();await f.advance(1500);
  assert.equal(f.sockets[1].url,'ws://example.test/api/conversations/c1/events?after=35');assert.equal(f.connection.cursor,35);
 });
 test('expired conversation stops reconnect attempts',async()=>{
- const f=connectionFixture(()=>Promise.reject({status:404}));await f.connection.open('gone');assert.equal(f.connection.id,null);assert.equal(f.timers.length,0);assert.equal(f.statuses.at(-1),404);
+ const f=connectionFixture(()=>Promise.reject({status:404}));await f.connection.open('gone');assert.equal(f.connection.id,null);assert.equal(f.timers.size,0);assert.equal(f.statuses.at(-1),404);
 });
 
 // 空值是明确的无上限，缺失数据仍为未知，不能混淆。
@@ -133,4 +134,78 @@ test('optional constraint values retain their meaning',async()=>{
  assert.equal(intentValue(3000,'max_triangles'),'3,000');
  assert.equal(intentValue('further','reduction_mode'),'进一步降低面数');
  assert.match(intentValue({max_bytes:{kind:'cleared'}},'constraint_sources'),/本次明确取消/);
+});
+
+const {workspaceActivity,submissionActivity,progressValue}=await import('../static/workspace-activity.mjs');
+function activityFixture(status='running',op) {
+ const state=createWorkspace('c1');mergeSnapshot(state,snapshot('c1',100,'r1',{runs:[{id:'r1',status,current_operation:op}]}));state.connection.phase='connected';return state;
+}
+const activityEvent=(state,seq,kind,data={},runID='r1',conversationID='c1')=>state.events.set(seq,{seq,kind,data,run_id:runID,conversation_id:conversationID});
+test('activity stages use current operations and never invent progress',()=>{
+ const cases=[['understanding',null,null,'thinking'],['awaiting_answer',null,null,'processing'],['queued',null,null,'queued'],['queue_full',null,null,'queue_full'],['running',{stage:'ready'},null,'preparing'],['running',{stage:'submitting'},null,'preparing'],['running',{stage:'submitted'},'queued','provider_queued'],['running',{stage:'submitted'},'running','generating'],['running',{stage:'submitted',kind:'decimate'},'running','decimating'],['running',{stage:'submitted'},'success','files'],['running',{stage:'submitted'},'alien','processing'],['running',null,null,'processing'],['alien',null,null,'processing']];
+ for(const [status,extra,provider,expected] of cases){const op=extra&&{id:'op1',kind:'generate',task_id:'task1',...extra},state=activityFixture(status,op);if(provider)activityEvent(state,20,'tripo_progress',{operation_id:'op1',status:provider});assert.equal(workspaceActivity(state).kind,expected,JSON.stringify([status,extra,provider]));}
+ for(const value of [null,undefined,'',NaN,Infinity,-1,101,'24'])assert.equal(progressValue(value),null);
+ for(const value of [0,24,100])assert.equal(progressValue(value),value);
+});
+test('thinking closes on model result and historical failures cannot mask correction or current tool',()=>{
+ const state=activityFixture('running',{id:'new',stage:'done'});
+ activityEvent(state,2,'model_call');activityEvent(state,3,'agent_proposal');assert.equal(workspaceActivity(state).kind,'processing');
+ activityEvent(state,9,'model_call');activityEvent(state,8,'technical_report',{operation_id:'new'});assert.equal(workspaceActivity(state).kind,'thinking');
+ activityEvent(state,10,'model_call',{},'old');activityEvent(state,11,'model_error',{},'r1','foreign');activityEvent(state,7,'tool_failed',{operation_id:'old'});assert.equal(workspaceActivity(state).kind,'thinking');
+ activityEvent(state,12,'model_error');assert.equal(workspaceActivity(state).kind,'processing');
+ state.runs.get('r1').current_operation={id:'next',kind:'generate',stage:'submitted',task_id:'task-next'};
+ activityEvent(state,13,'model_call'); // 滞后、未闭合的调用也不能覆盖正在生产的操作。
+ state.messages.set('new',{id:'new',run_id:'r1',kind:'operation_card',seq:14,updated_seq:20,data:{operation_id:'next',status:'running'}});
+ activityEvent(state,18,'tripo_progress',{operation_id:'next',status:'queued'});
+ activityEvent(state,30,'tripo_progress',{operation_id:'old',status:'success'});
+ assert.equal(workspaceActivity(state).kind,'provider_queued'); // 较晚卡片更新不等于较晚供应商状态。
+ activityEvent(state,21,'tripo_progress',{operation_id:'next',status:'running'});assert.equal(workspaceActivity(state).kind,'generating');
+ activityEvent(state,22,'tripo_progress',{operation_id:'next',status:'success'});assert.equal(workspaceActivity(state).kind,'files');
+ activityEvent(state,22,'tripo_progress',{operation_id:'next',status:'success'});assert.equal(workspaceActivity(state).kind,'files');
+ state.conversation.active_run_id='r2';state.runs.set('r2',{id:'r2',status:'running'});assert.equal(workspaceActivity(state).kind,'processing');
+});
+test('local sending and uncertainty precede old questions without changing gates, identities or drafts',()=>{
+ const state=activityFixture();state.runs.set('r1',questionRun('r1','w1',1));state.answers.set('r1:w1:1',{text:'回答',submission:null,submitting:false,uncertain:false});
+ assert.equal(workspaceActivity(state).kind,'awaiting_answer');
+ const slot=composerSlot(state),payload=startSubmission(slot.draft,{text:'回答'},()=> 'stable');state.pendingSlot=slot.key;
+ assert.equal(workspaceActivity(state).kind,'sending');submissionFailed(slot.draft,new Error('lost'));assert.equal(workspaceActivity(state).kind,'uncertain');assert.strictEqual(slot.draft.submission,payload);
+ submissionFailed(slot.draft,{status:400});assert.equal(workspaceActivity(state).kind,'awaiting_answer');
+ const before=JSON.stringify(state,(_,value)=>value instanceof Map?[...value]:value),allowed=canSubmit(state);workspaceActivity(state);assert.equal(JSON.stringify(state,(_,value)=>value instanceof Map?[...value]:value),before);assert.equal(canSubmit(state),allowed);
+ assert.equal(submissionActivity({submitting:true}).kind,'sending');assert.equal(submissionActivity({uncertain:true}).kind,'uncertain');assert.equal(submissionActivity({}),null);
+ state.stopPending=true;state.connection.phase='reconnecting';assert.equal(workspaceActivity(state).kind,'stopping');assert.equal(canSubmit(state),false);
+ state.stopPending=false;assert.equal(workspaceActivity(state).kind,'reconnecting');state.connection.phase='syncing';assert.equal(workspaceActivity(state).kind,'syncing');
+ for(const status of ['completed','answered','failed','stopped']){state.runs.get('r1').status=status;assert.equal(workspaceActivity(state).animated,false);assert.equal(canSubmit(state),false);}
+ state.conversation.active_run_id='';assert.equal(workspaceActivity(state),null);state.unavailable=true;assert.equal(workspaceActivity(state),null);
+});
+test('socket open alone is not fresh and same-cursor snapshots keep feedback live',async()=>{
+ const f=connectionFixture(async()=>snapshot('c1',12));await f.connection.open('c1');const socket=f.sockets[0];socket.onopen();assert.equal(f.connection.phase,'syncing');
+ socket.onmessage({data:JSON.stringify(snapshot('c1',12))});assert.equal(f.connection.phase,'connected');
+ await f.advance(14000);socket.onmessage({data:JSON.stringify(snapshot('c1',12))});assert.equal(f.connection.lastSnapshotAt,14000);
+ await f.advance(14000);assert.equal(f.connection.phase,'connected');assert.equal(f.sockets.length,1);
+ socket.onmessage({data:JSON.stringify(snapshot('foreign',100))});socket.onmessage({data:JSON.stringify(snapshot('c1',11))});assert.equal(f.connection.lastSnapshotAt,14000);
+ await f.advance(1000);assert.equal(f.connection.phase,'reconnecting');assert.equal(f.timers.size,1);f.connection.checkFreshness();assert.equal(f.timers.size,1);
+});
+test('foreground staleness and socket identity fence recover once and restore terminal state',async()=>{
+ let loads=0,server=snapshot('c1',12,'r1');const f=connectionFixture(async()=>{loads++;return server;});await f.connection.open('c1');
+ const old=f.sockets[0],lateMessage=old.onmessage,lateClose=old.onclose;old.onmessage({data:JSON.stringify(server)});
+ f.jump(15000);f.connection.checkFreshness();assert.equal(f.connection.phase,'reconnecting');assert.equal(f.timers.size,1);assert.equal(old.closed,true);
+ server=snapshot('c1',20,'',{runs:[{id:'r1',status:'completed'}]});await f.advance(1500);assert.equal(loads,2);const current=f.sockets[1];
+ lateMessage({data:JSON.stringify(snapshot('c1',99,'old'))});lateClose();assert.equal(f.connection.cursor,20);assert.equal(f.connection.socket,current);
+ current.onmessage({data:JSON.stringify(server)});assert.equal(f.connection.phase,'connected');assert.equal(f.seen.at(-1).conversation.active_run_id,'');
+ // 同代但非当前 socket 的回调也不允许覆盖页面。
+ const handler=current.onmessage;f.connection.socket={};handler({data:JSON.stringify(snapshot('c1',100))});assert.equal(f.connection.cursor,20);f.connection.socket=current;
+ f.connection.close();assert.equal(f.timers.size,0);assert.equal(current.closed,true);f.jump(30000);f.connection.checkFreshness();assert.equal(loads,2);
+});
+test('HTTP and socket staleness cannot create parallel recovery chains or refresh rejected snapshots',async()=>{
+ let resolve;const f=connectionFixture(()=>new Promise(done=>{resolve=done;}));const pending=f.connection.open('c1');
+ await f.advance(15000);assert.equal(f.connection.phase,'reconnecting');resolve(snapshot('c1',80));await pending;assert.equal(f.seen.length,0);assert.equal(f.sockets.length,0);
+ f.connection.close();assert.equal(f.timers.size,0);
+ const g=connectionFixture(async()=>snapshot('c1',1));await g.connection.open('c1');g.connection.onSnapshot=()=>false;await g.advance(100);g.sockets[0].onmessage({data:JSON.stringify(snapshot('c1',2))});assert.equal(g.connection.lastSnapshotAt,0);assert.equal(g.connection.cursor,1);
+});
+
+test('local running inherited by operation cards does not prove supplier progress',()=>{
+ const state=activityFixture('running',{id:'op1',kind:'generate',stage:'submitted',task_id:'task1'});
+ state.messages.set('card',{id:'card',run_id:'r1',kind:'operation_card',seq:10,data:{operation_id:'op1',status:'running'}});
+ assert.equal(workspaceActivity(state).kind,'processing');
+ activityEvent(state,11,'tripo_progress',{operation_id:'op1',status:'running'});assert.equal(workspaceActivity(state).kind,'generating');
 });
