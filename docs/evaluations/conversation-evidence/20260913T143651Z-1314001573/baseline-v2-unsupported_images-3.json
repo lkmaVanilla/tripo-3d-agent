@@ -1,0 +1,447 @@
+{
+  "automated_checks": [
+    {
+      "Critical": false,
+      "Detail": "",
+      "Dimension": "strategy",
+      "Name": "terminal_and_model_available",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "actual=0 expected=0..0",
+      "Dimension": "strategy",
+      "Name": "allowed_submission_count",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "failed",
+      "Dimension": "strategy",
+      "Name": "expected_delivery",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=3 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "proposals=1",
+      "Dimension": "strategy",
+      "Name": "real_model_proposals_exist",
+      "Passed": true
+    }
+  ],
+  "automated_passed": true,
+  "case": {
+    "AllowedProduction": null,
+    "Answer": "我只接受使用我接下来上传的三张照片重建模型；没有图片输入能力就结束，不要用文本生成替代。 其他外观细节可合理默认并公开，不改变硬约束。",
+    "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。",
+    "ID": "unsupported_images",
+    "InitialProduction": 0,
+    "IntentReview": "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+    "MaxBytes": 10485760,
+    "MaxSubmits": 0,
+    "MaxTriangles": 5000,
+    "MinSubmits": 0,
+    "NoDelivery": true,
+    "Provider": "normal",
+    "Request": "我只接受使用我接下来上传的三张照片重建模型；没有图片输入能力就结束，不要用文本生成替代。",
+    "RequireThreeQuestions": false,
+    "Seed": "",
+    "StrategyReview": "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+    "Suite": "baseline-v2",
+    "WantAnswer": false,
+    "WantDelivery": false
+  },
+  "conversation": {
+    "conversation": {
+      "created": "2026-09-13T14:39:38.876318Z",
+      "expires": "2026-09-20T14:39:45.045036Z",
+      "id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+      "title": "我只接受使用我接下来上传的三张照片重建模型；没有图片输入能力就结束，不要用文本生成替代。",
+      "updated": "2026-09-13T14:39:45.045036Z"
+    },
+    "cursor": 5,
+    "events": [
+      {
+        "conversation_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "我只接受使用我接下来上传的三张照片重建模型；没有图片输入能力就结束，不要用文本生成替代。",
+          "tripo_model": "v3.1-20260211"
+        },
+        "kind": "request",
+        "run_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "seq": 1,
+        "time": "2026-09-13T14:39:38.876409Z"
+      },
+      {
+        "conversation_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "seq": 2,
+        "time": "2026-09-13T14:39:39.030601Z"
+      },
+      {
+        "conversation_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"deliver\": false, \"explanation\": \"用户明确要求仅接受使用三张照片进行模型重建，且声明若无图片输入能力应结束、不得用文本生成替代。当前环境仅接入 Tripo 文本生成与已有候选模型减面，不支持图片输入、已有模型导入或照片重建，无法满足该需求，因此按用户指令结束请求，未进行任何文本生成或资产生产。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_EfjicuR9qd1Rly8IJMF68539",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "run_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "seq": 3,
+        "time": "2026-09-13T14:39:45.042331Z"
+      },
+      {
+        "conversation_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "data": {
+          "deliver": false,
+          "explanation": "用户明确要求仅接受使用三张照片进行模型重建，且声明若无图片输入能力应结束、不得用文本生成替代。当前环境仅接入 Tripo 文本生成与已有候选模型减面，不支持图片输入、已有模型导入或照片重建，无法满足该需求，因此按用户指令结束请求，未进行任何文本生成或资产生产。",
+          "final": "Agent 已选择结束本次请求，没有作出交付选择；原始说明保留为决策记录。\n累计生产提交 0 / 3 次，模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "agent_stop",
+            "source": "agent",
+            "status": "failed",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "run_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "seq": 4,
+        "time": "2026-09-13T14:39:45.045254Z"
+      },
+      {
+        "conversation_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "data": {
+          "expires": "2026-09-20T14:39:45.045036Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "seq": 5,
+        "time": "2026-09-13T14:39:45.04791Z"
+      }
+    ],
+    "has_more": false,
+    "messages": [
+      {
+        "conversation_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "created": "2026-09-13T14:39:38.876409Z",
+        "id": "8aee7b154fefdde7db8c5ff1c7fdb874ba5574fd8da8c432880a186583e38a39",
+        "kind": "user",
+        "run_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "seq": 1,
+        "text": "我只接受使用我接下来上传的三张照片重建模型；没有图片输入能力就结束，不要用文本生成替代。",
+        "updated_seq": 1
+      },
+      {
+        "conversation_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "created": "2026-09-13T14:39:45.045254Z",
+        "data": {
+          "outcome": {
+            "kind": "ended",
+            "source": "runtime"
+          },
+          "result": {
+            "evidence": "verified",
+            "reason": "agent_stop",
+            "source": "agent",
+            "status": "failed",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+          "source": "runtime"
+        },
+        "id": "375404d6a6ededc1f98de4b5a92d93fef15a502b0dfb01edd075435da18dbd1e",
+        "kind": "run_result",
+        "run_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "seq": 4,
+        "text": "Agent 已选择结束本次请求，没有作出交付选择；原始说明保留为决策记录。\n累计生产提交 0 / 3 次，模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "updated_seq": 5
+      }
+    ],
+    "runs": [
+      {
+        "artifacts": [],
+        "clarifications": 0,
+        "created": "2026-09-13T14:39:38.876318Z",
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-13T14:39:45.045036Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "0",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "1",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "本次未宣告交付成功",
+              "name": "交付证据",
+              "status": "not_applicable"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-20T14:39:45.045036Z",
+        "final": "Agent 已选择结束本次请求，没有作出交付选择；原始说明保留为决策记录。\n累计生产提交 0 / 3 次，模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 0,
+        "id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+        "input_assessment": null,
+        "intent": null,
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 1,
+        "outcome": {
+          "kind": "ended",
+          "source": "runtime"
+        },
+        "production": 0,
+        "prompt_version": "asset-agent-v2",
+        "question": "",
+        "request": "我只接受使用我接下来上传的三张照片重建模型；没有图片输入能力就结束，不要用文本生成替代。",
+        "result": {
+          "evidence": "verified",
+          "reason": "agent_stop",
+          "source": "agent",
+          "status": "failed",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "",
+        "status": "failed",
+        "wait_id": ""
+      }
+    ],
+    "versions": []
+  },
+  "critical_errors_automated": 0,
+  "ended": "2026-09-13T14:39:45.131075Z",
+  "repeat": 3,
+  "run_id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+  "semantic_review": {
+    "instructions": [
+      "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+      "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+      "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。"
+    ],
+    "proposals": [
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 3,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"deliver\": false, \"explanation\": \"用户明确要求仅接受使用三张照片进行模型重建，且声明若无图片输入能力应结束、不得用文本生成替代。当前环境仅接入 Tripo 文本生成与已有候选模型减面，不支持图片输入、已有模型导入或照片重建，无法满足该需求，因此按用户指令结束请求，未进行任何文本生成或资产生产。\"}",
+              "name": "finish_request"
+            },
+            "id": "call_00_EfjicuR9qd1Rly8IJMF68539",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    ],
+    "status": "pending"
+  },
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "我只接受使用我接下来上传的三张照片重建模型；没有图片输入能力就结束，不要用文本生成替代。",
+          "tripo_model": "v3.1-20260211"
+        },
+        "kind": "request",
+        "seq": 1,
+        "time": "2026-09-13T14:39:38.876409Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 2,
+        "time": "2026-09-13T14:39:39.030601Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"deliver\": false, \"explanation\": \"用户明确要求仅接受使用三张照片进行模型重建，且声明若无图片输入能力应结束、不得用文本生成替代。当前环境仅接入 Tripo 文本生成与已有候选模型减面，不支持图片输入、已有模型导入或照片重建，无法满足该需求，因此按用户指令结束请求，未进行任何文本生成或资产生产。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_EfjicuR9qd1Rly8IJMF68539",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 3,
+        "time": "2026-09-13T14:39:45.042331Z"
+      },
+      {
+        "data": {
+          "deliver": false,
+          "explanation": "用户明确要求仅接受使用三张照片进行模型重建，且声明若无图片输入能力应结束、不得用文本生成替代。当前环境仅接入 Tripo 文本生成与已有候选模型减面，不支持图片输入、已有模型导入或照片重建，无法满足该需求，因此按用户指令结束请求，未进行任何文本生成或资产生产。",
+          "final": "Agent 已选择结束本次请求，没有作出交付选择；原始说明保留为决策记录。\n累计生产提交 0 / 3 次，模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "evidence": "verified",
+            "reason": "agent_stop",
+            "source": "agent",
+            "status": "failed",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "seq": 4,
+        "time": "2026-09-13T14:39:45.045254Z"
+      },
+      {
+        "data": {
+          "expires": "2026-09-20T14:39:45.045036Z"
+        },
+        "kind": "conversation_idle",
+        "seq": 5,
+        "time": "2026-09-13T14:39:45.04791Z"
+      }
+    ],
+    "session": {
+      "artifacts": [],
+      "clarifications": 0,
+      "created": "2026-09-13T14:39:38.876318Z",
+      "deadline": "0001-01-01T00:00:00Z",
+      "ended": "2026-09-13T14:39:45.045036Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "0",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "1",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "0",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "本次未宣告交付成功",
+            "name": "交付证据",
+            "status": "not_applicable"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-20T14:39:45.045036Z",
+      "final": "Agent 已选择结束本次请求，没有作出交付选择；原始说明保留为决策记录。\n累计生产提交 0 / 3 次，模型调用 1 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "id": "ed40e0d2596a5e97f1651c2246dd03d9d6d854553436ae56",
+      "intent": null,
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 1,
+      "production": 0,
+      "prompt_version": "asset-agent-v2",
+      "question": "",
+      "request": "我只接受使用我接下来上传的三张照片重建模型；没有图片输入能力就结束，不要用文本生成替代。",
+      "result": {
+        "evidence": "verified",
+        "reason": "agent_stop",
+        "source": "agent",
+        "status": "failed",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "",
+      "status": "failed"
+    },
+    "source": "real-llm-fixed-provider-evaluation"
+  },
+  "source": "real DeepSeek; fixed Provider; synthetic GLB; no real Tripo",
+  "started": "2026-09-13T14:39:38.876317Z",
+  "suite_acceptance": "pending_semantic_review"
+}

@@ -1,0 +1,502 @@
+{
+  "automated_check": {
+    "passed": true,
+    "scope": "运行完成、真实模型提议存在、生产次数及预期技术终态；不核验自然语言语义"
+  },
+  "case": "product_display",
+  "fixture": {
+    "all_outputs_triangles_if_always_over": 6000,
+    "always_over": false,
+    "generation_triangles": 12,
+    "submissions": 1
+  },
+  "full_agent_evaluation_suite": "not_run; four one-off samples do not replace the 60-run suite",
+  "input": "为产品展示制作一个卡通低模茶壶，静态、自包含 GLB，最多 5000 个三角面、10 MiB。",
+  "manual_review": {
+    "criteria": [
+      "意图和生成描述保留产品展示用途",
+      "未无依据地追问游戏引擎或游戏视角，也未把用途改成游戏",
+      "原始解释只引用实际技术检查，未认证外观符合性"
+    ],
+    "status": "pending"
+  },
+  "prepared_clarification_answer": "用途是产品展示，主体为卡通低模茶壶；静态、自包含 GLB，最多 5000 个三角面、10 MiB，其他外观细节由你合理选择并公开假设。",
+  "recorded": "2026-09-13T10:14:20.357439Z",
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "source": "live-llm-fixed-tripo",
+          "text": "为产品展示制作一个卡通低模茶壶，静态、自包含 GLB，最多 5000 个三角面、10 MiB。",
+          "tripo_model": "v3.1-20260211"
+        },
+        "kind": "request",
+        "seq": 1,
+        "time": "2026-09-13T10:14:02.269728Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 2,
+        "time": "2026-09-13T10:14:02.423015Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"intent\"}",
+                "name": "skill"
+              },
+              "id": "call_00_nSIRMfBDD6xAswKhNdKE0633",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 3,
+        "time": "2026-09-13T10:14:05.576111Z"
+      },
+      {
+        "data": {
+          "name": "intent",
+          "prompt_version": "asset-agent-v2",
+          "version": "b8af70853ad7ebc38bcd90869abf4faf10fc740b8d5c852e14b855eab365d5b2"
+        },
+        "kind": "skill_loaded",
+        "seq": 4,
+        "time": "2026-09-13T10:14:05.576975Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 5,
+        "time": "2026-09-13T10:14:05.577311Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"asset\": \"卡通低模茶壶（静态道具）\", \"use\": \"产品展示\", \"style\": \"卡通低多边形（low-poly cartoon）\", \"constraints\": [\"静态、无动画\", \"自包含单个 GLB 文件\", \"最多 5000 个三角面\", \"体积不超过 10 MiB\", \"卡通低模茶壶\"], \"max_triangles\": 5000, \"max_bytes\": 10485760, \"assumptions\": [\"未指定具体配色，采用典型卡通茶壶配色\", \"未指定 PBR/贴图精细度，默认 standard 纹理质量\", \"未指定茶壶具体造型细节，采用通用卡通茶壶造型\"], \"plan\": [\"加载 Tripo 生成 Skill\", \"调用 generate_asset 生成静态卡通低模茶壶 GLB\", \"根据实测报告核对面数与体积\", \"通过后 finish_request 交付，未通过则按纠偏 Skill 处理\"]}",
+                "name": "set_intent"
+              },
+              "id": "call_00_k3nJxrFXKYQFTOqi03Sv9519",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 6,
+        "time": "2026-09-13T10:14:10.976437Z"
+      },
+      {
+        "data": {
+          "asset": "卡通低模茶壶（静态道具）",
+          "assumptions": [
+            "未指定具体配色，采用典型卡通茶壶配色",
+            "未指定 PBR/贴图精细度，默认 standard 纹理质量",
+            "未指定茶壶具体造型细节，采用通用卡通茶壶造型"
+          ],
+          "constraints": [
+            "静态、无动画",
+            "自包含单个 GLB 文件",
+            "最多 5000 个三角面",
+            "体积不超过 10 MiB",
+            "卡通低模茶壶"
+          ],
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "plan": [
+            "加载 Tripo 生成 Skill",
+            "调用 generate_asset 生成静态卡通低模茶壶 GLB",
+            "根据实测报告核对面数与体积",
+            "通过后 finish_request 交付，未通过则按纠偏 Skill 处理"
+          ],
+          "style": "卡通低多边形（low-poly cartoon）",
+          "use": "产品展示"
+        },
+        "kind": "intent_and_plan",
+        "seq": 7,
+        "time": "2026-09-13T10:14:10.977942Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 8,
+        "time": "2026-09-13T10:14:10.978525Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"generation\"}",
+                "name": "skill"
+              },
+              "id": "call_00_ET_poo26PeJ29bXsrysjPvF0105",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 9,
+        "time": "2026-09-13T10:14:12.03603Z"
+      },
+      {
+        "data": {
+          "name": "generation",
+          "prompt_version": "asset-agent-v2",
+          "version": "c6ea4fb58ee33dda9a78ca89d1b2b2e2aaf17d3445f4e6ad3d7fc386b3cc5f8e"
+        },
+        "kind": "skill_loaded",
+        "seq": 10,
+        "time": "2026-09-13T10:14:12.0371Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 11,
+        "time": "2026-09-13T10:14:12.037589Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"prompt\": \"A cartoon low-poly teapot for product display, stylized cute design with rounded body, spout, handle and lid, flat-shaded faceted surfaces, clean silhouette, static single object, no animation, no rigging.\", \"target_triangles\": 3000, \"texture_quality\": \"standard\", \"reason\": \"生成静态卡通低模茶壶 GLB，目标面数在 5000 三角面硬约束内，standard 贴图质量。\"}",
+                "name": "generate_asset"
+              },
+              "id": "call_00_9MI5XYBXrpdy3Rw96DfI3959",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 12,
+        "time": "2026-09-13T10:14:15.085287Z"
+      },
+      {
+        "data": {
+          "kind": "generate",
+          "operation_id": "fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b",
+          "reason": "生成静态卡通低模茶壶 GLB，目标面数在 5000 三角面硬约束内，standard 贴图质量。",
+          "state": "running",
+          "target_triangles": 3000
+        },
+        "kind": "runtime_accepted",
+        "seq": 13,
+        "time": "2026-09-13T10:14:15.089187Z"
+      },
+      {
+        "data": {
+          "generation": 1,
+          "kind": "production",
+          "pause_id": "d8c18fdd468956ea2442f7786369749c245069eced5a290e",
+          "ref_id": "fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b"
+        },
+        "kind": "checkpoint_committed",
+        "seq": 14,
+        "time": "2026-09-13T10:14:15.089201Z"
+      },
+      {
+        "data": {
+          "kind": "generate",
+          "operation_id": "fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b",
+          "params": {
+            "face_limit": 3000,
+            "prompt": "A cartoon low-poly teapot for product display, stylized cute design with rounded body, spout, handle and lid, flat-shaded faceted surfaces, clean silhouette, static single object, no animation, no rigging.\nRequired: 静态、无动画; 自包含单个 GLB 文件; 最多 5000 个三角面; 体积不超过 10 MiB; 卡通低模茶壶",
+            "texture_quality": "standard"
+          }
+        },
+        "kind": "tool_submitting",
+        "seq": 15,
+        "time": "2026-09-13T10:14:15.092648Z"
+      },
+      {
+        "data": {
+          "operation_id": "fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b",
+          "task_id": "task_1"
+        },
+        "kind": "tool_submitted",
+        "seq": 16,
+        "time": "2026-09-13T10:14:15.093053Z"
+      },
+      {
+        "data": {
+          "credits": 0,
+          "operation_id": "fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b",
+          "progress": 100,
+          "status": "success",
+          "task_id": "task_1"
+        },
+        "kind": "tripo_progress",
+        "seq": 17,
+        "time": "2026-09-13T10:14:15.093626Z"
+      },
+      {
+        "data": {
+          "artifact_id": "fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b",
+          "operation_id": "fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b",
+          "report": {
+            "bytes": 720,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 12 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 720 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 12,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "task_1"
+        },
+        "kind": "technical_report",
+        "seq": 18,
+        "time": "2026-09-13T10:14:15.104444Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 19,
+        "time": "2026-09-13T10:14:15.105131Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"deliver\": true, \"artifact_id\": \"fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b\", \"explanation\": \"已按需求生成静态、自包含的卡通低模茶壶 GLB。技术检查报告通过：文件有效性（静态、自包含、非空三角面 GLB）、几何规模（实测 12 / 上限 5000 三角面）、文件体积（实测 720 / 上限 10485760 字节）均符合硬约束。未进行视觉检查，技术通过不代表类别、风格或外观符合需求。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_UEQb7HbbtKy78RDLoRU74563",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 20,
+        "time": "2026-09-13T10:14:20.261546Z"
+      },
+      {
+        "data": {
+          "artifact_id": "fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b",
+          "deliver": true,
+          "explanation": "已按需求生成静态、自包含的卡通低模茶壶 GLB。技术检查报告通过：文件有效性（静态、自包含、非空三角面 GLB）、几何规模（实测 12 / 上限 5000 三角面）、文件体积（实测 720 / 上限 10485760 字节）均符合硬约束。未进行视觉检查，技术通过不代表类别、风格或外观符合需求。",
+          "final": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 12 / 上限 5000 个三角面\n文件体积：实测 720 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 5 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "artifact_id": "fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b",
+            "evidence": "verified",
+            "operation_id": "fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b",
+            "reason": "delivered",
+            "source": "agent",
+            "status": "completed",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "seq": 21,
+        "time": "2026-09-13T10:14:20.264578Z"
+      }
+    ],
+    "session": {
+      "artifacts": [
+        {
+          "id": "fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b",
+          "report": {
+            "bytes": 720,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 12 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 720 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 12,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "task_1",
+          "url": "/api/sessions/4fdf273fd1c8bba86e3d433f372f060f1169399cb3f2fb37/artifacts/fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b"
+        }
+      ],
+      "clarifications": 0,
+      "created": "2026-09-13T10:14:02.269381Z",
+      "deadline": "2026-09-13T10:44:15.092599Z",
+      "ended": "2026-09-13T10:14:20.264391Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "1",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "5",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "0",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "交付引用已实测且技术通过的模型",
+            "name": "交付证据",
+            "status": "passed"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-20T10:14:20.264391Z",
+      "final": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 12 / 上限 5000 个三角面\n文件体积：实测 720 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 5 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "id": "4fdf273fd1c8bba86e3d433f372f060f1169399cb3f2fb37",
+      "intent": {
+        "asset": "卡通低模茶壶（静态道具）",
+        "assumptions": [
+          "未指定具体配色，采用典型卡通茶壶配色",
+          "未指定 PBR/贴图精细度，默认 standard 纹理质量",
+          "未指定茶壶具体造型细节，采用通用卡通茶壶造型"
+        ],
+        "constraints": [
+          "静态、无动画",
+          "自包含单个 GLB 文件",
+          "最多 5000 个三角面",
+          "体积不超过 10 MiB",
+          "卡通低模茶壶"
+        ],
+        "max_bytes": 10485760,
+        "max_triangles": 5000,
+        "plan": [
+          "加载 Tripo 生成 Skill",
+          "调用 generate_asset 生成静态卡通低模茶壶 GLB",
+          "根据实测报告核对面数与体积",
+          "通过后 finish_request 交付，未通过则按纠偏 Skill 处理"
+        ],
+        "style": "卡通低多边形（low-poly cartoon）",
+        "use": "产品展示"
+      },
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 5,
+      "production": 1,
+      "prompt_version": "asset-agent-v2",
+      "question": "",
+      "request": "为产品展示制作一个卡通低模茶壶，静态、自包含 GLB，最多 5000 个三角面、10 MiB。",
+      "result": {
+        "artifact_id": "fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b",
+        "evidence": "verified",
+        "operation_id": "fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b",
+        "reason": "delivered",
+        "source": "agent",
+        "status": "completed",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "fe8018b273ebcaa1685c83a6809ec2a44dfb5c0f05ae085b",
+      "status": "completed"
+    },
+    "source": "live-llm-fixed-tripo"
+  },
+  "source": "real DeepSeek LLM; fixed local Tripo provider; synthetic GLB; no real Tripo calls",
+  "started": "2026-09-13T10:14:02.269381Z"
+}

@@ -1,0 +1,283 @@
+{
+  "reviewer": "Codex root; direct offline review of all saved proposals and execution evidence; no external judge calls",
+  "status": "completed",
+  "evaluation_rubric": "technical-only-v1",
+  "review_mode": "full_batch_review",
+  "exclusions": [
+    "visual_conformance",
+    "source_visual_claims",
+    "visual_disclaimer"
+  ],
+  "reviews": {
+    "baseline-optional-v4-bytes_only-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。明确清除面数上限，只设置 2097152 字节；8000 面是制作策略，报告实测 4500 面仅展示，体积达标依据准确。",
+      "reviewed_proposal_sequences": [
+        3,
+        6,
+        9,
+        12,
+        20
+      ],
+      "source_record_sha256": "b8b8f486e80af3e4befbcbe0dcb3442adadecb9b3c6b7d8970a642661b374145"
+    },
+    "baseline-optional-v4-bytes_only-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。新建意图省略面数上限保持 null，体积上限准确为 2 MiB；生产目标与报告实测区分，未补入旧默认。",
+      "reviewed_proposal_sequences": [
+        3,
+        6,
+        9,
+        12,
+        20
+      ],
+      "source_record_sha256": "f14d1ccbfdad6db9372b052dd5946e9a501950dd2e8c447ef1febe7cd1eb9aed"
+    },
+    "baseline-optional-v4-bytes_only-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。无来源 inherit 的面数保持 null，只对体积 2 MiB 做上限比较；最终准确说明 4000 面不适用比较、24656 字节通过。",
+      "reviewed_proposal_sequences": [
+        3,
+        6,
+        9,
+        12,
+        20
+      ],
+      "source_record_sha256": "a4d9708dd04cae9de497ac63d970d4f88cbb5b821ab402f6feccda4ce0d2b611"
+    },
+    "baseline-optional-v4-faces_only-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。只设置 3000 面并 clear 文件大小，生成达标后交付；18656 字节仅为测量，未设隐含体积限制。",
+      "reviewed_proposal_sequences": [
+        3,
+        6,
+        9,
+        12,
+        20
+      ],
+      "source_record_sha256": "b200d90c91d4afc6078bc459517cd6a3d346c46f8da94b5a4362e471448ca73f"
+    },
+    "baseline-optional-v4-faces_only-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。正式约束为 3000/null，文件体积只测量不验上限；保留产品展示用途并准确解释实测及约束。",
+      "reviewed_proposal_sequences": [
+        3,
+        6,
+        9,
+        12,
+        20
+      ],
+      "source_record_sha256": "011e7b888b9fe455849b71994eefe29c4b280bf77222801313fe091fc9e1d907"
+    },
+    "baseline-optional-v4-faces_only-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。省略体积字段保持 null，仅执行 3000 面上限，最终说明与技术报告准确一致。",
+      "reviewed_proposal_sequences": [
+        3,
+        6,
+        9,
+        12,
+        20
+      ],
+      "source_record_sha256": "90dd01e2760abe658798affcaf806c58d8fc3e515d5f81a7fe7b3c6cc6bf9a1b"
+    },
+    "baseline-optional-v4-no_limits-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。两项技术上限均为空，目标 3000 但实测 6000 不触发伪超限纠偏，一次交付；说明只测量、不比较上限。",
+      "reviewed_proposal_sequences": [
+        3,
+        6,
+        9,
+        12,
+        20
+      ],
+      "source_record_sha256": "9fef684af97b506e2688339167fee0b1a525b09e431ffdd425bddabc8516f035"
+    },
+    "baseline-optional-v4-no_limits-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。8000 面及 detailed 纹理明确为制作选择，不回填为验收条件；实测 6000 面合法且一次交付，准确说明两个 not_applicable。",
+      "reviewed_proposal_sequences": [
+        3,
+        6,
+        9,
+        12,
+        20
+      ],
+      "source_record_sha256": "880950c8faffdf152a90a3a7ad3b44e276ad0a4a1306bf33974c9ba7a7b263de"
+    },
+    "baseline-optional-v4-no_limits-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。无技术上限时生成实测 6000 面后直接交付，未套用旧 5000 面默认；准确说明 not_applicable 是未设上限而非证明低于上限。",
+      "reviewed_proposal_sequences": [
+        3,
+        6,
+        9,
+        12,
+        20
+      ],
+      "source_record_sha256": "d76dd10b6b38da744888221dc316cdb387e0dd57573999a052aa37648c1009a4"
+    },
+    "conversation-optional-v4-clear_limits-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 7,10,14,17,25）及工具参数，结合执行证据。明确 clear 两项历史上限，继承用途风格并重新文本生成；正式约束为 null/null，准确说明与旧几何无修改关系及仅测量。",
+      "reviewed_proposal_sequences": [
+        7,
+        10,
+        14,
+        17,
+        25
+      ],
+      "source_record_sha256": "b0abfc2e16222758458a4727750932c6162baf54ddd15c7346d7dbbb9f4974e0"
+    },
+    "conversation-optional-v4-clear_limits-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 7,10,14,17,25）及工具参数，结合执行证据。两项旧上限显式取消，4500 只为制作选择，最终报告两项空上限；未把历史报告或旧版本修改为新规则。",
+      "reviewed_proposal_sequences": [
+        7,
+        10,
+        14,
+        17,
+        25
+      ],
+      "source_record_sha256": "2ce67833f3e3515409ba1ee392d2a28c95693bd36c5de6d941aaf2187db810ac"
+    },
+    "conversation-optional-v4-clear_limits-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 7,10,14,17,25）及工具参数，结合执行证据。参考选定茶壶但不改旧几何，清除 5000 面和 10 MiB 而不新设上限；6000 生产目标与实测 4500 面明确区分。",
+      "reviewed_proposal_sequences": [
+        7,
+        10,
+        14,
+        17,
+        25
+      ],
+      "source_record_sha256": "f82b3120ca5b82752acf11a505e55a9590bda97b78929b7e3d80ce82b080d821"
+    },
+    "conversation-optional-v4-further_reduction-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部4条原始提议（seq 7,10,14,24）及工具参数，结合执行证据。保存 further、清空绝对上限，只减面绑定输入；实测由 4500 降到 4000，依据实际减少而非仅文件有效交付。",
+      "reviewed_proposal_sequences": [
+        7,
+        10,
+        14,
+        24
+      ],
+      "source_record_sha256": "0f90e6d11dcb3947e3ab74dad25c78837ff7e1b3da5c6038e50c6620e146492e"
+    },
+    "conversation-optional-v4-further_reduction-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部4条原始提议（seq 7,10,14,24）及工具参数，结合执行证据。用户只授权进一步减面，未调用生成；两项上限为空，输出实测 3000 小于源 4500，准确解释相对目标和 not_applicable。",
+      "reviewed_proposal_sequences": [
+        7,
+        10,
+        14,
+        24
+      ],
+      "source_record_sha256": "8cd7a7a61ff032b73adbed5588b1b537c9161dc06a0f14a37ae9099b033bb839"
+    },
+    "conversation-optional-v4-further_reduction-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部4条原始提议（seq 7,10,14,24）及工具参数，结合执行证据。取消绝对上限且正确选 further，执行所选版本减面到 3000，实际低于初始 4500；没有用请求参数代替最终实测。",
+      "reviewed_proposal_sequences": [
+        7,
+        10,
+        14,
+        24
+      ],
+      "source_record_sha256": "63f6e6cd68a4968e0cb9d4f0d948aca2e78deafaeb8212a30f19cad8df25501f"
+    },
+    "conversation-optional-v4-inherit_limits-1.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 7,10,14,17,25）及工具参数，结合执行证据。两项使用 inherit，保留历史 5000 面/10 MiB 及用途风格；再生成而非改旧几何，最终准确解释约束来自沿用及实测数据。",
+      "reviewed_proposal_sequences": [
+        7,
+        10,
+        14,
+        17,
+        25
+      ],
+      "source_record_sha256": "d98ef19cab37f7f340584a2e1de5d47999d668b9f427d3bc2bca04d058f4aa6f"
+    },
+    "conversation-optional-v4-inherit_limits-2.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 7,10,14,17,25）及工具参数，结合执行证据。通过 inherit 保留历史两项上限而不是重新发明默认，用途风格沿用；4500 为生产目标，最终实测及上限来源表述准确。",
+      "reviewed_proposal_sequences": [
+        7,
+        10,
+        14,
+        17,
+        25
+      ],
+      "source_record_sha256": "09cb5de47777c398f7462366236a757a6b038e5160885667b603f797bcf921fe"
+    },
+    "conversation-optional-v4-inherit_limits-3.json": {
+      "intent": "passed",
+      "strategy": "passed",
+      "explanation": "passed",
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 7,10,14,17,25）及工具参数，结合执行证据。正确绑定历史茶壶并选择 regenerate，继承 5000 面/10 MiB，解释明确沿用来源和新文本生成，未声称直接编辑旧几何。",
+      "reviewed_proposal_sequences": [
+        7,
+        10,
+        14,
+        17,
+        25
+      ],
+      "source_record_sha256": "de3f2d31891e9211e56ee0716dcfd046e170d46735ef1812021786cf3f10e5df"
+    }
+  },
+  "reviewed_at": "2026-09-16T17:06:07.785167+00:00",
+  "reviewed_run_count": 18,
+  "reviewed_proposal_count": 87
+}

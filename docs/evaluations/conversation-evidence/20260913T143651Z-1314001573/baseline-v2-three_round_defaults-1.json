@@ -1,0 +1,980 @@
+{
+  "automated_checks": [
+    {
+      "Critical": false,
+      "Detail": "",
+      "Dimension": "strategy",
+      "Name": "terminal_and_model_available",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "actual=0 expected=1..1",
+      "Dimension": "strategy",
+      "Name": "allowed_submission_count",
+      "Passed": false
+    },
+    {
+      "Critical": false,
+      "Detail": "failed",
+      "Dimension": "strategy",
+      "Name": "expected_delivery",
+      "Passed": false
+    },
+    {
+      "Critical": false,
+      "Detail": "questions=2",
+      "Dimension": "intent",
+      "Name": "clarification_exit",
+      "Passed": false
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=3 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=6 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=6 prior=0",
+      "Dimension": "intent",
+      "Name": "question_budget_proposal",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=12 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=12 prior=1",
+      "Dimension": "intent",
+      "Name": "question_budget_proposal",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=18 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=18 faces=0 bytes=0",
+      "Dimension": "constraint",
+      "Name": "intent_numeric_hard_constraints",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "proposals=4",
+      "Dimension": "strategy",
+      "Name": "real_model_proposals_exist",
+      "Passed": true
+    }
+  ],
+  "automated_passed": false,
+  "case": {
+    "AllowedProduction": [
+      "generate_asset"
+    ],
+    "Answer": "还没想好，你先问清楚；如果已经问了三轮，就公开合理默认并开始，不再继续追问。",
+    "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。",
+    "ID": "three_round_defaults",
+    "InitialProduction": 0,
+    "IntentReview": "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+    "MaxBytes": 10485760,
+    "MaxSubmits": 1,
+    "MaxTriangles": 5000,
+    "MinSubmits": 1,
+    "NoDelivery": false,
+    "Provider": "normal",
+    "Request": "我需要一个低模资产，请先澄清主体、用途和风格；最多问三轮。",
+    "RequireThreeQuestions": true,
+    "Seed": "",
+    "StrategyReview": "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+    "Suite": "baseline-v2",
+    "WantAnswer": false,
+    "WantDelivery": true
+  },
+  "conversation": {
+    "conversation": {
+      "created": "2026-09-13T14:39:45.140844Z",
+      "expires": "2026-09-20T14:40:48.92277Z",
+      "id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+      "title": "我需要一个低模资产，请先澄清主体、用途和风格；最多问三轮。",
+      "updated": "2026-09-13T14:40:48.92277Z"
+    },
+    "cursor": 20,
+    "events": [
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "我需要一个低模资产，请先澄清主体、用途和风格；最多问三轮。",
+          "tripo_model": "v3.1-20260211"
+        },
+        "kind": "request",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 1,
+        "time": "2026-09-13T14:39:45.140913Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 2,
+        "time": "2026-09-13T14:39:45.296499Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"intent\"}",
+                "name": "skill"
+              },
+              "id": "call_00_XOuVBdLBU67vNEm4mvIG5400",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 3,
+        "time": "2026-09-13T14:39:47.860586Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "name": "intent",
+          "prompt_version": "asset-agent-v2",
+          "version": "b8af70853ad7ebc38bcd90869abf4faf10fc740b8d5c852e14b855eab365d5b2"
+        },
+        "kind": "skill_loaded",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 4,
+        "time": "2026-09-13T14:39:47.863099Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 5,
+        "time": "2026-09-13T14:39:47.864295Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"question\": \"请先告诉我这个低模资产的主体是什么？（例如：一棵树、一把椅子、一只动物、一个道具等）\"}",
+                "name": "ask_user"
+              },
+              "id": "call_00_iR607ed2AQ0d2vLupYCT3346",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 6,
+        "time": "2026-09-13T14:39:51.720963Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "question": "请先告诉我这个低模资产的主体是什么？（例如：一棵树、一把椅子、一只动物、一个道具等）"
+        },
+        "kind": "clarification",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 7,
+        "time": "2026-09-13T14:39:51.729761Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "generation": 1,
+          "kind": "question",
+          "pause_id": "b9c12849cfd1eb9e06a7fe410806a738730c02c8080f08a1",
+          "ref_id": "048e18739b0818caacede6169d67094a119207e04ea5d07f"
+        },
+        "kind": "checkpoint_committed",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 8,
+        "time": "2026-09-13T14:39:51.730161Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "text": "还没想好，你先问清楚；如果已经问了三轮，就公开合理默认并开始，不再继续追问。"
+        },
+        "kind": "user_answer",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 9,
+        "time": "2026-09-13T14:39:51.799796Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "wait_id": "048e18739b0818caacede6169d67094a119207e04ea5d07f"
+        },
+        "kind": "clarification_resumed",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 10,
+        "time": "2026-09-13T14:39:51.900197Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 11,
+        "time": "2026-09-13T14:39:51.901946Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"question\": \"这个资产的用途是什么？（例如：产品展示、概念设计、游戏原型、教学演示等）这也会帮助确定合适的主体。\"}",
+                "name": "ask_user"
+              },
+              "id": "call_00_o49ylxDqD0VW7H7BsF7V4110",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 12,
+        "time": "2026-09-13T14:39:57.789234Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "question": "这个资产的用途是什么？（例如：产品展示、概念设计、游戏原型、教学演示等）这也会帮助确定合适的主体。"
+        },
+        "kind": "clarification",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 13,
+        "time": "2026-09-13T14:39:57.799531Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "generation": 2,
+          "kind": "question",
+          "pause_id": "5a06dc9e01730052ea958b382ca90a53949996e194bd6a53",
+          "ref_id": "d37193d03d3995673385f0208a88b0e81bf65075ed4764ae"
+        },
+        "kind": "checkpoint_committed",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 14,
+        "time": "2026-09-13T14:39:57.79991Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "text": "还没想好，你先问清楚；如果已经问了三轮，就公开合理默认并开始，不再继续追问。"
+        },
+        "kind": "user_answer",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 15,
+        "time": "2026-09-13T14:39:57.862144Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "wait_id": "d37193d03d3995673385f0208a88b0e81bf65075ed4764ae"
+        },
+        "kind": "clarification_resumed",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 16,
+        "time": "2026-09-13T14:39:57.903822Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 17,
+        "time": "2026-09-13T14:39:57.905082Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"asset\": \"低模松树（锥形/分层树冠 + 直树干，低多边形静态道具）\", \"use\": \"概念展示 / 通用场景道具（用户未指定，采用默认）\", \"style\": \"低多边形（low-poly）扁平风格（用户未指定，采用默认）\", \"constraints\": [\"必须为低模（低多边形）静态资产\", \"输出为单个静态自包含 GLB（当前工具仅支持文本生成静态资产）\"], \"max_triangles\": 5000, \"max_bytes\": 10485760, \"assumptions\": [\"主体未指定，默认采用低模松树（low-poly pine tree）\", \"用途未指定，默认用于概念展示/通用场景道具\", \"风格未指定，默认采用低多边形扁平风格\", \"技术上限未指定，采用默认 5000 三角面、10 MiB\", \"用户两轮均未",
+                "name": "set_intent"
+              },
+              "id": "call_00_8wltepVTuWLpIF5DlFNU4308",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 18,
+        "time": "2026-09-13T14:40:48.919554Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "final": "原请求的执行恢复未能完成，已结束本地执行。\n累计生产提交 0 / 3 次，模型调用 4 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "execution_error",
+          "raw_text_verification": "unverifiable",
+          "reason": "[NodeRunError] recovery_seed_invalid：无法安全恢复当前执行\n------------------------\nnode path: [node_1, ChatModel]",
+          "result": {
+            "evidence": "verified",
+            "reason": "recovery_failed",
+            "source": "runtime",
+            "status": "failed",
+            "version": 1
+          }
+        },
+        "kind": "recovery_rejected",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 19,
+        "time": "2026-09-13T14:40:48.923027Z"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "data": {
+          "expires": "2026-09-20T14:40:48.92277Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 20,
+        "time": "2026-09-13T14:40:48.924679Z"
+      }
+    ],
+    "has_more": false,
+    "messages": [
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "created": "2026-09-13T14:39:45.140913Z",
+        "id": "6a2f90564f77e7bd38364733d7707df4d1a43a39e2402d9105f1d3000059ca71",
+        "kind": "user",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 1,
+        "text": "我需要一个低模资产，请先澄清主体、用途和风格；最多问三轮。",
+        "updated_seq": 1
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "created": "2026-09-13T14:39:51.729761Z",
+        "data": {
+          "generation": 1
+        },
+        "id": "6c3c08a57c6f1135e6229786eeec4c255e5446d7fe2e2b0e98abd1a09a199be8",
+        "kind": "clarification",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 7,
+        "text": "请先告诉我这个低模资产的主体是什么？（例如：一棵树、一把椅子、一只动物、一个道具等）",
+        "updated_seq": 7,
+        "wait_id": "048e18739b0818caacede6169d67094a119207e04ea5d07f"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "created": "2026-09-13T14:39:51.799796Z",
+        "id": "9b32a7732b1fb1915249aa3fed9efdb87e447d14a095a3c72c0c906f18e64599",
+        "kind": "user",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 9,
+        "text": "还没想好，你先问清楚；如果已经问了三轮，就公开合理默认并开始，不再继续追问。",
+        "updated_seq": 9
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "created": "2026-09-13T14:39:57.799531Z",
+        "data": {
+          "generation": 2
+        },
+        "id": "5eb26c77f7a6617de4d81cace0133f76492bf218fc78bc119a35e62050d1dff2",
+        "kind": "clarification",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 13,
+        "text": "这个资产的用途是什么？（例如：产品展示、概念设计、游戏原型、教学演示等）这也会帮助确定合适的主体。",
+        "updated_seq": 13,
+        "wait_id": "d37193d03d3995673385f0208a88b0e81bf65075ed4764ae"
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "created": "2026-09-13T14:39:57.862144Z",
+        "id": "0e0af41dde281b0a2b8b1e3881eeedfb8ef686adc0e94973cfe9a74f8eb3a0f6",
+        "kind": "user",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 15,
+        "text": "还没想好，你先问清楚；如果已经问了三轮，就公开合理默认并开始，不再继续追问。",
+        "updated_seq": 15
+      },
+      {
+        "conversation_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "created": "2026-09-13T14:40:48.923027Z",
+        "data": {
+          "outcome": {
+            "kind": "ended",
+            "source": "runtime"
+          },
+          "result": {
+            "evidence": "verified",
+            "reason": "recovery_failed",
+            "source": "runtime",
+            "status": "failed",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+          "source": "runtime"
+        },
+        "id": "83ed716e77441afe80de95e8da341a9296d81acb4768bc276dbcc105796552d5",
+        "kind": "run_result",
+        "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "seq": 19,
+        "text": "原请求的执行恢复未能完成，已结束本地执行。\n累计生产提交 0 / 3 次，模型调用 4 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "updated_seq": 20
+      }
+    ],
+    "runs": [
+      {
+        "artifacts": [],
+        "clarifications": 2,
+        "created": "2026-09-13T14:39:45.140844Z",
+        "deadline": "0001-01-01T00:00:00Z",
+        "ended": "2026-09-13T14:40:48.92277Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "0",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "4",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "2",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "本次未宣告交付成功",
+              "name": "交付证据",
+              "status": "not_applicable"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-20T14:40:48.92277Z",
+        "final": "原请求的执行恢复未能完成，已结束本地执行。\n累计生产提交 0 / 3 次，模型调用 4 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 2,
+        "id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+        "input_assessment": null,
+        "intent": null,
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 4,
+        "outcome": {
+          "kind": "ended",
+          "source": "runtime"
+        },
+        "production": 0,
+        "prompt_version": "asset-agent-v2",
+        "question": "",
+        "request": "我需要一个低模资产，请先澄清主体、用途和风格；最多问三轮。",
+        "result": {
+          "evidence": "verified",
+          "reason": "recovery_failed",
+          "source": "runtime",
+          "status": "failed",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "",
+        "status": "failed",
+        "wait_id": "d37193d03d3995673385f0208a88b0e81bf65075ed4764ae"
+      }
+    ],
+    "versions": []
+  },
+  "critical_errors_automated": 0,
+  "ended": "2026-09-13T14:40:48.954439Z",
+  "repeat": 1,
+  "run_id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+  "semantic_review": {
+    "instructions": [
+      "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+      "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+      "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。"
+    ],
+    "proposals": [
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 3,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"skill\": \"intent\"}",
+              "name": "skill"
+            },
+            "id": "call_00_XOuVBdLBU67vNEm4mvIG5400",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 6,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"question\": \"请先告诉我这个低模资产的主体是什么？（例如：一棵树、一把椅子、一只动物、一个道具等）\"}",
+              "name": "ask_user"
+            },
+            "id": "call_00_iR607ed2AQ0d2vLupYCT3346",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 12,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"question\": \"这个资产的用途是什么？（例如：产品展示、概念设计、游戏原型、教学演示等）这也会帮助确定合适的主体。\"}",
+              "name": "ask_user"
+            },
+            "id": "call_00_o49ylxDqD0VW7H7BsF7V4110",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 18,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"asset\": \"低模松树（锥形/分层树冠 + 直树干，低多边形静态道具）\", \"use\": \"概念展示 / 通用场景道具（用户未指定，采用默认）\", \"style\": \"低多边形（low-poly）扁平风格（用户未指定，采用默认）\", \"constraints\": [\"必须为低模（低多边形）静态资产\", \"输出为单个静态自包含 GLB（当前工具仅支持文本生成静态资产）\"], \"max_triangles\": 5000, \"max_bytes\": 10485760, \"assumptions\": [\"主体未指定，默认采用低模松树（low-poly pine tree）\", \"用途未指定，默认用于概念展示/通用场景道具\", \"风格未指定，默认采用低多边形扁平风格\", \"技术上限未指定，采用默认 5000 三角面、10 MiB\", \"用户两轮均未",
+              "name": "set_intent"
+            },
+            "id": "call_00_8wltepVTuWLpIF5DlFNU4308",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    ],
+    "status": "pending"
+  },
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "我需要一个低模资产，请先澄清主体、用途和风格；最多问三轮。",
+          "tripo_model": "v3.1-20260211"
+        },
+        "kind": "request",
+        "seq": 1,
+        "time": "2026-09-13T14:39:45.140913Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 2,
+        "time": "2026-09-13T14:39:45.296499Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"intent\"}",
+                "name": "skill"
+              },
+              "id": "call_00_XOuVBdLBU67vNEm4mvIG5400",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 3,
+        "time": "2026-09-13T14:39:47.860586Z"
+      },
+      {
+        "data": {
+          "name": "intent",
+          "prompt_version": "asset-agent-v2",
+          "version": "b8af70853ad7ebc38bcd90869abf4faf10fc740b8d5c852e14b855eab365d5b2"
+        },
+        "kind": "skill_loaded",
+        "seq": 4,
+        "time": "2026-09-13T14:39:47.863099Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 5,
+        "time": "2026-09-13T14:39:47.864295Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"question\": \"请先告诉我这个低模资产的主体是什么？（例如：一棵树、一把椅子、一只动物、一个道具等）\"}",
+                "name": "ask_user"
+              },
+              "id": "call_00_iR607ed2AQ0d2vLupYCT3346",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 6,
+        "time": "2026-09-13T14:39:51.720963Z"
+      },
+      {
+        "data": {
+          "question": "请先告诉我这个低模资产的主体是什么？（例如：一棵树、一把椅子、一只动物、一个道具等）"
+        },
+        "kind": "clarification",
+        "seq": 7,
+        "time": "2026-09-13T14:39:51.729761Z"
+      },
+      {
+        "data": {
+          "generation": 1,
+          "kind": "question",
+          "pause_id": "b9c12849cfd1eb9e06a7fe410806a738730c02c8080f08a1",
+          "ref_id": "048e18739b0818caacede6169d67094a119207e04ea5d07f"
+        },
+        "kind": "checkpoint_committed",
+        "seq": 8,
+        "time": "2026-09-13T14:39:51.730161Z"
+      },
+      {
+        "data": {
+          "text": "还没想好，你先问清楚；如果已经问了三轮，就公开合理默认并开始，不再继续追问。"
+        },
+        "kind": "user_answer",
+        "seq": 9,
+        "time": "2026-09-13T14:39:51.799796Z"
+      },
+      {
+        "data": {
+          "wait_id": "048e18739b0818caacede6169d67094a119207e04ea5d07f"
+        },
+        "kind": "clarification_resumed",
+        "seq": 10,
+        "time": "2026-09-13T14:39:51.900197Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 11,
+        "time": "2026-09-13T14:39:51.901946Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"question\": \"这个资产的用途是什么？（例如：产品展示、概念设计、游戏原型、教学演示等）这也会帮助确定合适的主体。\"}",
+                "name": "ask_user"
+              },
+              "id": "call_00_o49ylxDqD0VW7H7BsF7V4110",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 12,
+        "time": "2026-09-13T14:39:57.789234Z"
+      },
+      {
+        "data": {
+          "question": "这个资产的用途是什么？（例如：产品展示、概念设计、游戏原型、教学演示等）这也会帮助确定合适的主体。"
+        },
+        "kind": "clarification",
+        "seq": 13,
+        "time": "2026-09-13T14:39:57.799531Z"
+      },
+      {
+        "data": {
+          "generation": 2,
+          "kind": "question",
+          "pause_id": "5a06dc9e01730052ea958b382ca90a53949996e194bd6a53",
+          "ref_id": "d37193d03d3995673385f0208a88b0e81bf65075ed4764ae"
+        },
+        "kind": "checkpoint_committed",
+        "seq": 14,
+        "time": "2026-09-13T14:39:57.79991Z"
+      },
+      {
+        "data": {
+          "text": "还没想好，你先问清楚；如果已经问了三轮，就公开合理默认并开始，不再继续追问。"
+        },
+        "kind": "user_answer",
+        "seq": 15,
+        "time": "2026-09-13T14:39:57.862144Z"
+      },
+      {
+        "data": {
+          "wait_id": "d37193d03d3995673385f0208a88b0e81bf65075ed4764ae"
+        },
+        "kind": "clarification_resumed",
+        "seq": 16,
+        "time": "2026-09-13T14:39:57.903822Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 17,
+        "time": "2026-09-13T14:39:57.905082Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"asset\": \"低模松树（锥形/分层树冠 + 直树干，低多边形静态道具）\", \"use\": \"概念展示 / 通用场景道具（用户未指定，采用默认）\", \"style\": \"低多边形（low-poly）扁平风格（用户未指定，采用默认）\", \"constraints\": [\"必须为低模（低多边形）静态资产\", \"输出为单个静态自包含 GLB（当前工具仅支持文本生成静态资产）\"], \"max_triangles\": 5000, \"max_bytes\": 10485760, \"assumptions\": [\"主体未指定，默认采用低模松树（low-poly pine tree）\", \"用途未指定，默认用于概念展示/通用场景道具\", \"风格未指定，默认采用低多边形扁平风格\", \"技术上限未指定，采用默认 5000 三角面、10 MiB\", \"用户两轮均未",
+                "name": "set_intent"
+              },
+              "id": "call_00_8wltepVTuWLpIF5DlFNU4308",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 18,
+        "time": "2026-09-13T14:40:48.919554Z"
+      },
+      {
+        "data": {
+          "final": "原请求的执行恢复未能完成，已结束本地执行。\n累计生产提交 0 / 3 次，模型调用 4 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "execution_error",
+          "raw_text_verification": "unverifiable",
+          "reason": "[NodeRunError] recovery_seed_invalid：无法安全恢复当前执行\n------------------------\nnode path: [node_1, ChatModel]",
+          "result": {
+            "evidence": "verified",
+            "reason": "recovery_failed",
+            "source": "runtime",
+            "status": "failed",
+            "version": 1
+          }
+        },
+        "kind": "recovery_rejected",
+        "seq": 19,
+        "time": "2026-09-13T14:40:48.923027Z"
+      },
+      {
+        "data": {
+          "expires": "2026-09-20T14:40:48.92277Z"
+        },
+        "kind": "conversation_idle",
+        "seq": 20,
+        "time": "2026-09-13T14:40:48.924679Z"
+      }
+    ],
+    "session": {
+      "artifacts": [],
+      "clarifications": 2,
+      "created": "2026-09-13T14:39:45.140844Z",
+      "deadline": "0001-01-01T00:00:00Z",
+      "ended": "2026-09-13T14:40:48.92277Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "0",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "4",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "2",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "本次未宣告交付成功",
+            "name": "交付证据",
+            "status": "not_applicable"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-20T14:40:48.92277Z",
+      "final": "原请求的执行恢复未能完成，已结束本地执行。\n累计生产提交 0 / 3 次，模型调用 4 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "id": "bfe3306e058389785ff4e4612cdf07160b51c702fec8c8ee",
+      "intent": null,
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 4,
+      "production": 0,
+      "prompt_version": "asset-agent-v2",
+      "question": "",
+      "request": "我需要一个低模资产，请先澄清主体、用途和风格；最多问三轮。",
+      "result": {
+        "evidence": "verified",
+        "reason": "recovery_failed",
+        "source": "runtime",
+        "status": "failed",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "",
+      "status": "failed"
+    },
+    "source": "real-llm-fixed-provider-evaluation"
+  },
+  "source": "real DeepSeek; fixed Provider; synthetic GLB; no real Tripo",
+  "started": "2026-09-13T14:39:45.140844Z",
+  "suite_acceptance": "pending_semantic_review"
+}

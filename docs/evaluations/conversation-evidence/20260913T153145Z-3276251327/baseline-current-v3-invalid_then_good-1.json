@@ -1,0 +1,2365 @@
+{
+  "automated_checks": [
+    {
+      "Critical": false,
+      "Detail": "",
+      "Dimension": "strategy",
+      "Name": "terminal_and_model_available",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "actual=2 expected=1..3",
+      "Dimension": "strategy",
+      "Name": "allowed_submission_count",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "completed",
+      "Dimension": "strategy",
+      "Name": "expected_delivery",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=3 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=3 tool=skill",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=6 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=6 tool=set_intent",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=6 faces=5000 bytes=1.048576e+07",
+      "Dimension": "constraint",
+      "Name": "intent_numeric_hard_constraints",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=9 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=9 tool=skill",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=12 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=12 tool=generate_asset",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=12 generate_asset",
+      "Dimension": "strategy",
+      "Name": "allowed_production_proposal",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=12 consumed=0",
+      "Dimension": "constraint",
+      "Name": "production_budget_proposal",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=12 target=4500",
+      "Dimension": "constraint",
+      "Name": "proposal_face_limit",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=20 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=20 tool=skill",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=23 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=23 tool=generate_asset",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=23 generate_asset",
+      "Dimension": "strategy",
+      "Name": "allowed_production_proposal",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=23 consumed=1",
+      "Dimension": "constraint",
+      "Name": "production_budget_proposal",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=23 target=4500",
+      "Dimension": "constraint",
+      "Name": "proposal_face_limit",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=31 tools=1",
+      "Dimension": "strategy",
+      "Name": "one_tool_per_step",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=31 tool=finish_request",
+      "Dimension": "strategy",
+      "Name": "tool_arguments_json",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "seq=31 outcome=delivery",
+      "Dimension": "strategy",
+      "Name": "finish_outcome_contract",
+      "Passed": true
+    },
+    {
+      "Critical": true,
+      "Detail": "seq=31 artifact=c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+      "Dimension": "constraint",
+      "Name": "delivery_has_current_run_evidence",
+      "Passed": true
+    },
+    {
+      "Critical": false,
+      "Detail": "proposals=7",
+      "Dimension": "strategy",
+      "Name": "real_model_proposals_exist",
+      "Passed": true
+    }
+  ],
+  "automated_passed": true,
+  "case": {
+    "AllowedProduction": [
+      "generate_asset",
+      "decimate_asset"
+    ],
+    "Answer": "为产品展示制作卡通低模茶壶，静态自包含GLB，实际最多5000三角面、10MiB。严格保留上限。按真实反馈在原3次预算内纠偏或诚实停止；不必为凑满次数继续。 其他外观细节可合理默认并公开，不改变硬约束。",
+    "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。",
+    "ID": "invalid_then_good",
+    "InitialProduction": 0,
+    "IntentReview": "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+    "MaxBytes": 10485760,
+    "MaxSubmits": 3,
+    "MaxTriangles": 5000,
+    "MinSubmits": 1,
+    "NoDelivery": false,
+    "Provider": "invalid_then_good",
+    "Request": "为产品展示制作卡通低模茶壶，静态自包含GLB，实际最多5000三角面、10MiB。严格保留上限。按真实反馈在原3次预算内纠偏或诚实停止；不必为凑满次数继续。",
+    "RequireThreeQuestions": false,
+    "Seed": "",
+    "StrategyReview": "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+    "Suite": "baseline-current-v3",
+    "WantAnswer": false,
+    "WantDelivery": false
+  },
+  "conversation": {
+    "conversation": {
+      "created": "2026-09-13T15:38:05.253811Z",
+      "expires": "2026-09-20T15:38:32.857715Z",
+      "id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+      "title": "为产品展示制作卡通低模茶壶，静态自包含GLB，实际最多5000三角面、10MiB。严格保留上限。按真实反馈在原3次预算内纠偏或诚实停止；不必为凑满次数继续。",
+      "updated": "2026-09-13T15:38:32.857715Z"
+    },
+    "cursor": 33,
+    "events": [
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "为产品展示制作卡通低模茶壶，静态自包含GLB，实际最多5000三角面、10MiB。严格保留上限。按真实反馈在原3次预算内纠偏或诚实停止；不必为凑满次数继续。"
+        },
+        "kind": "request",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 1,
+        "time": "2026-09-13T15:38:05.253916Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 2,
+        "time": "2026-09-13T15:38:05.40703Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"intent\"}",
+                "name": "skill"
+              },
+              "id": "call_00_XdN0IUGLSDksQw8XpmRg8443",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 128,
+            "prompt_token_details": {
+              "cached_tokens": 1152
+            },
+            "prompt_tokens": 3232,
+            "total_tokens": 3360
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 3,
+        "time": "2026-09-13T15:38:07.076808Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "name": "intent",
+          "prompt_version": "asset-agent-v3",
+          "version": "4b2d07affb044a253cf0cb7de510acbe6c6d1d35ed1e4993093a9ab43053720f"
+        },
+        "kind": "skill_loaded",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 4,
+        "time": "2026-09-13T15:38:07.078643Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 5,
+        "time": "2026-09-13T15:38:07.079927Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"action\": \"generate\", \"intent\": {\"asset\": \"卡通低模茶壶（cartoon low-poly teapot）：圆润壶身、壶盖、壶嘴、壶把，简洁卡通造型\", \"use\": \"产品展示\", \"style\": \"卡通低模（cartoon low-poly），圆润简洁、明快配色\", \"constraints\": [\"静态自包含GLB\", \"实际最多5000三角面\", \"文件大小不超过10MiB（10485760字节）\"], \"max_triangles\": 5000, \"max_bytes\": 10485760, \"assumptions\": [\"采用明快卡通配色与圆润比例\", \"使用不依赖外部贴图的材质以保证自包含\", \"默认常规茶壶比例\"], \"plan\": [\"加载generation技能\", \"以不高于5000三角面的目标提交Tripo生成\", \"按真实技术反馈核对三角面与字节上限\", \"通过后交付，失败则在3次预算内纠偏或诚实停止\"]}}",
+                "name": "set_intent"
+              },
+              "id": "call_00_QPjfBhguA3tLH47Niesm0010",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 756,
+            "prompt_token_details": {
+              "cached_tokens": 1152
+            },
+            "prompt_tokens": 3553,
+            "total_tokens": 4309
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 6,
+        "time": "2026-09-13T15:38:15.273977Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "asset": "卡通低模茶壶（cartoon low-poly teapot）：圆润壶身、壶盖、壶嘴、壶把，简洁卡通造型",
+          "assumptions": [
+            "采用明快卡通配色与圆润比例",
+            "使用不依赖外部贴图的材质以保证自包含",
+            "默认常规茶壶比例"
+          ],
+          "constraints": [
+            "静态自包含GLB",
+            "实际最多5000三角面",
+            "文件大小不超过10MiB（10485760字节）"
+          ],
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "plan": [
+            "加载generation技能",
+            "以不高于5000三角面的目标提交Tripo生成",
+            "按真实技术反馈核对三角面与字节上限",
+            "通过后交付，失败则在3次预算内纠偏或诚实停止"
+          ],
+          "style": "卡通低模（cartoon low-poly），圆润简洁、明快配色",
+          "use": "产品展示"
+        },
+        "kind": "intent_and_plan",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 7,
+        "time": "2026-09-13T15:38:15.278044Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 8,
+        "time": "2026-09-13T15:38:15.279242Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"generation\"}",
+                "name": "skill"
+              },
+              "id": "call_00_lGIvdpBU7EhGpoHboz6g3093",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 49,
+            "prompt_token_details": {
+              "cached_tokens": 1280
+            },
+            "prompt_tokens": 4695,
+            "total_tokens": 4744
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 9,
+        "time": "2026-09-13T15:38:15.965249Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "name": "generation",
+          "prompt_version": "asset-agent-v3",
+          "version": "3a7f5c1690793216adcaa510e1b473390ee8690e75cfe8feea8d5c1ffa352190"
+        },
+        "kind": "skill_loaded",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 10,
+        "time": "2026-09-13T15:38:15.968361Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 11,
+        "time": "2026-09-13T15:38:15.970096Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"prompt\": \"A cartoon low-poly teapot for product display. Rounded body, a lid with small knob, a short curved spout, and a rounded handle. Simple cute proportions, clean flat bright colors (e.g. cheerful red body with cream lid and accents), soft smooth low-poly silhouette. Single static self-contained model, no external textures, no animation, no rigging. Low-poly stylized product showcase model.\", \"target_triangles\": 4500, \"texture_quality\": \"standard\", \"reason\": \"首次生成卡通低模茶壶，目标4500三角面留出上限余量，符合5000三角面与10MiB硬约束。\"}",
+                "name": "generate_asset"
+              },
+              "id": "call_00_Tj7HFF8rY5OvKfXRwPhT2572",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 391,
+            "prompt_token_details": {
+              "cached_tokens": 1280
+            },
+            "prompt_tokens": 4934,
+            "total_tokens": 5325
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 12,
+        "time": "2026-09-13T15:38:21.221499Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "kind": "generate",
+          "operation_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+          "reason": "首次生成卡通低模茶壶，目标4500三角面留出上限余量，符合5000三角面与10MiB硬约束。",
+          "state": "running",
+          "target_triangles": 4500
+        },
+        "kind": "runtime_accepted",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 13,
+        "time": "2026-09-13T15:38:21.228451Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "generation": 1,
+          "kind": "production",
+          "pause_id": "3fb14649bdedb04a24c48f2ef524ec23ba431101f4ce7011",
+          "ref_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30"
+        },
+        "kind": "checkpoint_committed",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 14,
+        "time": "2026-09-13T15:38:21.228849Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "kind": "generate",
+          "operation_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+          "params": {
+            "face_limit": 4500,
+            "prompt": "A cartoon low-poly teapot for product display. Rounded body, a lid with small knob, a short curved spout, and a rounded handle. Simple cute proportions, clean flat bright colors (e.g. cheerful red body with cream lid and accents), soft smooth low-poly silhouette. Single static self-contained model, no external textures, no animation, no rigging. Low-poly stylized product showcase model.\nRequired: 静态自包含GLB; 实际最多5000三角面; 文件大小不超过10MiB（10485760字节）",
+            "texture_quality": "standard"
+          }
+        },
+        "kind": "tool_submitting",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 15,
+        "time": "2026-09-13T15:38:21.234312Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "operation_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+          "task_id": "eval-task-1"
+        },
+        "kind": "tool_submitted",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 16,
+        "time": "2026-09-13T15:38:21.235461Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "credits": 0,
+          "operation_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+          "progress": 100,
+          "status": "success",
+          "task_id": "eval-task-1"
+        },
+        "kind": "tripo_progress",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 17,
+        "time": "2026-09-13T15:38:21.23667Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "artifact_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+          "operation_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+          "report": {
+            "bytes": 33,
+            "checks": [
+              {
+                "detail": "不是长度有效的 GLB 2.0 文件",
+                "name": "文件有效性",
+                "status": "failed"
+              },
+              {
+                "detail": "文件未通过有效性检查，不能给出可信面数",
+                "name": "几何规模",
+                "status": "unverifiable"
+              },
+              {
+                "detail": "实测 33 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": false,
+            "triangles": 0,
+            "valid": false,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "eval-task-1"
+        },
+        "kind": "technical_report",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 18,
+        "time": "2026-09-13T15:38:21.244582Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 19,
+        "time": "2026-09-13T15:38:21.245723Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"correction\"}",
+                "name": "skill"
+              },
+              "id": "call_00_pL61VFMN0daU0nVHXjfr2718",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 249,
+            "prompt_token_details": {
+              "cached_tokens": 1024
+            },
+            "prompt_tokens": 5831,
+            "total_tokens": 6080
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 20,
+        "time": "2026-09-13T15:38:24.157279Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "name": "correction",
+          "prompt_version": "asset-agent-v3",
+          "version": "13e0f25640474af227cf12aac6bb5e4918623f8fdc08cc14bbed1c30b0a120e0"
+        },
+        "kind": "skill_loaded",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 21,
+        "time": "2026-09-13T15:38:24.158228Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 22,
+        "time": "2026-09-13T15:38:24.158971Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"prompt\": \"A cartoon low-poly teapot for product display. Rounded body, a lid with small knob, a short curved spout, and a rounded handle. Simple cute proportions, clean flat bright colors. Single static self-contained low-poly model, no external textures, no animation.\", \"target_triangles\": 4500, \"texture_quality\": \"standard\", \"reason\": \"首次候选返回33字节、不是有效的GLB 2.0文件，按同一生成目标重试提交，未改动上限。\"}",
+                "name": "generate_asset"
+              },
+              "id": "call_00_Ta9niG4AJsMZgdazyYO39744",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 417,
+            "prompt_token_details": {
+              "cached_tokens": 1024
+            },
+            "prompt_tokens": 6282,
+            "total_tokens": 6699
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 23,
+        "time": "2026-09-13T15:38:28.956384Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "kind": "generate",
+          "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "reason": "首次候选返回33字节、不是有效的GLB 2.0文件，按同一生成目标重试提交，未改动上限。",
+          "state": "running",
+          "target_triangles": 4500
+        },
+        "kind": "runtime_accepted",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 24,
+        "time": "2026-09-13T15:38:28.96723Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "generation": 2,
+          "kind": "production",
+          "pause_id": "cdae6a9488f0d5b566417ea98a4a769be5facc5c51690f97",
+          "ref_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b"
+        },
+        "kind": "checkpoint_committed",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 25,
+        "time": "2026-09-13T15:38:28.968072Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "kind": "generate",
+          "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "params": {
+            "face_limit": 4500,
+            "prompt": "A cartoon low-poly teapot for product display. Rounded body, a lid with small knob, a short curved spout, and a rounded handle. Simple cute proportions, clean flat bright colors. Single static self-contained low-poly model, no external textures, no animation.\nRequired: 静态自包含GLB; 实际最多5000三角面; 文件大小不超过10MiB（10485760字节）",
+            "texture_quality": "standard"
+          }
+        },
+        "kind": "tool_submitting",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 26,
+        "time": "2026-09-13T15:38:28.975031Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "task_id": "eval-task-2"
+        },
+        "kind": "tool_submitted",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 27,
+        "time": "2026-09-13T15:38:28.976512Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "credits": 0,
+          "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "progress": 100,
+          "status": "success",
+          "task_id": "eval-task-2"
+        },
+        "kind": "tripo_progress",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 28,
+        "time": "2026-09-13T15:38:28.97822Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "artifact_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "report": {
+            "bytes": 27656,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 4500 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 27656 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 4500,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "eval-task-2"
+        },
+        "kind": "technical_report",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 29,
+        "time": "2026-09-13T15:38:28.987437Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 30,
+        "time": "2026-09-13T15:38:28.988791Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"outcome\": \"delivery\", \"artifact_id\": \"c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b\", \"explanation\": \"已生成卡通低模茶壶（静态自包含GLB），技术验收通过：实测4500个三角面（≤5000）、体积27656字节（≤10MiB），文件为有效的静态自包含非空三角面GLB。首次候选返回无效文件后按同一生成目标重试成功。未进行视觉检查，技术通过不代表类别、风格或外观完全符合预期，如需调整外观可另开新目标。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_QEPyEsvfSg6FgbzXJd5V2352",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 297,
+            "prompt_token_details": {
+              "cached_tokens": 1024
+            },
+            "prompt_tokens": 7133,
+            "total_tokens": 7430
+          }
+        },
+        "kind": "agent_proposal",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 31,
+        "time": "2026-09-13T15:38:32.853417Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "artifact_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "deliver": true,
+          "explanation": "已生成卡通低模茶壶（静态自包含GLB），技术验收通过：实测4500个三角面（≤5000）、体积27656字节（≤10MiB），文件为有效的静态自包含非空三角面GLB。首次候选返回无效文件后按同一生成目标重试成功。未进行视觉检查，技术通过不代表类别、风格或外观完全符合预期，如需调整外观可另开新目标。",
+          "final": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 2 / 3 次，模型调用 7 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "artifact_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+            "evidence": "verified",
+            "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+            "reason": "delivered",
+            "source": "agent",
+            "status": "completed",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 32,
+        "time": "2026-09-13T15:38:32.858021Z"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "data": {
+          "expires": "2026-09-20T15:38:32.857715Z"
+        },
+        "kind": "conversation_idle",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 33,
+        "time": "2026-09-13T15:38:32.859956Z"
+      }
+    ],
+    "has_more": false,
+    "messages": [
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "created": "2026-09-13T15:38:05.253916Z",
+        "id": "f76f781afbdcc012151eaa6f4728aea9563140a7a51fd077f794a65e4a2aa4f2",
+        "kind": "user",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 1,
+        "text": "为产品展示制作卡通低模茶壶，静态自包含GLB，实际最多5000三角面、10MiB。严格保留上限。按真实反馈在原3次预算内纠偏或诚实停止；不必为凑满次数继续。",
+        "updated_seq": 1
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "created": "2026-09-13T15:38:15.278044Z",
+        "data": {
+          "intent": {
+            "asset": "卡通低模茶壶（cartoon low-poly teapot）：圆润壶身、壶盖、壶嘴、壶把，简洁卡通造型",
+            "assumptions": [
+              "采用明快卡通配色与圆润比例",
+              "使用不依赖外部贴图的材质以保证自包含",
+              "默认常规茶壶比例"
+            ],
+            "constraints": [
+              "静态自包含GLB",
+              "实际最多5000三角面",
+              "文件大小不超过10MiB（10485760字节）"
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "plan": [
+              "加载generation技能",
+              "以不高于5000三角面的目标提交Tripo生成",
+              "按真实技术反馈核对三角面与字节上限",
+              "通过后交付，失败则在3次预算内纠偏或诚实停止"
+            ],
+            "style": "卡通低模（cartoon low-poly），圆润简洁、明快配色",
+            "use": "产品展示"
+          }
+        },
+        "id": "d9f5fd070580fd691ef8065dfaa2c1b44510b0c8c9cf64869983034fc7fa2f53",
+        "kind": "accepted_plan",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 7,
+        "updated_seq": 7
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "created": "2026-09-13T15:38:21.228451Z",
+        "data": {
+          "credits": 0,
+          "operation_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+          "operation_kind": "generate",
+          "progress": 100,
+          "report": {
+            "bytes": 33,
+            "checks": [
+              {
+                "detail": "已存技术报告记录文件有效性检查未通过。",
+                "name": "文件有效性",
+                "status": "failed"
+              },
+              {
+                "detail": "文件未通过有效性检查，不能给出可信面数。",
+                "name": "几何规模",
+                "status": "unverifiable"
+              },
+              {
+                "detail": "实测 33 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": false,
+            "triangles": 0,
+            "valid": false,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "stage": "done",
+          "state": "running",
+          "status": "checked",
+          "target_triangles": 4500,
+          "task_id": "eval-task-1"
+        },
+        "id": "fc0f690688dfd9c5c06350743d480164deaca0ad2d002eb88507d57b404efa75",
+        "kind": "operation_card",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 13,
+        "updated_seq": 18,
+        "version_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "created": "2026-09-13T15:38:28.96723Z",
+        "data": {
+          "credits": 0,
+          "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "operation_kind": "generate",
+          "progress": 100,
+          "report": {
+            "bytes": 27656,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 4500 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 27656 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 4500,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "stage": "done",
+          "state": "running",
+          "status": "checked",
+          "target_triangles": 4500,
+          "task_id": "eval-task-2"
+        },
+        "id": "f6b7918a5caf1595420b55a55638ae7192ab14d0d935a16c4c5b25eb27c07c8d",
+        "kind": "operation_card",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 24,
+        "updated_seq": 29,
+        "version_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b"
+      },
+      {
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "created": "2026-09-13T15:38:32.858021Z",
+        "data": {
+          "outcome": {
+            "kind": "delivery",
+            "source": "agent"
+          },
+          "result": {
+            "artifact_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+            "evidence": "verified",
+            "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+            "reason": "delivered",
+            "source": "agent",
+            "status": "completed",
+            "stored_consistency": "passed",
+            "version": 1
+          },
+          "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+          "source": "runtime"
+        },
+        "id": "3cae3e8d77d1d299b66b44b2a32d3fec7a2bd20cc9ce3daf0f490ba63e2cfe9a",
+        "kind": "run_result",
+        "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "seq": 32,
+        "text": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 2 / 3 次，模型调用 7 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "updated_seq": 33
+      }
+    ],
+    "runs": [
+      {
+        "artifacts": [
+          {
+            "id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+            "report": {
+              "bytes": 33,
+              "checks": [
+                {
+                  "detail": "已存技术报告记录文件有效性检查未通过。",
+                  "name": "文件有效性",
+                  "status": "failed"
+                },
+                {
+                  "detail": "文件未通过有效性检查，不能给出可信面数。",
+                  "name": "几何规模",
+                  "status": "unverifiable"
+                },
+                {
+                  "detail": "实测 33 / 上限 10485760 字节",
+                  "name": "文件体积",
+                  "status": "passed"
+                }
+              ],
+              "max_bytes": 10485760,
+              "max_triangles": 5000,
+              "passed": false,
+              "triangles": 0,
+              "valid": false,
+              "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+            },
+            "task_id": "eval-task-1",
+            "url": "/api/sessions/78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782/artifacts/b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30"
+          },
+          {
+            "id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+            "report": {
+              "bytes": 27656,
+              "checks": [
+                {
+                  "detail": "静态、自包含、非空三角面 GLB",
+                  "name": "文件有效性",
+                  "status": "passed"
+                },
+                {
+                  "detail": "实测 4500 / 上限 5000 个三角面",
+                  "name": "几何规模",
+                  "status": "passed"
+                },
+                {
+                  "detail": "实测 27656 / 上限 10485760 字节",
+                  "name": "文件体积",
+                  "status": "passed"
+                }
+              ],
+              "max_bytes": 10485760,
+              "max_triangles": 5000,
+              "passed": true,
+              "triangles": 4500,
+              "valid": true,
+              "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+            },
+            "task_id": "eval-task-2",
+            "url": "/api/sessions/78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782/artifacts/c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b"
+          }
+        ],
+        "clarifications": 0,
+        "created": "2026-09-13T15:38:05.253811Z",
+        "current_operation": {
+          "error": "",
+          "error_code": "",
+          "id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "input_version_id": "",
+          "kind": "generate",
+          "stage": "done",
+          "task_id": "eval-task-2"
+        },
+        "deadline": "2026-09-13T16:08:21.234213Z",
+        "ended": "2026-09-13T15:38:32.857715Z",
+        "evaluation": {
+          "checks": [
+            {
+              "detail": "2",
+              "name": "生产次数",
+              "status": "passed"
+            },
+            {
+              "detail": "7",
+              "name": "模型调用额度",
+              "status": "passed"
+            },
+            {
+              "detail": "0",
+              "name": "澄清轮数",
+              "status": "passed"
+            },
+            {
+              "detail": "交付引用已实测且技术通过的模型",
+              "name": "交付证据",
+              "status": "passed"
+            },
+            {
+              "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+              "name": "正式结果证据一致性",
+              "status": "passed"
+            },
+            {
+              "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+              "name": "原始 Agent 解释事实核验",
+              "status": "unverifiable"
+            },
+            {
+              "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+              "name": "可核验的违规提议",
+              "status": "passed"
+            }
+          ],
+          "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+        },
+        "expires": "2026-09-20T15:38:32.857715Z",
+        "final": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 2 / 3 次，模型调用 7 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+        "generation": 2,
+        "id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "input_assessment": null,
+        "intent": {
+          "asset": "卡通低模茶壶（cartoon low-poly teapot）：圆润壶身、壶盖、壶嘴、壶把，简洁卡通造型",
+          "assumptions": [
+            "采用明快卡通配色与圆润比例",
+            "使用不依赖外部贴图的材质以保证自包含",
+            "默认常规茶壶比例"
+          ],
+          "constraints": [
+            "静态自包含GLB",
+            "实际最多5000三角面",
+            "文件大小不超过10MiB（10485760字节）"
+          ],
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "plan": [
+            "加载generation技能",
+            "以不高于5000三角面的目标提交Tripo生成",
+            "按真实技术反馈核对三角面与字节上限",
+            "通过后交付，失败则在3次预算内纠偏或诚实停止"
+          ],
+          "style": "卡通低模（cartoon low-poly），圆润简洁、明快配色",
+          "use": "产品展示"
+        },
+        "max_model_calls": 20,
+        "max_submissions": 3,
+        "model": "deepseek-v4-pro",
+        "model_calls": 7,
+        "outcome": {
+          "kind": "delivery",
+          "source": "agent"
+        },
+        "production": 2,
+        "prompt_version": "asset-agent-v3",
+        "question": "",
+        "request": "为产品展示制作卡通低模茶壶，静态自包含GLB，实际最多5000三角面、10MiB。严格保留上限。按真实反馈在原3次预算内纠偏或诚实停止；不必为凑满次数继续。",
+        "result": {
+          "artifact_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "evidence": "verified",
+          "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "reason": "delivered",
+          "source": "agent",
+          "status": "completed",
+          "stored_consistency": "passed",
+          "version": 1
+        },
+        "selected_artifact": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+        "status": "completed",
+        "wait_id": ""
+      }
+    ],
+    "versions": [
+      {
+        "bytes": 33,
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "created": "2026-09-13T15:38:21.244582Z",
+        "format": "glb",
+        "id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+        "operation_kind": "generate",
+        "processable": false,
+        "provenance_status": "verified",
+        "report": {
+          "bytes": 33,
+          "checks": [
+            {
+              "detail": "已存技术报告记录文件有效性检查未通过。",
+              "name": "文件有效性",
+              "status": "failed"
+            },
+            {
+              "detail": "文件未通过有效性检查，不能给出可信面数。",
+              "name": "几何规模",
+              "status": "unverifiable"
+            },
+            {
+              "detail": "实测 33 / 上限 10485760 字节",
+              "name": "文件体积",
+              "status": "passed"
+            }
+          ],
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "passed": false,
+          "triangles": 0,
+          "valid": false,
+          "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+        },
+        "sha256": "8d4db0ee76252366d24605846cc3470335fb55e09ecd27679c0593c1803dcb80",
+        "source_operation_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+        "source_run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "task_id": "eval-task-1",
+        "url": "/api/conversations/78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782/versions/b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30/file",
+        "version_number": 1
+      },
+      {
+        "bytes": 27656,
+        "conversation_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "created": "2026-09-13T15:38:28.987437Z",
+        "format": "glb",
+        "id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+        "operation_kind": "generate",
+        "processable": true,
+        "provenance_status": "verified",
+        "report": {
+          "bytes": 27656,
+          "checks": [
+            {
+              "detail": "静态、自包含、非空三角面 GLB",
+              "name": "文件有效性",
+              "status": "passed"
+            },
+            {
+              "detail": "实测 4500 / 上限 5000 个三角面",
+              "name": "几何规模",
+              "status": "passed"
+            },
+            {
+              "detail": "实测 27656 / 上限 10485760 字节",
+              "name": "文件体积",
+              "status": "passed"
+            }
+          ],
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "passed": true,
+          "triangles": 4500,
+          "valid": true,
+          "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+        },
+        "sha256": "cc288615089c9e9ba7828ef8636e3ceaf42c68a5f64a38e053d417b85f1e03c5",
+        "source_operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+        "source_run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+        "task_id": "eval-task-2",
+        "url": "/api/conversations/78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782/versions/c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b/file",
+        "version_number": 2
+      }
+    ]
+  },
+  "critical_errors_automated": 0,
+  "ended": "2026-09-13T15:38:33.034433Z",
+  "repeat": 1,
+  "response_metadata": [
+    {
+      "content_length": 0,
+      "message_index": 2,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 128,
+          "prompt_token_details": {
+            "cached_tokens": 1152
+          },
+          "prompt_tokens": 3232,
+          "total_tokens": 3360
+        }
+      },
+      "tool_argument_lengths": [
+        19
+      ],
+      "tool_count": 1
+    },
+    {
+      "content_length": 0,
+      "message_index": 4,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 756,
+          "prompt_token_details": {
+            "cached_tokens": 1152
+          },
+          "prompt_tokens": 3553,
+          "total_tokens": 4309
+        }
+      },
+      "tool_argument_lengths": [
+        781
+      ],
+      "tool_count": 1
+    },
+    {
+      "content_length": 0,
+      "message_index": 6,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 49,
+          "prompt_token_details": {
+            "cached_tokens": 1280
+          },
+          "prompt_tokens": 4695,
+          "total_tokens": 4744
+        }
+      },
+      "tool_argument_lengths": [
+        23
+      ],
+      "tool_count": 1
+    },
+    {
+      "content_length": 0,
+      "message_index": 8,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 391,
+          "prompt_token_details": {
+            "cached_tokens": 1280
+          },
+          "prompt_tokens": 4934,
+          "total_tokens": 5325
+        }
+      },
+      "tool_argument_lengths": [
+        586
+      ],
+      "tool_count": 1
+    },
+    {
+      "content_length": 0,
+      "message_index": 10,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 249,
+          "prompt_token_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_tokens": 5831,
+          "total_tokens": 6080
+        }
+      },
+      "tool_argument_lengths": [
+        23
+      ],
+      "tool_count": 1
+    },
+    {
+      "content_length": 0,
+      "message_index": 12,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 417,
+          "prompt_token_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_tokens": 6282,
+          "total_tokens": 6699
+        }
+      },
+      "tool_argument_lengths": [
+        458
+      ],
+      "tool_count": 1
+    },
+    {
+      "content_length": 0,
+      "message_index": 14,
+      "response_meta": {
+        "finish_reason": "tool_calls",
+        "usage": {
+          "completion_token_details": {},
+          "completion_tokens": 297,
+          "prompt_token_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_tokens": 7133,
+          "total_tokens": 7430
+        }
+      },
+      "tool_argument_lengths": [
+        508
+      ],
+      "tool_count": 1
+    }
+  ],
+  "run_id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+  "semantic_review": {
+    "instructions": [
+      "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+      "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+      "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。"
+    ],
+    "proposals": [
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 3,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"skill\": \"intent\"}",
+              "name": "skill"
+            },
+            "id": "call_00_XdN0IUGLSDksQw8XpmRg8443",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 6,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"action\": \"generate\", \"intent\": {\"asset\": \"卡通低模茶壶（cartoon low-poly teapot）：圆润壶身、壶盖、壶嘴、壶把，简洁卡通造型\", \"use\": \"产品展示\", \"style\": \"卡通低模（cartoon low-poly），圆润简洁、明快配色\", \"constraints\": [\"静态自包含GLB\", \"实际最多5000三角面\", \"文件大小不超过10MiB（10485760字节）\"], \"max_triangles\": 5000, \"max_bytes\": 10485760, \"assumptions\": [\"采用明快卡通配色与圆润比例\", \"使用不依赖外部贴图的材质以保证自包含\", \"默认常规茶壶比例\"], \"plan\": [\"加载generation技能\", \"以不高于5000三角面的目标提交Tripo生成\", \"按真实技术反馈核对三角面与字节上限\", \"通过后交付，失败则在3次预算内纠偏或诚实停止\"]}}",
+              "name": "set_intent"
+            },
+            "id": "call_00_QPjfBhguA3tLH47Niesm0010",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 9,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"skill\": \"generation\"}",
+              "name": "skill"
+            },
+            "id": "call_00_lGIvdpBU7EhGpoHboz6g3093",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 0,
+        "content": "",
+        "seq": 12,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"prompt\": \"A cartoon low-poly teapot for product display. Rounded body, a lid with small knob, a short curved spout, and a rounded handle. Simple cute proportions, clean flat bright colors (e.g. cheerful red body with cream lid and accents), soft smooth low-poly silhouette. Single static self-contained model, no external textures, no animation, no rigging. Low-poly stylized product showcase model.\", \"target_triangles\": 4500, \"texture_quality\": \"standard\", \"reason\": \"首次生成卡通低模茶壶，目标4500三角面留出上限余量，符合5000三角面与10MiB硬约束。\"}",
+              "name": "generate_asset"
+            },
+            "id": "call_00_Tj7HFF8rY5OvKfXRwPhT2572",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 1,
+        "content": "",
+        "seq": 20,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"skill\": \"correction\"}",
+              "name": "skill"
+            },
+            "id": "call_00_pL61VFMN0daU0nVHXjfr2718",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 1,
+        "content": "",
+        "seq": 23,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"prompt\": \"A cartoon low-poly teapot for product display. Rounded body, a lid with small knob, a short curved spout, and a rounded handle. Simple cute proportions, clean flat bright colors. Single static self-contained low-poly model, no external textures, no animation.\", \"target_triangles\": 4500, \"texture_quality\": \"standard\", \"reason\": \"首次候选返回33字节、不是有效的GLB 2.0文件，按同一生成目标重试提交，未改动上限。\"}",
+              "name": "generate_asset"
+            },
+            "id": "call_00_Ta9niG4AJsMZgdazyYO39744",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      },
+      {
+        "consumed_production_before_proposal": 2,
+        "content": "",
+        "seq": 31,
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"outcome\": \"delivery\", \"artifact_id\": \"c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b\", \"explanation\": \"已生成卡通低模茶壶（静态自包含GLB），技术验收通过：实测4500个三角面（≤5000）、体积27656字节（≤10MiB），文件为有效的静态自包含非空三角面GLB。首次候选返回无效文件后按同一生成目标重试成功。未进行视觉检查，技术通过不代表类别、风格或外观完全符合预期，如需调整外观可另开新目标。\"}",
+              "name": "finish_request"
+            },
+            "id": "call_00_QEPyEsvfSg6FgbzXJd5V2352",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    ],
+    "status": "pending"
+  },
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "client_message_id": "target",
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "source": "real-llm-fixed-provider-evaluation",
+          "text": "为产品展示制作卡通低模茶壶，静态自包含GLB，实际最多5000三角面、10MiB。严格保留上限。按真实反馈在原3次预算内纠偏或诚实停止；不必为凑满次数继续。"
+        },
+        "kind": "request",
+        "seq": 1,
+        "time": "2026-09-13T15:38:05.253916Z"
+      },
+      {
+        "data": {
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 2,
+        "time": "2026-09-13T15:38:05.40703Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"intent\"}",
+                "name": "skill"
+              },
+              "id": "call_00_XdN0IUGLSDksQw8XpmRg8443",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 128,
+            "prompt_token_details": {
+              "cached_tokens": 1152
+            },
+            "prompt_tokens": 3232,
+            "total_tokens": 3360
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 3,
+        "time": "2026-09-13T15:38:07.076808Z"
+      },
+      {
+        "data": {
+          "name": "intent",
+          "prompt_version": "asset-agent-v3",
+          "version": "4b2d07affb044a253cf0cb7de510acbe6c6d1d35ed1e4993093a9ab43053720f"
+        },
+        "kind": "skill_loaded",
+        "seq": 4,
+        "time": "2026-09-13T15:38:07.078643Z"
+      },
+      {
+        "data": {
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 5,
+        "time": "2026-09-13T15:38:07.079927Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"action\": \"generate\", \"intent\": {\"asset\": \"卡通低模茶壶（cartoon low-poly teapot）：圆润壶身、壶盖、壶嘴、壶把，简洁卡通造型\", \"use\": \"产品展示\", \"style\": \"卡通低模（cartoon low-poly），圆润简洁、明快配色\", \"constraints\": [\"静态自包含GLB\", \"实际最多5000三角面\", \"文件大小不超过10MiB（10485760字节）\"], \"max_triangles\": 5000, \"max_bytes\": 10485760, \"assumptions\": [\"采用明快卡通配色与圆润比例\", \"使用不依赖外部贴图的材质以保证自包含\", \"默认常规茶壶比例\"], \"plan\": [\"加载generation技能\", \"以不高于5000三角面的目标提交Tripo生成\", \"按真实技术反馈核对三角面与字节上限\", \"通过后交付，失败则在3次预算内纠偏或诚实停止\"]}}",
+                "name": "set_intent"
+              },
+              "id": "call_00_QPjfBhguA3tLH47Niesm0010",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 756,
+            "prompt_token_details": {
+              "cached_tokens": 1152
+            },
+            "prompt_tokens": 3553,
+            "total_tokens": 4309
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 6,
+        "time": "2026-09-13T15:38:15.273977Z"
+      },
+      {
+        "data": {
+          "asset": "卡通低模茶壶（cartoon low-poly teapot）：圆润壶身、壶盖、壶嘴、壶把，简洁卡通造型",
+          "assumptions": [
+            "采用明快卡通配色与圆润比例",
+            "使用不依赖外部贴图的材质以保证自包含",
+            "默认常规茶壶比例"
+          ],
+          "constraints": [
+            "静态自包含GLB",
+            "实际最多5000三角面",
+            "文件大小不超过10MiB（10485760字节）"
+          ],
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "plan": [
+            "加载generation技能",
+            "以不高于5000三角面的目标提交Tripo生成",
+            "按真实技术反馈核对三角面与字节上限",
+            "通过后交付，失败则在3次预算内纠偏或诚实停止"
+          ],
+          "style": "卡通低模（cartoon low-poly），圆润简洁、明快配色",
+          "use": "产品展示"
+        },
+        "kind": "intent_and_plan",
+        "seq": 7,
+        "time": "2026-09-13T15:38:15.278044Z"
+      },
+      {
+        "data": {
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 8,
+        "time": "2026-09-13T15:38:15.279242Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"generation\"}",
+                "name": "skill"
+              },
+              "id": "call_00_lGIvdpBU7EhGpoHboz6g3093",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 49,
+            "prompt_token_details": {
+              "cached_tokens": 1280
+            },
+            "prompt_tokens": 4695,
+            "total_tokens": 4744
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 9,
+        "time": "2026-09-13T15:38:15.965249Z"
+      },
+      {
+        "data": {
+          "name": "generation",
+          "prompt_version": "asset-agent-v3",
+          "version": "3a7f5c1690793216adcaa510e1b473390ee8690e75cfe8feea8d5c1ffa352190"
+        },
+        "kind": "skill_loaded",
+        "seq": 10,
+        "time": "2026-09-13T15:38:15.968361Z"
+      },
+      {
+        "data": {
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 11,
+        "time": "2026-09-13T15:38:15.970096Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"prompt\": \"A cartoon low-poly teapot for product display. Rounded body, a lid with small knob, a short curved spout, and a rounded handle. Simple cute proportions, clean flat bright colors (e.g. cheerful red body with cream lid and accents), soft smooth low-poly silhouette. Single static self-contained model, no external textures, no animation, no rigging. Low-poly stylized product showcase model.\", \"target_triangles\": 4500, \"texture_quality\": \"standard\", \"reason\": \"首次生成卡通低模茶壶，目标4500三角面留出上限余量，符合5000三角面与10MiB硬约束。\"}",
+                "name": "generate_asset"
+              },
+              "id": "call_00_Tj7HFF8rY5OvKfXRwPhT2572",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 391,
+            "prompt_token_details": {
+              "cached_tokens": 1280
+            },
+            "prompt_tokens": 4934,
+            "total_tokens": 5325
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 12,
+        "time": "2026-09-13T15:38:21.221499Z"
+      },
+      {
+        "data": {
+          "kind": "generate",
+          "operation_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+          "reason": "首次生成卡通低模茶壶，目标4500三角面留出上限余量，符合5000三角面与10MiB硬约束。",
+          "state": "running",
+          "target_triangles": 4500
+        },
+        "kind": "runtime_accepted",
+        "seq": 13,
+        "time": "2026-09-13T15:38:21.228451Z"
+      },
+      {
+        "data": {
+          "generation": 1,
+          "kind": "production",
+          "pause_id": "3fb14649bdedb04a24c48f2ef524ec23ba431101f4ce7011",
+          "ref_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30"
+        },
+        "kind": "checkpoint_committed",
+        "seq": 14,
+        "time": "2026-09-13T15:38:21.228849Z"
+      },
+      {
+        "data": {
+          "kind": "generate",
+          "operation_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+          "params": {
+            "face_limit": 4500,
+            "prompt": "A cartoon low-poly teapot for product display. Rounded body, a lid with small knob, a short curved spout, and a rounded handle. Simple cute proportions, clean flat bright colors (e.g. cheerful red body with cream lid and accents), soft smooth low-poly silhouette. Single static self-contained model, no external textures, no animation, no rigging. Low-poly stylized product showcase model.\nRequired: 静态自包含GLB; 实际最多5000三角面; 文件大小不超过10MiB（10485760字节）",
+            "texture_quality": "standard"
+          }
+        },
+        "kind": "tool_submitting",
+        "seq": 15,
+        "time": "2026-09-13T15:38:21.234312Z"
+      },
+      {
+        "data": {
+          "operation_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+          "task_id": "eval-task-1"
+        },
+        "kind": "tool_submitted",
+        "seq": 16,
+        "time": "2026-09-13T15:38:21.235461Z"
+      },
+      {
+        "data": {
+          "credits": 0,
+          "operation_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+          "progress": 100,
+          "status": "success",
+          "task_id": "eval-task-1"
+        },
+        "kind": "tripo_progress",
+        "seq": 17,
+        "time": "2026-09-13T15:38:21.23667Z"
+      },
+      {
+        "data": {
+          "artifact_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+          "operation_id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+          "report": {
+            "bytes": 33,
+            "checks": [
+              {
+                "detail": "不是长度有效的 GLB 2.0 文件",
+                "name": "文件有效性",
+                "status": "failed"
+              },
+              {
+                "detail": "文件未通过有效性检查，不能给出可信面数",
+                "name": "几何规模",
+                "status": "unverifiable"
+              },
+              {
+                "detail": "实测 33 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": false,
+            "triangles": 0,
+            "valid": false,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "eval-task-1"
+        },
+        "kind": "technical_report",
+        "seq": 18,
+        "time": "2026-09-13T15:38:21.244582Z"
+      },
+      {
+        "data": {
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 19,
+        "time": "2026-09-13T15:38:21.245723Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"correction\"}",
+                "name": "skill"
+              },
+              "id": "call_00_pL61VFMN0daU0nVHXjfr2718",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 249,
+            "prompt_token_details": {
+              "cached_tokens": 1024
+            },
+            "prompt_tokens": 5831,
+            "total_tokens": 6080
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 20,
+        "time": "2026-09-13T15:38:24.157279Z"
+      },
+      {
+        "data": {
+          "name": "correction",
+          "prompt_version": "asset-agent-v3",
+          "version": "13e0f25640474af227cf12aac6bb5e4918623f8fdc08cc14bbed1c30b0a120e0"
+        },
+        "kind": "skill_loaded",
+        "seq": 21,
+        "time": "2026-09-13T15:38:24.158228Z"
+      },
+      {
+        "data": {
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 22,
+        "time": "2026-09-13T15:38:24.158971Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"prompt\": \"A cartoon low-poly teapot for product display. Rounded body, a lid with small knob, a short curved spout, and a rounded handle. Simple cute proportions, clean flat bright colors. Single static self-contained low-poly model, no external textures, no animation.\", \"target_triangles\": 4500, \"texture_quality\": \"standard\", \"reason\": \"首次候选返回33字节、不是有效的GLB 2.0文件，按同一生成目标重试提交，未改动上限。\"}",
+                "name": "generate_asset"
+              },
+              "id": "call_00_Ta9niG4AJsMZgdazyYO39744",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 417,
+            "prompt_token_details": {
+              "cached_tokens": 1024
+            },
+            "prompt_tokens": 6282,
+            "total_tokens": 6699
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 23,
+        "time": "2026-09-13T15:38:28.956384Z"
+      },
+      {
+        "data": {
+          "kind": "generate",
+          "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "reason": "首次候选返回33字节、不是有效的GLB 2.0文件，按同一生成目标重试提交，未改动上限。",
+          "state": "running",
+          "target_triangles": 4500
+        },
+        "kind": "runtime_accepted",
+        "seq": 24,
+        "time": "2026-09-13T15:38:28.96723Z"
+      },
+      {
+        "data": {
+          "generation": 2,
+          "kind": "production",
+          "pause_id": "cdae6a9488f0d5b566417ea98a4a769be5facc5c51690f97",
+          "ref_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b"
+        },
+        "kind": "checkpoint_committed",
+        "seq": 25,
+        "time": "2026-09-13T15:38:28.968072Z"
+      },
+      {
+        "data": {
+          "kind": "generate",
+          "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "params": {
+            "face_limit": 4500,
+            "prompt": "A cartoon low-poly teapot for product display. Rounded body, a lid with small knob, a short curved spout, and a rounded handle. Simple cute proportions, clean flat bright colors. Single static self-contained low-poly model, no external textures, no animation.\nRequired: 静态自包含GLB; 实际最多5000三角面; 文件大小不超过10MiB（10485760字节）",
+            "texture_quality": "standard"
+          }
+        },
+        "kind": "tool_submitting",
+        "seq": 26,
+        "time": "2026-09-13T15:38:28.975031Z"
+      },
+      {
+        "data": {
+          "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "task_id": "eval-task-2"
+        },
+        "kind": "tool_submitted",
+        "seq": 27,
+        "time": "2026-09-13T15:38:28.976512Z"
+      },
+      {
+        "data": {
+          "credits": 0,
+          "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "progress": 100,
+          "status": "success",
+          "task_id": "eval-task-2"
+        },
+        "kind": "tripo_progress",
+        "seq": 28,
+        "time": "2026-09-13T15:38:28.97822Z"
+      },
+      {
+        "data": {
+          "artifact_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "report": {
+            "bytes": 27656,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 4500 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 27656 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 4500,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "eval-task-2"
+        },
+        "kind": "technical_report",
+        "seq": 29,
+        "time": "2026-09-13T15:38:28.987437Z"
+      },
+      {
+        "data": {
+          "max_completion_tokens": 8192,
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v3",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 30,
+        "time": "2026-09-13T15:38:28.988791Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "finish_reason": "tool_calls",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"outcome\": \"delivery\", \"artifact_id\": \"c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b\", \"explanation\": \"已生成卡通低模茶壶（静态自包含GLB），技术验收通过：实测4500个三角面（≤5000）、体积27656字节（≤10MiB），文件为有效的静态自包含非空三角面GLB。首次候选返回无效文件后按同一生成目标重试成功。未进行视觉检查，技术通过不代表类别、风格或外观完全符合预期，如需调整外观可另开新目标。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_QEPyEsvfSg6FgbzXJd5V2352",
+              "index": 0,
+              "type": "function"
+            }
+          ],
+          "usage": {
+            "completion_token_details": {},
+            "completion_tokens": 297,
+            "prompt_token_details": {
+              "cached_tokens": 1024
+            },
+            "prompt_tokens": 7133,
+            "total_tokens": 7430
+          }
+        },
+        "kind": "agent_proposal",
+        "seq": 31,
+        "time": "2026-09-13T15:38:32.853417Z"
+      },
+      {
+        "data": {
+          "artifact_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "deliver": true,
+          "explanation": "已生成卡通低模茶壶（静态自包含GLB），技术验收通过：实测4500个三角面（≤5000）、体积27656字节（≤10MiB），文件为有效的静态自包含非空三角面GLB。首次候选返回无效文件后按同一生成目标重试成功。未进行视觉检查，技术通过不代表类别、风格或外观完全符合预期，如需调整外观可另开新目标。",
+          "final": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 2 / 3 次，模型调用 7 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "artifact_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+            "evidence": "verified",
+            "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+            "reason": "delivered",
+            "source": "agent",
+            "status": "completed",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "seq": 32,
+        "time": "2026-09-13T15:38:32.858021Z"
+      },
+      {
+        "data": {
+          "expires": "2026-09-20T15:38:32.857715Z"
+        },
+        "kind": "conversation_idle",
+        "seq": 33,
+        "time": "2026-09-13T15:38:32.859956Z"
+      }
+    ],
+    "session": {
+      "artifacts": [
+        {
+          "id": "b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30",
+          "report": {
+            "bytes": 33,
+            "checks": [
+              {
+                "detail": "已存技术报告记录文件有效性检查未通过。",
+                "name": "文件有效性",
+                "status": "failed"
+              },
+              {
+                "detail": "文件未通过有效性检查，不能给出可信面数。",
+                "name": "几何规模",
+                "status": "unverifiable"
+              },
+              {
+                "detail": "实测 33 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": false,
+            "triangles": 0,
+            "valid": false,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "eval-task-1",
+          "url": "/api/sessions/78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782/artifacts/b59609c53a94b9afa1f658c3fefcbadc290b2e7259c10f30"
+        },
+        {
+          "id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+          "report": {
+            "bytes": 27656,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 4500 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 27656 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 4500,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "eval-task-2",
+          "url": "/api/sessions/78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782/artifacts/c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b"
+        }
+      ],
+      "clarifications": 0,
+      "created": "2026-09-13T15:38:05.253811Z",
+      "current_operation": {
+        "error": "",
+        "error_code": "",
+        "id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+        "input_version_id": "",
+        "kind": "generate",
+        "stage": "done",
+        "task_id": "eval-task-2"
+      },
+      "deadline": "2026-09-13T16:08:21.234213Z",
+      "ended": "2026-09-13T15:38:32.857715Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "2",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "7",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "0",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "交付引用已实测且技术通过的模型",
+            "name": "交付证据",
+            "status": "passed"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-20T15:38:32.857715Z",
+      "final": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 4500 / 上限 5000 个三角面\n文件体积：实测 27656 / 上限 10485760 字节\n累计生产提交 2 / 3 次，模型调用 7 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "generation": 2,
+      "id": "78d03d0bc9828f09b6cc18169657a920a0d3b6386bd4b782",
+      "input_assessment": null,
+      "intent": {
+        "asset": "卡通低模茶壶（cartoon low-poly teapot）：圆润壶身、壶盖、壶嘴、壶把，简洁卡通造型",
+        "assumptions": [
+          "采用明快卡通配色与圆润比例",
+          "使用不依赖外部贴图的材质以保证自包含",
+          "默认常规茶壶比例"
+        ],
+        "constraints": [
+          "静态自包含GLB",
+          "实际最多5000三角面",
+          "文件大小不超过10MiB（10485760字节）"
+        ],
+        "max_bytes": 10485760,
+        "max_triangles": 5000,
+        "plan": [
+          "加载generation技能",
+          "以不高于5000三角面的目标提交Tripo生成",
+          "按真实技术反馈核对三角面与字节上限",
+          "通过后交付，失败则在3次预算内纠偏或诚实停止"
+        ],
+        "style": "卡通低模（cartoon low-poly），圆润简洁、明快配色",
+        "use": "产品展示"
+      },
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 7,
+      "outcome": {
+        "kind": "delivery",
+        "source": "agent"
+      },
+      "production": 2,
+      "prompt_version": "asset-agent-v3",
+      "question": "",
+      "request": "为产品展示制作卡通低模茶壶，静态自包含GLB，实际最多5000三角面、10MiB。严格保留上限。按真实反馈在原3次预算内纠偏或诚实停止；不必为凑满次数继续。",
+      "result": {
+        "artifact_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+        "evidence": "verified",
+        "operation_id": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+        "reason": "delivered",
+        "source": "agent",
+        "status": "completed",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "c12ad7230c08de58cc1725b668bf50454097b39bf2d95b3b",
+      "status": "completed",
+      "wait_id": ""
+    },
+    "source": "real-llm-fixed-provider-evaluation"
+  },
+  "source": "real DeepSeek; fixed Provider; synthetic GLB; no real Tripo",
+  "started": "2026-09-13T15:38:05.25381Z",
+  "suite_acceptance": "pending_semantic_review"
+}

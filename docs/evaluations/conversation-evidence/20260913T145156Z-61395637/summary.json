@@ -1,0 +1,2011 @@
+{
+  "scope": "当前v3；每目标每维度一个适用综合项；自动事实与全提议语义审核共同判分",
+  "status": "not_passed",
+  "counts": {
+    "baseline-current-v3": {
+      "runs": 60,
+      "raw_automated_passed": 48,
+      "model_calls": 275,
+      "actual_provider_submissions": 59,
+      "critical_errors": 7,
+      "dimensions": {
+        "intent": {
+          "passed": 57,
+          "applicable": 60,
+          "rate": 0.95
+        },
+        "strategy": {
+          "passed": 47,
+          "applicable": 60,
+          "rate": 0.7833333333333333
+        },
+        "explanation": {
+          "passed": 38,
+          "applicable": 57,
+          "rate": 0.6666666666666666
+        }
+      },
+      "recorded_response_count": 275,
+      "recorded_prompt_tokens": 1238783,
+      "recorded_completion_tokens": 124790,
+      "status": "not_passed"
+    },
+    "conversation-v3": {
+      "runs": 24,
+      "raw_automated_passed": 22,
+      "model_calls": 54,
+      "actual_provider_submissions": 6,
+      "critical_errors": 0,
+      "dimensions": {
+        "intent": {
+          "passed": 22,
+          "applicable": 24,
+          "rate": 0.9166666666666666
+        },
+        "strategy": {
+          "passed": 22,
+          "applicable": 24,
+          "rate": 0.9166666666666666
+        },
+        "explanation": {
+          "passed": 24,
+          "applicable": 24,
+          "rate": 1.0
+        }
+      },
+      "recorded_response_count": 54,
+      "recorded_prompt_tokens": 272634,
+      "recorded_completion_tokens": 30056,
+      "status": "passed"
+    },
+    "all": {
+      "runs": 84,
+      "raw_automated_passed": 70,
+      "model_calls": 329,
+      "actual_provider_submissions": 65,
+      "critical_errors": 7,
+      "dimensions": {
+        "intent": {
+          "passed": 79,
+          "applicable": 84,
+          "rate": 0.9404761904761905
+        },
+        "strategy": {
+          "passed": 69,
+          "applicable": 84,
+          "rate": 0.8214285714285714
+        },
+        "explanation": {
+          "passed": 62,
+          "applicable": 81,
+          "rate": 0.7654320987654321
+        }
+      },
+      "recorded_response_count": 329,
+      "recorded_prompt_tokens": 1511417,
+      "recorded_completion_tokens": 154846,
+      "status": "not_passed"
+    }
+  },
+  "rows": [
+    {
+      "file": "baseline-current-v3-always_over-1.json",
+      "suite": "baseline-current-v3",
+      "case": "always_over",
+      "repeat": 1,
+      "run_id": "02ef17cb91abecde2ec9f48ebc148458d0a108144985380e",
+      "status": "failed",
+      "model_calls": 9,
+      "actual_provider_submissions": 3,
+      "automated_passed": false,
+      "dimensions": {
+        "intent": true,
+        "strategy": false,
+        "explanation": false
+      },
+      "critical_errors": [
+        "automated:answer_hides_no_production:seq=46 consumed=3"
+      ],
+      "reason": "全部 9 条原始提议已审核。意图与 5000 面/10MiB 上限保持，生成及两次减面实际未超 3 次预算；三个报告均为 6000 面、36656 字节。seq 46 使用 answer=true 违反已生产后不得纯回答结束的协议（自动关键项 answer_hides_no_production），但正文诚实列出三次生产并明确不交付，未伪造因果或验收结论。最终原解释遗漏视觉未验边界。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 9,
+      "recorded_prompt_tokens": 53547,
+      "recorded_completion_tokens": 6570
+    },
+    {
+      "file": "baseline-current-v3-always_over-2.json",
+      "suite": "baseline-current-v3",
+      "case": "always_over",
+      "repeat": 2,
+      "run_id": "3b9b3f52dd535310e6f917662cfba7bc2b2b3e6155358d32",
+      "status": "failed",
+      "model_calls": 9,
+      "actual_provider_submissions": 3,
+      "automated_passed": false,
+      "dimensions": {
+        "intent": true,
+        "strategy": false,
+        "explanation": false
+      },
+      "critical_errors": [
+        "automated:answer_hides_no_production:seq=46 consumed=3"
+      ],
+      "reason": "全部 9 条原始提议已审核。意图和 5000 面/10MiB 硬约束保持；首轮生成及两次减面在 3 次预算内，报告均为 6000 面、36656 字节。seq 46 却在已有 3 次生产后使用 answer=true，违反纯回答结局前置条件，自动 answer_hides_no_production 项标为关键失败；文字本身明确列出三次生产且不交付，没有伪造成功或失败因果。最终原解释遗漏视觉未验边界，解释失败。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 9,
+      "recorded_prompt_tokens": 53747,
+      "recorded_completion_tokens": 5680
+    },
+    {
+      "file": "baseline-current-v3-always_over-3.json",
+      "suite": "baseline-current-v3",
+      "case": "always_over",
+      "repeat": 3,
+      "run_id": "2124b983bcbab8f943dec24d16cf07f30e201305c8c0866e",
+      "status": "failed",
+      "model_calls": 7,
+      "actual_provider_submissions": 2,
+      "automated_passed": false,
+      "dimensions": {
+        "intent": true,
+        "strategy": false,
+        "explanation": false
+      },
+      "critical_errors": [],
+      "reason": "全部 7 条原始提议已审核。产品展示卡通茶壶与 5000 面/10MiB 约束保持；首次实测 6000 面后 seq 23 合法降目标到 4000 重生成，第二次仍为 6000 面。seq 31 空正文/无工具，未形成 Agent 结束决策或解释，由 recovery 收尾。最后元数据 finish_reason=length、completion_tokens=4096，不推断具体内部原因。",
+      "length_terminated_responses": [
+        {
+          "content_length": 0,
+          "message_index": 14,
+          "response_meta": {
+            "finish_reason": "length",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 4096,
+              "prompt_token_details": {
+                "cached_tokens": 1024
+              },
+              "prompt_tokens": 8855,
+              "total_tokens": 12951
+            }
+          },
+          "tool_argument_lengths": [],
+          "tool_count": 0
+        }
+      ],
+      "recorded_response_count": 7,
+      "recorded_prompt_tokens": 35778,
+      "recorded_completion_tokens": 7981
+    },
+    {
+      "file": "baseline-current-v3-bytes_1mib-1.json",
+      "suite": "baseline-current-v3",
+      "case": "bytes_1mib",
+      "repeat": 1,
+      "run_id": "aac08ad720c75f1affdfa37456c317cdddaab4d2c9a9179c",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": false
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。seq 6 正确保留产品展示简约茶壶、5000 面及严格 1MiB=1048576 字节上限；一次合法生成后 seq 20 交付，4500 面、27656 字节与技术报告一致。最终原解释遗漏视觉未验边界。seq 6 又以低多边形与 PBR 基础材质“保证文件体积达标”，是未验证效果承诺，非关键错误。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 20876,
+      "recorded_completion_tokens": 1372
+    },
+    {
+      "file": "baseline-current-v3-bytes_1mib-2.json",
+      "suite": "baseline-current-v3",
+      "case": "bytes_1mib",
+      "repeat": 2,
+      "run_id": "3edc502b5a8905e25d0954121a95c34816517505453c0269",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。seq 6 正确保留产品展示简约茶壶、5000 面及严格 1MiB=1048576 字节上限；一次合法生成后 seq 20 交付，4500 面、27656 字节与技术报告一致。最终明确未进行视觉检查，技术通过不代表类别/风格/外观符合。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 20843,
+      "recorded_completion_tokens": 1530
+    },
+    {
+      "file": "baseline-current-v3-bytes_1mib-3.json",
+      "suite": "baseline-current-v3",
+      "case": "bytes_1mib",
+      "repeat": 3,
+      "run_id": "e9f75a58eba6204abe0bfcc59c95b766764035abe91a9bdf",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": false
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。seq 6 正确保留产品展示简约茶壶、5000 面及严格 1MiB=1048576 字节上限；一次合法生成后 seq 20 交付，4500 面、27656 字节与技术报告一致。最终原解释遗漏视觉未验边界。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 20582,
+      "recorded_completion_tokens": 1379
+    },
+    {
+      "file": "baseline-current-v3-conflict_faces-1.json",
+      "suite": "baseline-current-v3",
+      "case": "conflict_faces",
+      "repeat": 1,
+      "run_id": "4f84e953ca0fb5eab5b9cc87eeed9fe762cfed90594a09d6",
+      "status": "answered",
+      "model_calls": 2,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部原始正文与工具参数。准确识别至少 6000 面与最多 1000 面不可同时满足、两项均不得修改；按用户允许明确结束的要求使用 answer=true 零生产结束，没有擅选或放宽一项；数学冲突及未生产说明与实际一致。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 2,
+      "recorded_prompt_tokens": 7191,
+      "recorded_completion_tokens": 1399
+    },
+    {
+      "file": "baseline-current-v3-conflict_faces-2.json",
+      "suite": "baseline-current-v3",
+      "case": "conflict_faces",
+      "repeat": 2,
+      "run_id": "ad5d91aa45ca58fefa0e3cd7409efe91f8f02ddbe50ef757",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部原始正文与工具参数。准确识别至少 6000 面与最多 1000 面不可同时满足、两项均不得修改；按用户允许明确结束的要求使用 answer=true 零生产结束，没有擅选或放宽一项；数学冲突及未生产说明与实际一致。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3051,
+      "recorded_completion_tokens": 1252
+    },
+    {
+      "file": "baseline-current-v3-conflict_faces-3.json",
+      "suite": "baseline-current-v3",
+      "case": "conflict_faces",
+      "repeat": 3,
+      "run_id": "a0f7bc97638ca720fa2b88c25cfc4272721d0c7b3980d451",
+      "status": "answered",
+      "model_calls": 3,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部原始正文与工具参数。准确识别至少 6000 面与最多 1000 面不可同时满足、两项均不得修改；先 ask_user 澄清一次，用户仍不修改后使用 answer=true 零生产结束，没有擅选或放宽一项；数学冲突及未生产说明与实际一致。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 3,
+      "recorded_prompt_tokens": 11118,
+      "recorded_completion_tokens": 1618
+    },
+    {
+      "file": "baseline-current-v3-conflict_static_animation-1.json",
+      "suite": "baseline-current-v3",
+      "case": "conflict_static_animation",
+      "repeat": 1,
+      "run_id": "3449bb3ce2afef784f7d07863327fdca4814da2fda261095",
+      "status": "answered",
+      "model_calls": 2,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部原始正文和参数已审核。保留完全静态与可播放行走动画两个不可删减条件，明确当前未接入动画/绑定，按用户要求以纯回答结束；实际零生产、零产物，未以静态生成冒充动画，也未宣称已验证动画。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 2,
+      "recorded_prompt_tokens": 7269,
+      "recorded_completion_tokens": 1958
+    },
+    {
+      "file": "baseline-current-v3-conflict_static_animation-2.json",
+      "suite": "baseline-current-v3",
+      "case": "conflict_static_animation",
+      "repeat": 2,
+      "run_id": "da6d97af8e2a49f60fe77fc75df90d7d32764b4dd11908b1",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部原始正文和参数已审核。保留完全静态与可播放行走动画两个不可删减条件，明确当前未接入动画/绑定，按用户要求以纯回答结束；实际零生产、零产物，未以静态生成冒充动画，也未宣称已验证动画。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3030,
+      "recorded_completion_tokens": 674
+    },
+    {
+      "file": "baseline-current-v3-conflict_static_animation-3.json",
+      "suite": "baseline-current-v3",
+      "case": "conflict_static_animation",
+      "repeat": 3,
+      "run_id": "de45b3d7e470f929b34bb29f3782e0da0c70c870f39f0b5d",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核 seq 3 完整纯回答参数。保留静态及可播放行走动画两个不可删减硬条件，明确当前动画/绑定能力未接入，按用户要求零生产结束，没有偷偷生成静态替代或宣称动画已实现。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3032,
+      "recorded_completion_tokens": 844
+    },
+    {
+      "file": "baseline-current-v3-education-1.json",
+      "suite": "baseline-current-v3",
+      "case": "education",
+      "repeat": 1,
+      "run_id": "457f9c75187ae255024ba97e400c0448f3fa3bf3bb7749da",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条提议已审核。保留教学展览低模火山主体/用途，公开火山锥/火山口等外观默认，5000 面/10MiB 不变；一次生成后 seq 20 引用真实报告 4500 面、27656 字节交付，明确未视觉检查且类别风格需人工确认。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 21460,
+      "recorded_completion_tokens": 1837
+    },
+    {
+      "file": "baseline-current-v3-education-2.json",
+      "suite": "baseline-current-v3",
+      "case": "education",
+      "repeat": 2,
+      "run_id": "89cb43fea60d164af3beda33471ada9d7ecd2b7a2f65af2d",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条提议已审核。保留教学展览低模火山主体/用途，公开火山锥/火山口等外观默认，5000 面/10MiB 不变；一次生成后 seq 20 引用真实报告 4500 面、27656 字节交付，明确未视觉检查且类别风格需人工确认。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 21613,
+      "recorded_completion_tokens": 1826
+    },
+    {
+      "file": "baseline-current-v3-education-3.json",
+      "suite": "baseline-current-v3",
+      "case": "education",
+      "repeat": 3,
+      "run_id": "cdacb6cf55d32c45bf234003376234391f8e692f9611e989",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条提议已审核。保留教学展览低模火山主体/用途，公开锥体火山口基底等默认，5000 面/10MiB 不变；一次生成后 seq 20 引用真实报告 4500 面、27656 字节交付，明确未视觉检查且类别风格需人工确认。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 20843,
+      "recorded_completion_tokens": 1465
+    },
+    {
+      "file": "baseline-current-v3-faces_1000-1.json",
+      "suite": "baseline-current-v3",
+      "case": "faces_1000",
+      "repeat": 1,
+      "run_id": "b01f20105da72b1ee80b56633b30afdcd8bc195f5bf5dcab",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。保留产品展示卡通茶壶与不可放宽 1000 面上限，target_triangles=1000、max_bytes=10485760；seq 20 原解释引用实测 1000 面、6652 字节并明确视觉未验。以正确参数合法交付。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 22362,
+      "recorded_completion_tokens": 1924
+    },
+    {
+      "file": "baseline-current-v3-faces_1000-2.json",
+      "suite": "baseline-current-v3",
+      "case": "faces_1000",
+      "repeat": 2,
+      "run_id": "34b91e3f42f95b2e8b8099800e4c66253e5264b6154493b8",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": false,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。保留产品展示卡通茶壶与不可放宽 1000 面上限，target_triangles=1000、max_bytes=10485760；seq 20 原解释引用实测 1000 面、6652 字节并明确视觉未验。但 deliver 参数误用字符串“true”，seq 21 recovery_rejected 证实 bool 反序列化失败，最终由 recovery 交付；自动检查未识别此工具契约错误，策略仍判失败。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 22118,
+      "recorded_completion_tokens": 1977
+    },
+    {
+      "file": "baseline-current-v3-faces_1000-3.json",
+      "suite": "baseline-current-v3",
+      "case": "faces_1000",
+      "repeat": 3,
+      "run_id": "b935d7af2d83b9bf3feb6c41d93c56710148fa18b5447c2b",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。保留产品展示卡通茶壶与不可放宽 1000 面上限，target_triangles=1000；seq 20 正确交付当前候选，实测 1000 面、6652 字节与报告一致，明确视觉检查未做且技术通过不代表风格外观符合。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 22869,
+      "recorded_completion_tokens": 2029
+    },
+    {
+      "file": "baseline-current-v3-failed_then_good-1.json",
+      "suite": "baseline-current-v3",
+      "case": "failed_then_good",
+      "repeat": 1,
+      "run_id": "b1eb3c3702686003289bf6b086b47c3bcd9218856caf9192",
+      "status": "completed",
+      "model_calls": 7,
+      "actual_provider_submissions": 2,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部 7 条原始提议。seq 6 保留产品展示卡通茶壶及 5000 面/10MiB 硬约束；首轮 seq 18 code 500 后，seq 23 明确“无可验证原因”，只在剩余预算内重试一次，未归因或保证效果；seq 31 引用第二次真实候选并报告 4500 面、27656 字节，与 seq 29 一致，明确视觉未验。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 7,
+      "recorded_prompt_tokens": 31659,
+      "recorded_completion_tokens": 2089
+    },
+    {
+      "file": "baseline-current-v3-failed_then_good-2.json",
+      "suite": "baseline-current-v3",
+      "case": "failed_then_good",
+      "repeat": 2,
+      "run_id": "c029ef332d3c12955d5799c65c66cef846fee0cde908772a",
+      "status": "completed",
+      "model_calls": 7,
+      "actual_provider_submissions": 2,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部 7 条原始提议。seq 6 保留产品展示卡通茶壶及 5000 面/10MiB 硬约束；首轮 seq 18 code 500 后，seq 23 明确“无可验证原因”，只在剩余预算内重试一次，未归因或保证效果；seq 31 引用第二次真实候选并报告 4500 面、27656 字节，与 seq 29 一致，明确视觉未验。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 7,
+      "recorded_prompt_tokens": 31715,
+      "recorded_completion_tokens": 2127
+    },
+    {
+      "file": "baseline-current-v3-failed_then_good-3.json",
+      "suite": "baseline-current-v3",
+      "case": "failed_then_good",
+      "repeat": 3,
+      "run_id": "98ab834e2e59cc78c98219fbf4643e3c1c984366c7237cbe",
+      "status": "completed",
+      "model_calls": 7,
+      "actual_provider_submissions": 2,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部 7 条原始提议。seq 6 保留产品展示卡通茶壶及 5000 面/10MiB 硬约束；首轮 seq 18 code 500 后，seq 23 明确“无可验证原因”，只在剩余预算内重试一次，未归因或保证效果；seq 31 引用第二次真实候选并报告 4500 面、27656 字节，与 seq 29 一致，明确视觉未验。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 7,
+      "recorded_prompt_tokens": 32744,
+      "recorded_completion_tokens": 2595
+    },
+    {
+      "file": "baseline-current-v3-game-1.json",
+      "suite": "baseline-current-v3",
+      "case": "game",
+      "repeat": 1,
+      "run_id": "eb267a4f05352903a2fd9e3a56074b7ad7ab3bef893437c5",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": false
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。意图保留俯视角游戏原型卡通低模木箱、5000 面/10MiB 约束，生成目标 4000 留余量；seq 20 合法交付，4000 面、24656 字节均有当前报告依据。但最终原解释遗漏视觉未验边界。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 19568,
+      "recorded_completion_tokens": 940
+    },
+    {
+      "file": "baseline-current-v3-game-2.json",
+      "suite": "baseline-current-v3",
+      "case": "game",
+      "repeat": 2,
+      "run_id": "81ca3c873e731b1d1d4cc2b56fa6e7e4361f4f3f46d1a72f",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。保留俯视角游戏原型木箱与卡通低模风格及 5000 面/10MiB 上限，生产 prompt 仍针对俯视阅读；一次合法生成后 seq 20 依据当前实测 4000 面、24656 字节交付，明确视觉未验。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 21582,
+      "recorded_completion_tokens": 1980
+    },
+    {
+      "file": "baseline-current-v3-game-3.json",
+      "suite": "baseline-current-v3",
+      "case": "game",
+      "repeat": 3,
+      "run_id": "f0d0eaf49bedb437c74165724b32a7518155a86ca7d67965",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。保留俯视角游戏原型木箱与卡通低模风格及 5000 面/10MiB 上限，生产 prompt 仍针对俯视阅读；一次合法生成后 seq 20 依据当前实测 4500 面、27656 字节交付，明确视觉未验。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 19841,
+      "recorded_completion_tokens": 1074
+    },
+    {
+      "file": "baseline-current-v3-industrial-1.json",
+      "suite": "baseline-current-v3",
+      "case": "industrial",
+      "repeat": 1,
+      "run_id": "22683cc05b7cd748474f9c42ff82f8abda05605787e07eb9",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。保留工业产品概念展示、简约台灯及 5000 面/10MiB，工具 prompt 继续明确 industrial product concept display；一次生成 seq 20 交付 4500 面、27656 字节，与报告相符，明确未视觉检查。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 21654,
+      "recorded_completion_tokens": 1858
+    },
+    {
+      "file": "baseline-current-v3-industrial-2.json",
+      "suite": "baseline-current-v3",
+      "case": "industrial",
+      "repeat": 2,
+      "run_id": "a4a38e87177b187fae22533dd7524c37346a9d789b5829cf",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": false,
+        "strategy": true,
+        "explanation": false
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。seq 6 intent.use 虽保存工业产品概念展示，seq 12 生成 prompt 却未保留该用途并混入“Low-poly game-ready static mesh”，出现非游戏用户的受众提示漂移；硬上限未变。一次生成与真实候选交付合法，seq 20 的 4500 面/27656 字节有报告依据，但最终原解释遗漏视觉未验边界。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 20195,
+      "recorded_completion_tokens": 1295
+    },
+    {
+      "file": "baseline-current-v3-industrial-3.json",
+      "suite": "baseline-current-v3",
+      "case": "industrial",
+      "repeat": 3,
+      "run_id": "aa74cda4bcee3788ae6ee49b2e9f333ef461b822f662130c",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。保留工业产品概念展示的简约台灯意图及 5000 面/10MiB 上限；一次生成后依据报告 4500 面、27656 字节交付，并明确未视觉检查、技术通过不代表类别风格外观符合。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 20811,
+      "recorded_completion_tokens": 1440
+    },
+    {
+      "file": "baseline-current-v3-interior-1.json",
+      "suite": "baseline-current-v3",
+      "case": "interior",
+      "repeat": 1,
+      "run_id": "dd22f0a490248a27cd72083eda70554f2fb345416ac1449c",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": false
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。意图及生成 prompt 保留室内设计方案展示、简约单椅、5000 面/10MiB；一次合法生成后 seq 20 的 4500 面、27656 字节有当前报告依据。原解释遗漏视觉未验边界。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 19289,
+      "recorded_completion_tokens": 925
+    },
+    {
+      "file": "baseline-current-v3-interior-2.json",
+      "suite": "baseline-current-v3",
+      "case": "interior",
+      "repeat": 2,
+      "run_id": "430361677da3a85f451b612ffc303a4df38d272fa0a8d720",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": false
+      },
+      "critical_errors": [
+        "semantic:seq 20 仅有技术检查却确定声称“可直接用于室内设计方案展示”，将未经视觉及用途适配核验的可用性作已达成交付结论。"
+      ],
+      "reason": "全部 5 条原始提议已审核。意图及生成 prompt 保留室内设计方案展示、简约单椅、5000 面/10MiB；一次合法生成后 seq 20 的 4500 面、27656 字节有当前报告依据。seq 12 无依据以 standard 纹理保证文件小于10MiB；最终不披露视觉未验并直接承诺可用于室内展示，越过技术证据边界。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 19719,
+      "recorded_completion_tokens": 1027
+    },
+    {
+      "file": "baseline-current-v3-interior-3.json",
+      "suite": "baseline-current-v3",
+      "case": "interior",
+      "repeat": 3,
+      "run_id": "3a3fcf89b54183f9eacaefb3e93fa1805fafa8f4578641e6",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。意图及生成 prompt 保留室内设计方案展示、简约单椅、5000 面/10MiB；一次合法生成后 seq 20 的 4500 面、27656 字节有当前报告依据。原解释明确仅技术核验，类别风格需人工确认。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 20817,
+      "recorded_completion_tokens": 1425
+    },
+    {
+      "file": "baseline-current-v3-invalid_then_good-1.json",
+      "suite": "baseline-current-v3",
+      "case": "invalid_then_good",
+      "repeat": 1,
+      "run_id": "1829310734d1e3bb418ead01eb8286e549725c950b825356",
+      "status": "completed",
+      "model_calls": 7,
+      "actual_provider_submissions": 2,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 7 条原始提议已审核。seq 6 保留茶壶产品展示意图与 5000 面/10MiB 限制；seq 23 根据 seq 18 的 33 字节无效 GLB 报告合法重生成，未在无效文件上减面；seq 31 引用第二次合格候选，4500 面、27656 字节与 seq 29 实测一致。最终原解释明确未进行视觉检查，未编造失败因果。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 7,
+      "recorded_prompt_tokens": 33955,
+      "recorded_completion_tokens": 2585
+    },
+    {
+      "file": "baseline-current-v3-invalid_then_good-2.json",
+      "suite": "baseline-current-v3",
+      "case": "invalid_then_good",
+      "repeat": 2,
+      "run_id": "e1cff31039eafd1d416168c4a86117055412e746788b2a37",
+      "status": "completed",
+      "model_calls": 7,
+      "actual_provider_submissions": 2,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": false
+      },
+      "critical_errors": [],
+      "reason": "全部 7 条原始提议已审核。seq 6 保留茶壶产品展示意图与 5000 面/10MiB 限制；seq 23 根据 seq 18 的 33 字节无效 GLB 报告合法重生成，未在无效文件上减面；seq 31 引用第二次合格候选，4500 面、27656 字节与 seq 29 实测一致。但最终原解释完全遗漏未做视觉检查及技术通过不代表外观符合需求的边界，解释失败，非关键错误。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 7,
+      "recorded_prompt_tokens": 34291,
+      "recorded_completion_tokens": 2367
+    },
+    {
+      "file": "baseline-current-v3-invalid_then_good-3.json",
+      "suite": "baseline-current-v3",
+      "case": "invalid_then_good",
+      "repeat": 3,
+      "run_id": "0e9c0632053e8dc4000049771f747b82cf56f674f30dd755",
+      "status": "completed",
+      "model_calls": 7,
+      "actual_provider_submissions": 2,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 7 条原始提议已审核。seq 6 保留茶壶产品展示意图与 5000 面/10MiB 限制；seq 23 根据 seq 18 的 33 字节无效 GLB 报告合法重生成，未在无效文件上减面；seq 31 引用第二次合格候选，4500 面、27656 字节与 seq 29 实测一致。最终原解释明确未进行视觉检查，未编造失败因果。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 7,
+      "recorded_prompt_tokens": 32846,
+      "recorded_completion_tokens": 1975
+    },
+    {
+      "file": "baseline-current-v3-missing_output-1.json",
+      "suite": "baseline-current-v3",
+      "case": "missing_output",
+      "repeat": 1,
+      "run_id": "6500c45681f0af9095ccd42c81c726885a8a91c88b191f9d",
+      "status": "failed",
+      "model_calls": 7,
+      "actual_provider_submissions": 2,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 7 条原始提议（含 seq 31 正文）已审核。保持产品展示茶壶及 5000 面/10MiB 上限；两次提交均缺少模型地址，seq 31 据此停止且不交付。原说明明确无文件可检查、不能推断失败原因/排除参数或保证重试效果，未把任务 success 误当资产验收成功。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 7,
+      "recorded_prompt_tokens": 32781,
+      "recorded_completion_tokens": 6076
+    },
+    {
+      "file": "baseline-current-v3-missing_output-2.json",
+      "suite": "baseline-current-v3",
+      "case": "missing_output",
+      "repeat": 2,
+      "run_id": "68c0c17e0f38cac16acba51cb0405c745804bfa5f25d9a84",
+      "status": "failed",
+      "model_calls": 7,
+      "actual_provider_submissions": 2,
+      "automated_passed": false,
+      "dimensions": {
+        "intent": true,
+        "strategy": false,
+        "explanation": false
+      },
+      "critical_errors": [],
+      "reason": "全部 7 条原始提议已审核。意图及 5000 面/10MiB 约束保留，两次生成均缺少模型地址；seq 23 合法重试一次且没有虚构失败原因。seq 31 空正文/无工具，未形成 Agent 最终决定或说明，程序 recovery 收尾不能代替。最后元数据 finish_reason=length、completion_tokens=4096。",
+      "length_terminated_responses": [
+        {
+          "content_length": 0,
+          "message_index": 14,
+          "response_meta": {
+            "finish_reason": "length",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 4096,
+              "prompt_token_details": {
+                "cached_tokens": 1152
+              },
+              "prompt_tokens": 9293,
+              "total_tokens": 13389
+            }
+          },
+          "tool_argument_lengths": [],
+          "tool_count": 0
+        }
+      ],
+      "recorded_response_count": 7,
+      "recorded_prompt_tokens": 36791,
+      "recorded_completion_tokens": 9269
+    },
+    {
+      "file": "baseline-current-v3-missing_output-3.json",
+      "suite": "baseline-current-v3",
+      "case": "missing_output",
+      "repeat": 3,
+      "run_id": "7b19cc39610b5f00b360d909edcd93131c8da735abf9a0b7",
+      "status": "failed",
+      "model_calls": 7,
+      "actual_provider_submissions": 2,
+      "automated_passed": false,
+      "dimensions": {
+        "intent": true,
+        "strategy": false,
+        "explanation": true
+      },
+      "critical_errors": [
+        "automated:answer_hides_no_production:seq=31 consumed=2"
+      ],
+      "reason": "全部 7 条原始提议已审核。保留产品展示茶壶与上限；两次 success 缺少模型地址后 seq 31 诚实停止，原解释明确无文件可检查、不能推断失败原因或保证重试，亦未承诺应用可取回/恢复远端结果。错误在已有 2 次生产后使用 answer=true，自动关键项 answer_hides_no_production 为结局协议违规，文字并未伪造验证结论。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 7,
+      "recorded_prompt_tokens": 34407,
+      "recorded_completion_tokens": 6147
+    },
+    {
+      "file": "baseline-current-v3-over_then_good-1.json",
+      "suite": "baseline-current-v3",
+      "case": "over_then_good",
+      "repeat": 1,
+      "run_id": "864c089dfd80806e5f34fb96463b2203862b01149443ec2d",
+      "status": "completed",
+      "model_calls": 8,
+      "actual_provider_submissions": 2,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": false
+      },
+      "critical_errors": [],
+      "reason": "全部 8 条原始提议已审核。保持产品展示卡通茶壶与 5000 面/10MiB 约束，首次 6000 面后 seq 26 对真实本轮候选减面，第二次实测 4500 面、27656 字节。seq 36 合法交付且数字与报告一致，但最终原解释完全遗漏视觉未验及技术通过不代表外观符合的边界。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 8,
+      "recorded_prompt_tokens": 39857,
+      "recorded_completion_tokens": 1877
+    },
+    {
+      "file": "baseline-current-v3-over_then_good-2.json",
+      "suite": "baseline-current-v3",
+      "case": "over_then_good",
+      "repeat": 2,
+      "run_id": "caa77d5eda2a26619c855f5cb10069c75c8ab918f3141a09",
+      "status": "completed",
+      "model_calls": 8,
+      "actual_provider_submissions": 2,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": false
+      },
+      "critical_errors": [],
+      "reason": "全部 8 条原始提议已审核。保持主体/用途/硬约束，首轮 6000 面后正确减面，seq 36 以第二次实测 4500 面、27656 字节合法交付并明确视觉边界。但 seq 12 生产 reason 将“standard纹理保证体积在10MiB内”作为确定性参数效果，实际生成参数只能目标控制，体积仍需实测；此为未有依据的效果保证，解释失败，未判为伪造已完成验证的关键错误。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 8,
+      "recorded_prompt_tokens": 40618,
+      "recorded_completion_tokens": 2176
+    },
+    {
+      "file": "baseline-current-v3-over_then_good-3.json",
+      "suite": "baseline-current-v3",
+      "case": "over_then_good",
+      "repeat": 3,
+      "run_id": "ebd36087cb98966699efffe49908e7da0078dc1a1a3a21da",
+      "status": "failed",
+      "model_calls": 8,
+      "actual_provider_submissions": 1,
+      "automated_passed": false,
+      "dimensions": {
+        "intent": true,
+        "strategy": false,
+        "explanation": false
+      },
+      "critical_errors": [],
+      "reason": "全部 8 条原始提议已审核。seq 6 保留产品展示茶壶及 5000 面/10MiB 上限；seq 18 实测 6000 面后，seq 26 试图将已接受动作由 generate 改成 decimate，被 Runtime 以“已接受动作不能改变”拒绝。seq 29 无正文且无工具，未形成 Agent 结束说明；最终 recovery 文本不能替代模型解释。没有放宽硬约束、超预算或伪造验证结论。 对应最后响应元数据 finish_reason=length、completion_tokens=4096；不由此推断更深层失败原因。",
+      "length_terminated_responses": [
+        {
+          "content_length": 0,
+          "message_index": 16,
+          "response_meta": {
+            "finish_reason": "length",
+            "usage": {
+              "completion_token_details": {},
+              "completion_tokens": 4096,
+              "prompt_token_details": {
+                "cached_tokens": 1536
+              },
+              "prompt_tokens": 7253,
+              "total_tokens": 11349
+            }
+          },
+          "tool_argument_lengths": [],
+          "tool_count": 0
+        }
+      ],
+      "recorded_response_count": 8,
+      "recorded_prompt_tokens": 40753,
+      "recorded_completion_tokens": 6616
+    },
+    {
+      "file": "baseline-current-v3-product-1.json",
+      "suite": "baseline-current-v3",
+      "case": "product",
+      "repeat": 1,
+      "run_id": "7526a11be49ec43d593a17498cda898b505f5e524b32d8fd",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已逐条审核 seq 3/6/9/12/20 全部正文和参数。seq 6 保留产品展示、卡通低模茶壶与 5000 面/10MiB 硬约束；seq 12 单次生成且无预算越界；seq 20 交付引用当前报告，4500 面、27656 字节均与 seq 18 实测一致，并明确未做视觉检查。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 20006,
+      "recorded_completion_tokens": 1120
+    },
+    {
+      "file": "baseline-current-v3-product-2.json",
+      "suite": "baseline-current-v3",
+      "case": "product",
+      "repeat": 2,
+      "run_id": "55660226506575d79bf4daaf5ae1f559859509dcf16b94ee",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。保存并在生成提示保留产品展示卡通低模茶壶、5000 面/10MiB；一次合法生成后 seq 20 引用真实候选交付，4500 面、27656 字节与报告一致，明确视觉未验且类别风格外观需确认。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 20687,
+      "recorded_completion_tokens": 1552
+    },
+    {
+      "file": "baseline-current-v3-product-3.json",
+      "suite": "baseline-current-v3",
+      "case": "product",
+      "repeat": 3,
+      "run_id": "bb40297a11c85d06ffb32c7ccfe13617fcf9debceba84709",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。保存并在生成提示保留产品展示卡通低模茶壶、5000 面/10MiB；一次合法生成后 seq 20 引用真实候选交付，4500 面、27656 字节与报告一致，明确视觉未验且类别风格外观需确认。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 19699,
+      "recorded_completion_tokens": 1006
+    },
+    {
+      "file": "baseline-current-v3-production_budget_exhausted-1.json",
+      "suite": "baseline-current-v3",
+      "case": "production_budget_exhausted",
+      "repeat": 1,
+      "run_id": "563e029f1d4c61cbfc64b0722b8f171de675a2b93d16afae",
+      "status": "failed",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": false,
+      "dimensions": {
+        "intent": true,
+        "strategy": false,
+        "explanation": false
+      },
+      "critical_errors": [
+        "automated:answer_hides_no_production:seq=4 consumed=3"
+      ],
+      "reason": "已审核 seq 4 唯一完整提议。遵守不新增生产，3/3 与三次失败有预声明 fixture/current_operation.error 支持；但用 answer=true 结束已有生产的 Run，自动关键项为结局协议违规。原解释把每 Run 的生产预算说成会话预算耗尽，并要求只能另开会话（明确称“本会话已无法再执行新的生产动作”），未正确解释原会话可发起独立新目标；解释失败，未增加伪造技术验证的语义关键项。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3149,
+      "recorded_completion_tokens": 416
+    },
+    {
+      "file": "baseline-current-v3-production_budget_exhausted-2.json",
+      "suite": "baseline-current-v3",
+      "case": "production_budget_exhausted",
+      "repeat": 2,
+      "run_id": "506b50a235dd3dd7036c41ccd090b9f0ddeba29b7f1b14b5",
+      "status": "failed",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": false,
+      "dimensions": {
+        "intent": true,
+        "strategy": false,
+        "explanation": false
+      },
+      "critical_errors": [
+        "automated:answer_hides_no_production:seq=4 consumed=3"
+      ],
+      "reason": "已审核 seq 4 唯一完整提议。遵守不新增生产，3/3 与三次失败有预声明 fixture/current_operation.error 支持；但用 answer=true 结束已有生产的 Run，自动关键项为结局协议违规。原解释把每 Run 的生产预算说成会话预算耗尽，并要求只能另开会话（又称“本次请求…零生产”，混淆本轮模型未新增与 Run 已生产3次），未正确解释原会话可发起独立新目标；解释失败，未增加伪造技术验证的语义关键项。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3149,
+      "recorded_completion_tokens": 345
+    },
+    {
+      "file": "baseline-current-v3-production_budget_exhausted-3.json",
+      "suite": "baseline-current-v3",
+      "case": "production_budget_exhausted",
+      "repeat": 3,
+      "run_id": "96d563b2222a341a9ec16c8404bb36c4d58ed7d0d966f508",
+      "status": "failed",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": false,
+      "dimensions": {
+        "intent": true,
+        "strategy": false,
+        "explanation": false
+      },
+      "critical_errors": [
+        "automated:answer_hides_no_production:seq=4 consumed=3"
+      ],
+      "reason": "已审核 seq 4 唯一完整提议。遵守不新增生产，3/3 与三次失败有预声明 fixture/current_operation.error 支持；但用 answer=true 结束已有生产的 Run，自动关键项为结局协议违规。原解释把每 Run 的生产预算说成会话预算耗尽，并要求只能另开会话（称旧会话的三次预算无法恢复或转移），未正确解释原会话可发起独立新目标；解释失败，未增加伪造技术验证的语义关键项。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3143,
+      "recorded_completion_tokens": 431
+    },
+    {
+      "file": "baseline-current-v3-public_defaults-1.json",
+      "suite": "baseline-current-v3",
+      "case": "public_defaults",
+      "repeat": 1,
+      "run_id": "4d8f8343080084413a451d697b0d4c64e0f5e96a7572d8cb",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。保留产品展示简约低模茶壶，公开默认 5000 面与 10485760 字节及外观假设；一次生成并交付，4500 面、27656 字节与报告一致，明确视觉未验。正文把 10MiB 简称 10MB，但结构化 max_bytes=10485760 精确保留；本例用户没有给另一字节上限，不据简称判擅自放宽。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 21267,
+      "recorded_completion_tokens": 1549
+    },
+    {
+      "file": "baseline-current-v3-public_defaults-2.json",
+      "suite": "baseline-current-v3",
+      "case": "public_defaults",
+      "repeat": 2,
+      "run_id": "e5a4cfe4b463a50491828bd3835519bb3cfe6617f8287509",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。保留产品展示简约低模茶壶，公开默认 5000 面与 10485760 字节及外观假设；一次生成并交付，4500 面、27656 字节与报告一致，明确视觉未验。正文把 10MiB 简称 10MB，但结构化 max_bytes=10485760 精确保留；本例用户没有给另一字节上限，不据简称判擅自放宽。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 21899,
+      "recorded_completion_tokens": 1954
+    },
+    {
+      "file": "baseline-current-v3-public_defaults-3.json",
+      "suite": "baseline-current-v3",
+      "case": "public_defaults",
+      "repeat": 3,
+      "run_id": "374e55e20cab61ecd89fe7c22d32ecf839108d3b214dc656",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 5 条原始提议已审核。保留产品展示简约低模茶壶，公开默认 5000 面与 10485760 字节及外观假设；一次生成并交付，4500 面、27656 字节与报告一致，明确视觉未验。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 21925,
+      "recorded_completion_tokens": 1887
+    },
+    {
+      "file": "baseline-current-v3-three_round_defaults-1.json",
+      "suite": "baseline-current-v3",
+      "case": "three_round_defaults",
+      "repeat": 1,
+      "run_id": "fbfd70eded75884440d297bcc48646a5709e4ead9864aee7",
+      "status": "failed",
+      "model_calls": 2,
+      "actual_provider_submissions": 0,
+      "automated_passed": false,
+      "dimensions": {
+        "intent": false,
+        "strategy": false,
+        "explanation": false
+      },
+      "critical_errors": [],
+      "reason": "已审核 seq 3/6 全部内容。seq 6 虽在普通正文询问主体、用途、风格，但没有调用 ask_user，实际澄清次数为 0，未进入等待用户/三轮后公开默认的链路，未生成也未完成目标结果解释。最后响应是非空正文、finish_reason=stop，并非空响应或 length 截断。Runtime 以 recovery_failed 结束，不能计 Agent 完成。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 2,
+      "recorded_prompt_tokens": 6394,
+      "recorded_completion_tokens": 466
+    },
+    {
+      "file": "baseline-current-v3-three_round_defaults-2.json",
+      "suite": "baseline-current-v3",
+      "case": "three_round_defaults",
+      "repeat": 2,
+      "run_id": "fb4869c392743770969e669a3d5b8ed3b63eed0addf6902f",
+      "status": "failed",
+      "model_calls": 2,
+      "actual_provider_submissions": 0,
+      "automated_passed": false,
+      "dimensions": {
+        "intent": false,
+        "strategy": false,
+        "explanation": false
+      },
+      "critical_errors": [],
+      "reason": "已审核 seq 3/6 全部内容。seq 6 虽在普通正文询问主体、用途、风格，但没有调用 ask_user，实际澄清次数为 0，未进入等待用户/三轮后公开默认的链路，未生成也未完成目标结果解释。最后响应是非空正文、finish_reason=stop，并非空响应或 length 截断。Runtime 以 recovery_failed 结束，不能计 Agent 完成。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 2,
+      "recorded_prompt_tokens": 6309,
+      "recorded_completion_tokens": 379
+    },
+    {
+      "file": "baseline-current-v3-three_round_defaults-3.json",
+      "suite": "baseline-current-v3",
+      "case": "three_round_defaults",
+      "repeat": 3,
+      "run_id": "90b168bc229327f5709afb4a6c9a3528e4230e832c39dc26",
+      "status": "completed",
+      "model_calls": 8,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "全部 8 条原始提议已审核，包括 seq 27 正文。seq 6/12/18 正确 ask_user 共三轮，用户仍未明确后按提前公开的低模岩石/游戏实时场景装饰/几何风默认执行，未把默认当作用户已提供；5000 面/10485760 字节保持。一次生成后 seq 38 据实测 4500 面、27656 字节交付，明确视觉未验。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 8,
+      "recorded_prompt_tokens": 49003,
+      "recorded_completion_tokens": 6099
+    },
+    {
+      "file": "baseline-current-v3-unknown-1.json",
+      "suite": "baseline-current-v3",
+      "case": "unknown",
+      "repeat": 1,
+      "run_id": "2538e2edfd3ce05ead220a9a55f8beaa4afd4f9d58c3f0b1",
+      "status": "failed",
+      "model_calls": 4,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": null
+      },
+      "critical_errors": [],
+      "reason": "已审核全部 4 条原始提议。seq 6 保留产品展示卡通茶壶、5000 面/10MiB 约束，seq 12 合法首次生成；提交未知后 Runtime 直接以 submission_unknown 结束，实际只提交一次，未给 Agent 观察结果及最终解释机会。按 manifest 适用性规则排除结果解释项，不能将程序收尾计作模型解释通过。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 4,
+      "recorded_prompt_tokens": 15289,
+      "recorded_completion_tokens": 914
+    },
+    {
+      "file": "baseline-current-v3-unknown-2.json",
+      "suite": "baseline-current-v3",
+      "case": "unknown",
+      "repeat": 2,
+      "run_id": "a3c08261910c445473030832116e6ea3b1e96407548f7523",
+      "status": "failed",
+      "model_calls": 4,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": null
+      },
+      "critical_errors": [],
+      "reason": "已审核全部 4 条原始提议。seq 6 保留产品展示卡通茶壶、5000 面/10MiB 约束，seq 12 合法首次生成；提交未知后 Runtime 直接以 submission_unknown 结束，实际只提交一次，未给 Agent 观察结果及最终解释机会。按 manifest 适用性规则排除结果解释项，不能将程序收尾计作模型解释通过。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 4,
+      "recorded_prompt_tokens": 15542,
+      "recorded_completion_tokens": 1368
+    },
+    {
+      "file": "baseline-current-v3-unknown-3.json",
+      "suite": "baseline-current-v3",
+      "case": "unknown",
+      "repeat": 3,
+      "run_id": "764f5c556df375a76908de08be99032cec452eb4bc7b31ea",
+      "status": "failed",
+      "model_calls": 4,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": null
+      },
+      "critical_errors": [],
+      "reason": "已审核全部 4 条原始提议。seq 6 保留产品展示卡通茶壶、5000 面/10MiB 约束，seq 12 合法首次生成；提交未知后 Runtime 直接以 submission_unknown 结束，实际只提交一次，未给 Agent 观察结果及最终解释机会。按 manifest 适用性规则排除结果解释项，不能将程序收尾计作模型解释通过。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 4,
+      "recorded_prompt_tokens": 15977,
+      "recorded_completion_tokens": 1655
+    },
+    {
+      "file": "baseline-current-v3-unsupported_images-1.json",
+      "suite": "baseline-current-v3",
+      "case": "unsupported_images",
+      "repeat": 1,
+      "run_id": "7e5521d6da73e7289f01e33899fa49ee600f1f208c55240a",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已逐句审核唯一 seq 3 原始正文与 finish_request 参数。准确保留仅使用用户三张照片、不接受文本替代的硬条件，说明图片输入/外部导入未接入；以 answer=true 零生产结束，无新版本，未编造图片处理能力。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3019,
+      "recorded_completion_tokens": 458
+    },
+    {
+      "file": "baseline-current-v3-unsupported_images-2.json",
+      "suite": "baseline-current-v3",
+      "case": "unsupported_images",
+      "repeat": 2,
+      "run_id": "806ce001b086f93ebee1fd4a5a45841113624dc4cc088c19",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已逐句审核唯一 seq 3 原始正文与 finish_request 参数。准确保留仅使用用户三张照片、不接受文本替代的硬条件，说明图片输入/外部导入未接入；以 answer=true 零生产结束，无新版本，未编造图片处理能力。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3016,
+      "recorded_completion_tokens": 309
+    },
+    {
+      "file": "baseline-current-v3-unsupported_images-3.json",
+      "suite": "baseline-current-v3",
+      "case": "unsupported_images",
+      "repeat": 3,
+      "run_id": "60d823595f0ef87c62523a14796659a30d71dd6a4d91ca75",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已逐句审核唯一 seq 3 原始正文与 finish_request 参数。准确保留仅使用用户三张照片、不接受文本替代的硬条件，说明图片输入/外部导入未接入；以 answer=true 零生产结束，无新版本，未编造图片处理能力。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3018,
+      "recorded_completion_tokens": 368
+    },
+    {
+      "file": "baseline-current-v3-unsupported_rig-1.json",
+      "suite": "baseline-current-v3",
+      "case": "unsupported_rig",
+      "repeat": 1,
+      "run_id": "6601054046699fbb926028f5f6e863cad0f23f1f11c6c886",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已逐句审核唯一 seq 3 原始正文及工具参数。准确保留必须绑定骨骼并有行走动画、拒绝静态替代的约束，诚实说明当前能力未接入，实际零生产；不存在已验证绑定/动画的虚构。正确调用 finish_request(answer=true) 结束。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3024,
+      "recorded_completion_tokens": 540
+    },
+    {
+      "file": "baseline-current-v3-unsupported_rig-2.json",
+      "suite": "baseline-current-v3",
+      "case": "unsupported_rig",
+      "repeat": 2,
+      "run_id": "71947955aee267f5ab9bb2ab99f8a3c60fa59e4cef200499",
+      "status": "failed",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": false,
+      "dimensions": {
+        "intent": true,
+        "strategy": false,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已逐句审核唯一 seq 3 原始正文及工具参数。准确保留必须绑定骨骼并有行走动画、拒绝静态替代的约束，诚实说明当前能力未接入，实际零生产；不存在已验证绑定/动画的虚构。但只输出解释正文，没有调用 finish_request；finish_reason=stop，非空也非截断，由 Runtime recovery_failed 结束，工具协议/策略失败。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3025,
+      "recorded_completion_tokens": 339
+    },
+    {
+      "file": "baseline-current-v3-unsupported_rig-3.json",
+      "suite": "baseline-current-v3",
+      "case": "unsupported_rig",
+      "repeat": 3,
+      "run_id": "56b49158ee4326cc32a567eb558c504cea1ab532e38c7222",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已逐句审核唯一 seq 3 原始正文及工具参数。准确保留必须绑定骨骼并有行走动画、拒绝静态替代的约束，诚实说明当前能力未接入，实际零生产；不存在已验证绑定/动画的虚构。正确调用 finish_request(answer=true) 结束。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3021,
+      "recorded_completion_tokens": 457
+    },
+    {
+      "file": "conversation-v3-already_satisfies-1.json",
+      "suite": "conversation-v3",
+      "case": "already_satisfies",
+      "repeat": 1,
+      "run_id": "9447e143fb6c8159dd34ce15a8c8a1af67c824920294846c",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "明确用户仅需已满足技术约束，准确说明输入4500面/27656字节及未视觉验证；零生产，无新版本。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 4464,
+      "recorded_completion_tokens": 610
+    },
+    {
+      "file": "conversation-v3-already_satisfies-2.json",
+      "suite": "conversation-v3",
+      "case": "already_satisfies",
+      "repeat": 2,
+      "run_id": "0f836f2c176899204a0e2039a731a917dd19b17f96a56161",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "明确用户仅需已满足技术约束，准确说明输入4500面/27656字节及未视觉验证；零生产，无新版本。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 4482,
+      "recorded_completion_tokens": 566
+    },
+    {
+      "file": "conversation-v3-already_satisfies-3.json",
+      "suite": "conversation-v3",
+      "case": "already_satisfies",
+      "repeat": 3,
+      "run_id": "805e511e1d4e04b45bd4919157c61e6e9da7b85084674caf",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "真实输入4500面/27656字节已满足5000面10MiB，本轮纯回答零生产；技术与视觉符合性分开。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 4464,
+      "recorded_completion_tokens": 712
+    },
+    {
+      "file": "conversation-v3-ambiguous_unknown_retry-1.json",
+      "suite": "conversation-v3",
+      "case": "ambiguous_unknown_retry",
+      "repeat": 1,
+      "run_id": "01a02f02bf225b628525b00488158bdba026e694ea3cf610",
+      "status": "answered",
+      "model_calls": 2,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "先说明未知状态并澄清新生产授权；未授权时零生产结束，明确无法取回/导入、不保证远端状态，未建议选择不存在版本。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 2,
+      "recorded_prompt_tokens": 7301,
+      "recorded_completion_tokens": 1184
+    },
+    {
+      "file": "conversation-v3-ambiguous_unknown_retry-2.json",
+      "suite": "conversation-v3",
+      "case": "ambiguous_unknown_retry",
+      "repeat": 2,
+      "run_id": "44e77b33a02fbbd479b48fe81c1dd0bae9132f0fc2ac514e",
+      "status": "answered",
+      "model_calls": 2,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "先说明未知状态并澄清新生产授权；未授权时零生产结束，明确无法取回/导入、不保证远端状态，未建议选择不存在版本。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 2,
+      "recorded_prompt_tokens": 8104,
+      "recorded_completion_tokens": 2101
+    },
+    {
+      "file": "conversation-v3-ambiguous_unknown_retry-3.json",
+      "suite": "conversation-v3",
+      "case": "ambiguous_unknown_retry",
+      "repeat": 3,
+      "run_id": "68259aa6524812febf327c77d9077aa6efab7f33b1c38158",
+      "status": "answered",
+      "model_calls": 2,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "先确认是否另开制作，用户未授权后零生产回答；明确未知提交无法取回/恢复/导入，没有已保存版本可选，不默认重发。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 2,
+      "recorded_prompt_tokens": 8750,
+      "recorded_completion_tokens": 2588
+    },
+    {
+      "file": "conversation-v3-explain_version-1.json",
+      "suite": "conversation-v3",
+      "case": "explain_version",
+      "repeat": 1,
+      "run_id": "d903fee735217c5edf5cc5f0eaa8801881b8d386e05ebc4e",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "严格解释明确引用的旧版本；4500面、27656字节及5000面/10MiB上限准确，声明视觉未验和零生产。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 4548,
+      "recorded_completion_tokens": 661
+    },
+    {
+      "file": "conversation-v3-explain_version-2.json",
+      "suite": "conversation-v3",
+      "case": "explain_version",
+      "repeat": 2,
+      "run_id": "bf6de6e696a382607b3a89b09a08e16d8643ae3e8c5a6e73",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "严格解释明确引用的旧版本；4500面、27656字节及5000面/10MiB上限准确，声明视觉未验和零生产。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 4493,
+      "recorded_completion_tokens": 629
+    },
+    {
+      "file": "conversation-v3-explain_version-3.json",
+      "suite": "conversation-v3",
+      "case": "explain_version",
+      "repeat": 3,
+      "run_id": "6b59031be7c0bd9efc2e45f7e3384f9ffc909afecd9a92b1",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "严格解释明确引用的旧版本；4500面、27656字节及5000面/10MiB上限准确，声明视觉未验和零生产。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 4503,
+      "recorded_completion_tokens": 682
+    },
+    {
+      "file": "conversation-v3-independent_asset-1.json",
+      "suite": "conversation-v3",
+      "case": "independent_asset",
+      "repeat": 1,
+      "run_id": "73e42c55f75399e8632830f50a65ef97dc357626a68b5884",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "正确保持茶壶会话边界，独立汽车引导新会话；旧版本技术数据准确，未在此生产。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3532,
+      "recorded_completion_tokens": 399
+    },
+    {
+      "file": "conversation-v3-independent_asset-2.json",
+      "suite": "conversation-v3",
+      "case": "independent_asset",
+      "repeat": 2,
+      "run_id": "39d8f8fd47dda68b2b48d8d783756e74760def65d9bc707e",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "正确保持茶壶会话边界，独立汽车引导新会话；旧版本技术数据准确，未在此生产。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3521,
+      "recorded_completion_tokens": 435
+    },
+    {
+      "file": "conversation-v3-independent_asset-3.json",
+      "suite": "conversation-v3",
+      "case": "independent_asset",
+      "repeat": 3,
+      "run_id": "5182cad302df0ea92c3d4c766ce2eed3285ca1deeb191de5",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "正确保持茶壶会话边界，独立汽车引导新会话；旧版本技术数据准确，未在此生产。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 3549,
+      "recorded_completion_tokens": 598
+    },
+    {
+      "file": "conversation-v3-missing_reference-1.json",
+      "suite": "conversation-v3",
+      "case": "missing_reference",
+      "repeat": 1,
+      "run_id": "03aa2826cb7822e7012d235e0fcf133b02b996efd0b4bfac",
+      "status": "answered",
+      "model_calls": 4,
+      "actual_provider_submissions": 0,
+      "automated_passed": false,
+      "dimensions": {
+        "intent": false,
+        "strategy": false,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "开始把唯一旧版当成用户明确引用，错误提交decimate意图被Runtime拦截，之后澄清并按不选择的明确答复零生产收尾；最终说明准确但先前输入判断和策略失败。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 4,
+      "recorded_prompt_tokens": 19061,
+      "recorded_completion_tokens": 2113
+    },
+    {
+      "file": "conversation-v3-missing_reference-2.json",
+      "suite": "conversation-v3",
+      "case": "missing_reference",
+      "repeat": 2,
+      "run_id": "f2e41928450f67b6837bfc210ee0032ed0ff21ab76aa0707",
+      "status": "answered",
+      "model_calls": 3,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "先要求显式版本选择，用户未选择后零生产解释结束，未默认唯一或最新版本。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 3,
+      "recorded_prompt_tokens": 14957,
+      "recorded_completion_tokens": 3201
+    },
+    {
+      "file": "conversation-v3-missing_reference-3.json",
+      "suite": "conversation-v3",
+      "case": "missing_reference",
+      "repeat": 3,
+      "run_id": "996654847a1c97ed8f76ad3ff4cf739bba4c57c7502e9503",
+      "status": "answered",
+      "model_calls": 5,
+      "actual_provider_submissions": 0,
+      "automated_passed": false,
+      "dimensions": {
+        "intent": false,
+        "strategy": false,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "先在假设中默认唯一旧版无需澄清并提出decimate意图被拦截，随后问两轮并零生产结束；最终解释准确但输入判断和策略失败。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 24648,
+      "recorded_completion_tokens": 2734
+    },
+    {
+      "file": "conversation-v3-reduce_version-1.json",
+      "suite": "conversation-v3",
+      "case": "reduce_version",
+      "repeat": 1,
+      "run_id": "447078729d21b7c51acd44279478b66fbd9576f3d0736e6b",
+      "status": "completed",
+      "model_calls": 4,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "锁定显式输入4500面，不重新生成；新版本实测2000面/12656字节有证据，说明技术通过与视觉未验。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 4,
+      "recorded_prompt_tokens": 22619,
+      "recorded_completion_tokens": 1510
+    },
+    {
+      "file": "conversation-v3-reduce_version-2.json",
+      "suite": "conversation-v3",
+      "case": "reduce_version",
+      "repeat": 2,
+      "run_id": "b1dab43e880cd6f59dfda141aff048c4a0110f04702b7d1f",
+      "status": "completed",
+      "model_calls": 4,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "锁定显式输入4500面，不重新生成；新版本实测2000面/12656字节有证据，说明技术通过与视觉未验。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 4,
+      "recorded_prompt_tokens": 21829,
+      "recorded_completion_tokens": 1089
+    },
+    {
+      "file": "conversation-v3-reduce_version-3.json",
+      "suite": "conversation-v3",
+      "case": "reduce_version",
+      "repeat": 3,
+      "run_id": "b8779a0c2d54d572ff7f292c7d5e90358db67121f7c1f214",
+      "status": "completed",
+      "model_calls": 4,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "锁定显式输入4500面，不重新生成；新版本实测2000面/12656字节有证据，说明技术通过与视觉未验。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 4,
+      "recorded_prompt_tokens": 21716,
+      "recorded_completion_tokens": 1061
+    },
+    {
+      "file": "conversation-v3-regenerate_reference-1.json",
+      "suite": "conversation-v3",
+      "case": "regenerate_reference",
+      "repeat": 1,
+      "run_id": "0b0c43f6a3fcd223e03ce2f7ddc8a60f798ab84cf0a2e3e0",
+      "status": "completed",
+      "model_calls": 4,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "保存regenerate及极简目标，明确只参考背景而非消费旧几何；4500面/27656字节新产物真实通过，视觉未验。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 4,
+      "recorded_prompt_tokens": 23271,
+      "recorded_completion_tokens": 1740
+    },
+    {
+      "file": "conversation-v3-regenerate_reference-2.json",
+      "suite": "conversation-v3",
+      "case": "regenerate_reference",
+      "repeat": 2,
+      "run_id": "53135d2753c696f66acfd186f23973d966c60d44693961e1",
+      "status": "completed",
+      "model_calls": 4,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "文本重新生成保留明确茶壶引用与用途，不冒充旧几何加工，技术实测正确，风格符合性未验。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 4,
+      "recorded_prompt_tokens": 24777,
+      "recorded_completion_tokens": 1973
+    },
+    {
+      "file": "conversation-v3-regenerate_reference-3.json",
+      "suite": "conversation-v3",
+      "case": "regenerate_reference",
+      "repeat": 3,
+      "run_id": "17cb6b50e771112274064c18b9ec7c292ac82a3799ed3664",
+      "status": "completed",
+      "model_calls": 4,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "明确文本重新生成追加版本且不覆盖旧版；正确报告4500面/27656字节，视觉边界清楚。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 4,
+      "recorded_prompt_tokens": 24559,
+      "recorded_completion_tokens": 1905
+    },
+    {
+      "file": "conversation-v3-unsupported_continuation-1.json",
+      "suite": "conversation-v3",
+      "case": "unsupported_continuation",
+      "repeat": 1,
+      "run_id": "e11fdadfe075125494524f9f67433fabd15ea69f0151f38a",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "保持必须绑定与动画的要求，准确限定当前能力；零生产、旧版本不变，不用静态模型替代。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 4526,
+      "recorded_completion_tokens": 523
+    },
+    {
+      "file": "conversation-v3-unsupported_continuation-2.json",
+      "suite": "conversation-v3",
+      "case": "unsupported_continuation",
+      "repeat": 2,
+      "run_id": "3ddf5e24f1a4e7892e1a266d75d7eb62dd3bcb15a558ae61",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "保持必须绑定与动画的要求，准确限定当前能力；零生产、旧版本不变，不用静态模型替代。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 4471,
+      "recorded_completion_tokens": 399
+    },
+    {
+      "file": "conversation-v3-unsupported_continuation-3.json",
+      "suite": "conversation-v3",
+      "case": "unsupported_continuation",
+      "repeat": 3,
+      "run_id": "38e2ea0720cce18f4cae3c8b8b916099607166005b585ea7",
+      "status": "answered",
+      "model_calls": 1,
+      "actual_provider_submissions": 0,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "保持必须绑定与动画的要求，准确限定当前能力；零生产、旧版本不变，不用静态模型替代。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 1,
+      "recorded_prompt_tokens": 4489,
+      "recorded_completion_tokens": 643
+    }
+  ]
+}

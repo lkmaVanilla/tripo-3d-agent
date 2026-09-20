@@ -1,0 +1,502 @@
+{
+  "automated_check": {
+    "passed": true,
+    "scope": "运行完成、真实模型提议存在、生产次数及预期技术终态；不核验自然语言语义"
+  },
+  "case": "game_prototype",
+  "fixture": {
+    "all_outputs_triangles_if_always_over": 6000,
+    "always_over": false,
+    "generation_triangles": 12,
+    "submissions": 1
+  },
+  "full_agent_evaluation_suite": "not_run; four one-off samples do not replace the 60-run suite",
+  "input": "给我的俯视角游戏原型做一个卡通低模木箱，静态、自包含 GLB，最多 5000 个三角面、10 MiB。",
+  "manual_review": {
+    "criteria": [
+      "意图与生成描述保留用户明确的游戏原型用途",
+      "沿用静态技术检查与原预算，没有因新受众定位删去游戏信息",
+      "原始解释未把合成文件检查视为木箱外观验证"
+    ],
+    "status": "pending"
+  },
+  "prepared_clarification_answer": "用途是俯视角游戏原型，主体为卡通低模木箱；静态、自包含 GLB，最多 5000 个三角面、10 MiB，其他外观细节由你合理选择并公开假设。",
+  "recorded": "2026-09-13T10:14:35.426448Z",
+  "snapshot": {
+    "events": [
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "source": "live-llm-fixed-tripo",
+          "text": "给我的俯视角游戏原型做一个卡通低模木箱，静态、自包含 GLB，最多 5000 个三角面、10 MiB。",
+          "tripo_model": "v3.1-20260211"
+        },
+        "kind": "request",
+        "seq": 1,
+        "time": "2026-09-13T10:14:20.360784Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 2,
+        "time": "2026-09-13T10:14:20.512536Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"intent\"}",
+                "name": "skill"
+              },
+              "id": "call_00_UTWnMRW4zgDfwvBRTYXn9139",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 3,
+        "time": "2026-09-13T10:14:22.838046Z"
+      },
+      {
+        "data": {
+          "name": "intent",
+          "prompt_version": "asset-agent-v2",
+          "version": "b8af70853ad7ebc38bcd90869abf4faf10fc740b8d5c852e14b855eab365d5b2"
+        },
+        "kind": "skill_loaded",
+        "seq": 4,
+        "time": "2026-09-13T10:14:22.839472Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 5,
+        "time": "2026-09-13T10:14:22.840098Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"asset\": \"卡通低模木箱（wooden crate）\", \"use\": \"俯视角游戏原型\", \"style\": \"卡通低模（cartoon low-poly）\", \"constraints\": [\"静态（无动画、无绑定）\", \"自包含 GLB\", \"三角面数不超过 5000\", \"体积不超过 10 MiB（10485760 字节）\"], \"max_triangles\": 5000, \"max_bytes\": 10485760, \"assumptions\": [\"俯视角游戏原型用途保留，但制作的是静态自包含 GLB 道具\", \"木箱为标准方形板条箱形态，卡通化比例与配色\", \"采用默认上限 5000 三角面、10 MiB\"], \"plan\": [\"加载需求理解与 Tripo 生成技能\", \"用 set_intent 保存完整意图与硬约束\", \"以英文 prompt 调用 generate_asset 生成静态自包含 GLB\", \"依据实测报告核验面数、体积与文件有效性\", \"通过则 finish_request 交付，未通过则按预算纠偏或停止\"]}",
+                "name": "set_intent"
+              },
+              "id": "call_00_GzNShkqi7IsRvfIGiiGd9800",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 6,
+        "time": "2026-09-13T10:14:28.569678Z"
+      },
+      {
+        "data": {
+          "asset": "卡通低模木箱（wooden crate）",
+          "assumptions": [
+            "俯视角游戏原型用途保留，但制作的是静态自包含 GLB 道具",
+            "木箱为标准方形板条箱形态，卡通化比例与配色",
+            "采用默认上限 5000 三角面、10 MiB"
+          ],
+          "constraints": [
+            "静态（无动画、无绑定）",
+            "自包含 GLB",
+            "三角面数不超过 5000",
+            "体积不超过 10 MiB（10485760 字节）"
+          ],
+          "max_bytes": 10485760,
+          "max_triangles": 5000,
+          "plan": [
+            "加载需求理解与 Tripo 生成技能",
+            "用 set_intent 保存完整意图与硬约束",
+            "以英文 prompt 调用 generate_asset 生成静态自包含 GLB",
+            "依据实测报告核验面数、体积与文件有效性",
+            "通过则 finish_request 交付，未通过则按预算纠偏或停止"
+          ],
+          "style": "卡通低模（cartoon low-poly）",
+          "use": "俯视角游戏原型"
+        },
+        "kind": "intent_and_plan",
+        "seq": 7,
+        "time": "2026-09-13T10:14:28.570963Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 8,
+        "time": "2026-09-13T10:14:28.571435Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"skill\": \"generation\"}",
+                "name": "skill"
+              },
+              "id": "call_00_ET_xLqWASdtKKmD5Cu2KwX47166",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 9,
+        "time": "2026-09-13T10:14:29.636064Z"
+      },
+      {
+        "data": {
+          "name": "generation",
+          "prompt_version": "asset-agent-v2",
+          "version": "c6ea4fb58ee33dda9a78ca89d1b2b2e2aaf17d3445f4e6ad3d7fc386b3cc5f8e"
+        },
+        "kind": "skill_loaded",
+        "seq": 10,
+        "time": "2026-09-13T10:14:29.63663Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 11,
+        "time": "2026-09-13T10:14:29.636968Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"prompt\": \"A cartoon low-poly wooden crate, standard square crate shape with wooden planks and crossed frame boards, slightly exaggerated rounded proportions, warm brown wood tones with simple flat shading, stylized game prop. Static mesh, no animation, no rigging, self-contained single GLB output.\", \"target_triangles\": 5000, \"texture_quality\": \"standard\", \"reason\": \"用户要求俯视角游戏原型的卡通低模木箱，静态自包含 GLB，面数与体积上限分别为 5000 三角面、10 MiB；首次生成。\"}",
+                "name": "generate_asset"
+              },
+              "id": "call_00_brA3xHODHzPGD2tqFiGo0087",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 12,
+        "time": "2026-09-13T10:14:32.547554Z"
+      },
+      {
+        "data": {
+          "kind": "generate",
+          "operation_id": "e38f2d8af876d3a75676610b7017de6599dcccd07c131320",
+          "reason": "用户要求俯视角游戏原型的卡通低模木箱，静态自包含 GLB，面数与体积上限分别为 5000 三角面、10 MiB；首次生成。",
+          "state": "running",
+          "target_triangles": 5000
+        },
+        "kind": "runtime_accepted",
+        "seq": 13,
+        "time": "2026-09-13T10:14:32.552923Z"
+      },
+      {
+        "data": {
+          "generation": 1,
+          "kind": "production",
+          "pause_id": "7b2005156267e482721ab9a252da518f00e40b5d7e94c657",
+          "ref_id": "e38f2d8af876d3a75676610b7017de6599dcccd07c131320"
+        },
+        "kind": "checkpoint_committed",
+        "seq": 14,
+        "time": "2026-09-13T10:14:32.552939Z"
+      },
+      {
+        "data": {
+          "kind": "generate",
+          "operation_id": "e38f2d8af876d3a75676610b7017de6599dcccd07c131320",
+          "params": {
+            "face_limit": 5000,
+            "prompt": "A cartoon low-poly wooden crate, standard square crate shape with wooden planks and crossed frame boards, slightly exaggerated rounded proportions, warm brown wood tones with simple flat shading, stylized game prop. Static mesh, no animation, no rigging, self-contained single GLB output.\nRequired: 静态（无动画、无绑定）; 自包含 GLB; 三角面数不超过 5000; 体积不超过 10 MiB（10485760 字节）",
+            "texture_quality": "standard"
+          }
+        },
+        "kind": "tool_submitting",
+        "seq": 15,
+        "time": "2026-09-13T10:14:32.556987Z"
+      },
+      {
+        "data": {
+          "operation_id": "e38f2d8af876d3a75676610b7017de6599dcccd07c131320",
+          "task_id": "task_1"
+        },
+        "kind": "tool_submitted",
+        "seq": 16,
+        "time": "2026-09-13T10:14:32.557408Z"
+      },
+      {
+        "data": {
+          "credits": 0,
+          "operation_id": "e38f2d8af876d3a75676610b7017de6599dcccd07c131320",
+          "progress": 100,
+          "status": "success",
+          "task_id": "task_1"
+        },
+        "kind": "tripo_progress",
+        "seq": 17,
+        "time": "2026-09-13T10:14:32.557982Z"
+      },
+      {
+        "data": {
+          "artifact_id": "e38f2d8af876d3a75676610b7017de6599dcccd07c131320",
+          "operation_id": "e38f2d8af876d3a75676610b7017de6599dcccd07c131320",
+          "report": {
+            "bytes": 720,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 12 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 720 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 12,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "task_1"
+        },
+        "kind": "technical_report",
+        "seq": 18,
+        "time": "2026-09-13T10:14:32.564561Z"
+      },
+      {
+        "data": {
+          "model": "deepseek-v4-pro",
+          "prompt_version": "asset-agent-v2",
+          "provider_revision": "unavailable",
+          "reasoning_effort": "high",
+          "thinking": "enabled"
+        },
+        "kind": "model_call",
+        "seq": 19,
+        "time": "2026-09-13T10:14:32.56519Z"
+      },
+      {
+        "data": {
+          "content": "",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"deliver\": true, \"artifact_id\": \"e38f2d8af876d3a75676610b7017de6599dcccd07c131320\", \"explanation\": \"已按需求生成卡通低模木箱的静态自包含 GLB。实测报告通过：文件为静态、自包含、非空三角面 GLB，实测 12 个三角面（上限 5000），体积 720 字节（上限 10485760 字节）。未进行视觉检查，类别、风格与外观符合性尚未验证。\"}",
+                "name": "finish_request"
+              },
+              "id": "call_00_iHdVNGTZDdiGpc7JnoxB4278",
+              "index": 0,
+              "type": "function"
+            }
+          ]
+        },
+        "kind": "agent_proposal",
+        "seq": 20,
+        "time": "2026-09-13T10:14:35.419129Z"
+      },
+      {
+        "data": {
+          "artifact_id": "e38f2d8af876d3a75676610b7017de6599dcccd07c131320",
+          "deliver": true,
+          "explanation": "已按需求生成卡通低模木箱的静态自包含 GLB。实测报告通过：文件为静态、自包含、非空三角面 GLB，实测 12 个三角面（上限 5000），体积 720 字节（上限 10485760 字节）。未进行视觉检查，类别、风格与外观符合性尚未验证。",
+          "final": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 12 / 上限 5000 个三角面\n文件体积：实测 720 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 5 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+          "raw_text_source": "agent",
+          "raw_text_verification": "unverifiable",
+          "result": {
+            "artifact_id": "e38f2d8af876d3a75676610b7017de6599dcccd07c131320",
+            "evidence": "verified",
+            "operation_id": "e38f2d8af876d3a75676610b7017de6599dcccd07c131320",
+            "reason": "delivered",
+            "source": "agent",
+            "status": "completed",
+            "version": 1
+          }
+        },
+        "kind": "agent_finished",
+        "seq": 21,
+        "time": "2026-09-13T10:14:35.420965Z"
+      }
+    ],
+    "session": {
+      "artifacts": [
+        {
+          "id": "e38f2d8af876d3a75676610b7017de6599dcccd07c131320",
+          "report": {
+            "bytes": 720,
+            "checks": [
+              {
+                "detail": "静态、自包含、非空三角面 GLB",
+                "name": "文件有效性",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 12 / 上限 5000 个三角面",
+                "name": "几何规模",
+                "status": "passed"
+              },
+              {
+                "detail": "实测 720 / 上限 10485760 字节",
+                "name": "文件体积",
+                "status": "passed"
+              }
+            ],
+            "max_bytes": 10485760,
+            "max_triangles": 5000,
+            "passed": true,
+            "triangles": 12,
+            "valid": true,
+            "visual": "未进行视觉检查；技术通过不代表类别、风格或外观符合需求。"
+          },
+          "task_id": "task_1",
+          "url": "/api/sessions/0756f7ce9086d43e3767266a3a8cb6ad988b19d455666080/artifacts/e38f2d8af876d3a75676610b7017de6599dcccd07c131320"
+        }
+      ],
+      "clarifications": 0,
+      "created": "2026-09-13T10:14:20.360749Z",
+      "deadline": "2026-09-13T10:44:32.556917Z",
+      "ended": "2026-09-13T10:14:35.420631Z",
+      "evaluation": {
+        "checks": [
+          {
+            "detail": "1",
+            "name": "生产次数",
+            "status": "passed"
+          },
+          {
+            "detail": "5",
+            "name": "模型调用额度",
+            "status": "passed"
+          },
+          {
+            "detail": "0",
+            "name": "澄清轮数",
+            "status": "passed"
+          },
+          {
+            "detail": "交付引用已实测且技术通过的模型",
+            "name": "交付证据",
+            "status": "passed"
+          },
+          {
+            "detail": "正式结果由本请求的状态和相应技术证据生成；未核验原始自由解释。",
+            "name": "正式结果证据一致性",
+            "status": "passed"
+          },
+          {
+            "detail": "未自动核验自由说明的语义；程序结果正确不代表模型解释正确，需独立案例评测。",
+            "name": "原始 Agent 解释事实核验",
+            "status": "unverifiable"
+          },
+          {
+            "detail": "记录到 0 次；Runtime 拦截不抵消 Agent 违规",
+            "name": "可核验的违规提议",
+            "status": "passed"
+          }
+        ],
+        "scope": "仅核验本次执行的程序证据；不代替 20 案例 × 3 次 Agent 评测。"
+      },
+      "expires": "2026-09-20T10:14:35.420631Z",
+      "final": "已交付通过文件有效性、几何规模和文件体积检查的静态 GLB。\n文件有效性：静态、自包含、非空三角面 GLB\n几何规模：实测 12 / 上限 5000 个三角面\n文件体积：实测 720 / 上限 10485760 字节\n累计生产提交 1 / 3 次，模型调用 5 / 20 次。\n未进行视觉检查；技术通过不代表类别、风格或外观符合需求。",
+      "id": "0756f7ce9086d43e3767266a3a8cb6ad988b19d455666080",
+      "intent": {
+        "asset": "卡通低模木箱（wooden crate）",
+        "assumptions": [
+          "俯视角游戏原型用途保留，但制作的是静态自包含 GLB 道具",
+          "木箱为标准方形板条箱形态，卡通化比例与配色",
+          "采用默认上限 5000 三角面、10 MiB"
+        ],
+        "constraints": [
+          "静态（无动画、无绑定）",
+          "自包含 GLB",
+          "三角面数不超过 5000",
+          "体积不超过 10 MiB（10485760 字节）"
+        ],
+        "max_bytes": 10485760,
+        "max_triangles": 5000,
+        "plan": [
+          "加载需求理解与 Tripo 生成技能",
+          "用 set_intent 保存完整意图与硬约束",
+          "以英文 prompt 调用 generate_asset 生成静态自包含 GLB",
+          "依据实测报告核验面数、体积与文件有效性",
+          "通过则 finish_request 交付，未通过则按预算纠偏或停止"
+        ],
+        "style": "卡通低模（cartoon low-poly）",
+        "use": "俯视角游戏原型"
+      },
+      "max_model_calls": 20,
+      "max_submissions": 3,
+      "model": "deepseek-v4-pro",
+      "model_calls": 5,
+      "production": 1,
+      "prompt_version": "asset-agent-v2",
+      "question": "",
+      "request": "给我的俯视角游戏原型做一个卡通低模木箱，静态、自包含 GLB，最多 5000 个三角面、10 MiB。",
+      "result": {
+        "artifact_id": "e38f2d8af876d3a75676610b7017de6599dcccd07c131320",
+        "evidence": "verified",
+        "operation_id": "e38f2d8af876d3a75676610b7017de6599dcccd07c131320",
+        "reason": "delivered",
+        "source": "agent",
+        "status": "completed",
+        "stored_consistency": "passed",
+        "version": 1
+      },
+      "selected_artifact": "e38f2d8af876d3a75676610b7017de6599dcccd07c131320",
+      "status": "completed"
+    },
+    "source": "live-llm-fixed-tripo"
+  },
+  "source": "real DeepSeek LLM; fixed local Tripo provider; synthetic GLB; no real Tripo calls",
+  "started": "2026-09-13T10:14:20.360749Z"
+}

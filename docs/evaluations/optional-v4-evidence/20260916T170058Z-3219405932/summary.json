@@ -1,0 +1,490 @@
+{
+  "scope": "当前v4；仅评测非视觉的意图、策略与解释；不评测外观、视觉符合度或视觉声明；每目标每维度一个适用综合项；自动事实与全提议人工语义审核共同判分",
+  "status": "passed",
+  "counts": {
+    "baseline-optional-v4": {
+      "runs": 9,
+      "raw_automated_passed": 9,
+      "model_calls": 45,
+      "actual_provider_submissions": 9,
+      "critical_errors": 0,
+      "dimensions": {
+        "intent": {
+          "passed": 9,
+          "applicable": 9,
+          "rate": 1.0
+        },
+        "strategy": {
+          "passed": 9,
+          "applicable": 9,
+          "rate": 1.0
+        },
+        "explanation": {
+          "passed": 9,
+          "applicable": 9,
+          "rate": 1.0
+        }
+      },
+      "recorded_response_count": 45,
+      "recorded_prompt_tokens": 265113,
+      "recorded_completion_tokens": 15102,
+      "status": "passed"
+    },
+    "conversation-optional-v4": {
+      "runs": 9,
+      "raw_automated_passed": 9,
+      "model_calls": 42,
+      "actual_provider_submissions": 9,
+      "critical_errors": 0,
+      "dimensions": {
+        "intent": {
+          "passed": 9,
+          "applicable": 9,
+          "rate": 1.0
+        },
+        "strategy": {
+          "passed": 9,
+          "applicable": 9,
+          "rate": 1.0
+        },
+        "explanation": {
+          "passed": 9,
+          "applicable": 9,
+          "rate": 1.0
+        }
+      },
+      "recorded_response_count": 42,
+      "recorded_prompt_tokens": 342859,
+      "recorded_completion_tokens": 20806,
+      "status": "passed"
+    },
+    "all": {
+      "runs": 18,
+      "raw_automated_passed": 18,
+      "model_calls": 87,
+      "actual_provider_submissions": 18,
+      "critical_errors": 0,
+      "dimensions": {
+        "intent": {
+          "passed": 18,
+          "applicable": 18,
+          "rate": 1.0
+        },
+        "strategy": {
+          "passed": 18,
+          "applicable": 18,
+          "rate": 1.0
+        },
+        "explanation": {
+          "passed": 18,
+          "applicable": 18,
+          "rate": 1.0
+        }
+      },
+      "recorded_response_count": 87,
+      "recorded_prompt_tokens": 607972,
+      "recorded_completion_tokens": 35908,
+      "status": "passed"
+    }
+  },
+  "rows": [
+    {
+      "file": "baseline-optional-v4-bytes_only-1.json",
+      "suite": "baseline-optional-v4",
+      "case": "bytes_only",
+      "repeat": 1,
+      "run_id": "5a336bfdd672c9d24f073e799958b83fac72dcfbb45da1d1",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。明确清除面数上限，只设置 2097152 字节；8000 面是制作策略，报告实测 4500 面仅展示，体积达标依据准确。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 31149,
+      "recorded_completion_tokens": 2228
+    },
+    {
+      "file": "baseline-optional-v4-bytes_only-2.json",
+      "suite": "baseline-optional-v4",
+      "case": "bytes_only",
+      "repeat": 2,
+      "run_id": "e9cf42d9d0b9d957033d007d335b7865f600fcbc9eb1698a",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。新建意图省略面数上限保持 null，体积上限准确为 2 MiB；生产目标与报告实测区分，未补入旧默认。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 30855,
+      "recorded_completion_tokens": 2241
+    },
+    {
+      "file": "baseline-optional-v4-bytes_only-3.json",
+      "suite": "baseline-optional-v4",
+      "case": "bytes_only",
+      "repeat": 3,
+      "run_id": "c62ae55a00915314536a506862602725f9deea2f4321c2b4",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。无来源 inherit 的面数保持 null，只对体积 2 MiB 做上限比较；最终准确说明 4000 面不适用比较、24656 字节通过。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 29002,
+      "recorded_completion_tokens": 1424
+    },
+    {
+      "file": "baseline-optional-v4-faces_only-1.json",
+      "suite": "baseline-optional-v4",
+      "case": "faces_only",
+      "repeat": 1,
+      "run_id": "438475cb0051bc7663c8a5faded2b3f5886d9a1935665920",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。只设置 3000 面并 clear 文件大小，生成达标后交付；18656 字节仅为测量，未设隐含体积限制。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 29547,
+      "recorded_completion_tokens": 1821
+    },
+    {
+      "file": "baseline-optional-v4-faces_only-2.json",
+      "suite": "baseline-optional-v4",
+      "case": "faces_only",
+      "repeat": 2,
+      "run_id": "37764ec46885a8d0ac90fb7273380fe2bd02f3deeb0ec14f",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。正式约束为 3000/null，文件体积只测量不验上限；保留产品展示用途并准确解释实测及约束。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 29371,
+      "recorded_completion_tokens": 1571
+    },
+    {
+      "file": "baseline-optional-v4-faces_only-3.json",
+      "suite": "baseline-optional-v4",
+      "case": "faces_only",
+      "repeat": 3,
+      "run_id": "b6d7055fed42ecdfe9660d82d0a42cce0a9434fc0564c743",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。省略体积字段保持 null，仅执行 3000 面上限，最终说明与技术报告准确一致。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 29077,
+      "recorded_completion_tokens": 1575
+    },
+    {
+      "file": "baseline-optional-v4-no_limits-1.json",
+      "suite": "baseline-optional-v4",
+      "case": "no_limits",
+      "repeat": 1,
+      "run_id": "80e2c544ebc70f683325b3ccd646fbf54c7658f345d704d8",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。两项技术上限均为空，目标 3000 但实测 6000 不触发伪超限纠偏，一次交付；说明只测量、不比较上限。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 28410,
+      "recorded_completion_tokens": 1263
+    },
+    {
+      "file": "baseline-optional-v4-no_limits-2.json",
+      "suite": "baseline-optional-v4",
+      "case": "no_limits",
+      "repeat": 2,
+      "run_id": "ff1cec035c9e271d8ab864d6a7de825be35c1960226a66f3",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。8000 面及 detailed 纹理明确为制作选择，不回填为验收条件；实测 6000 面合法且一次交付，准确说明两个 not_applicable。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 28320,
+      "recorded_completion_tokens": 1400
+    },
+    {
+      "file": "baseline-optional-v4-no_limits-3.json",
+      "suite": "baseline-optional-v4",
+      "case": "no_limits",
+      "repeat": 3,
+      "run_id": "8097758ee157064f052e7a1effac5d08070809de698de505",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 3,6,9,12,20）及工具参数，结合执行证据。无技术上限时生成实测 6000 面后直接交付，未套用旧 5000 面默认；准确说明 not_applicable 是未设上限而非证明低于上限。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 29382,
+      "recorded_completion_tokens": 1579
+    },
+    {
+      "file": "conversation-optional-v4-clear_limits-1.json",
+      "suite": "conversation-optional-v4",
+      "case": "clear_limits",
+      "repeat": 1,
+      "run_id": "75b9f2bdf1d68adc39437b36f0fa3e9a10bd47bff9cb263b",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 7,10,14,17,25）及工具参数，结合执行证据。明确 clear 两项历史上限，继承用途风格并重新文本生成；正式约束为 null/null，准确说明与旧几何无修改关系及仅测量。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 39320,
+      "recorded_completion_tokens": 1778
+    },
+    {
+      "file": "conversation-optional-v4-clear_limits-2.json",
+      "suite": "conversation-optional-v4",
+      "case": "clear_limits",
+      "repeat": 2,
+      "run_id": "93266f11ebc23bc630504cba5b71c83cd9776504946ec4af",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 7,10,14,17,25）及工具参数，结合执行证据。两项旧上限显式取消，4500 只为制作选择，最终报告两项空上限；未把历史报告或旧版本修改为新规则。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 41905,
+      "recorded_completion_tokens": 2628
+    },
+    {
+      "file": "conversation-optional-v4-clear_limits-3.json",
+      "suite": "conversation-optional-v4",
+      "case": "clear_limits",
+      "repeat": 3,
+      "run_id": "a2446f365cc872ec44c4fc46291a23af363a4483ac02b519",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 7,10,14,17,25）及工具参数，结合执行证据。参考选定茶壶但不改旧几何，清除 5000 面和 10 MiB 而不新设上限；6000 生产目标与实测 4500 面明确区分。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 41093,
+      "recorded_completion_tokens": 2374
+    },
+    {
+      "file": "conversation-optional-v4-further_reduction-1.json",
+      "suite": "conversation-optional-v4",
+      "case": "further_reduction",
+      "repeat": 1,
+      "run_id": "4a36f7f39db7b71680cc3b9792cceabb92d322b11539670a",
+      "status": "completed",
+      "model_calls": 4,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部4条原始提议（seq 7,10,14,24）及工具参数，结合执行证据。保存 further、清空绝对上限，只减面绑定输入；实测由 4500 降到 4000，依据实际减少而非仅文件有效交付。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 4,
+      "recorded_prompt_tokens": 29325,
+      "recorded_completion_tokens": 1452
+    },
+    {
+      "file": "conversation-optional-v4-further_reduction-2.json",
+      "suite": "conversation-optional-v4",
+      "case": "further_reduction",
+      "repeat": 2,
+      "run_id": "e3a34ec1323497f48f42d7d41f64a685f5d1f776b349b49f",
+      "status": "completed",
+      "model_calls": 4,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部4条原始提议（seq 7,10,14,24）及工具参数，结合执行证据。用户只授权进一步减面，未调用生成；两项上限为空，输出实测 3000 小于源 4500，准确解释相对目标和 not_applicable。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 4,
+      "recorded_prompt_tokens": 33334,
+      "recorded_completion_tokens": 3006
+    },
+    {
+      "file": "conversation-optional-v4-further_reduction-3.json",
+      "suite": "conversation-optional-v4",
+      "case": "further_reduction",
+      "repeat": 3,
+      "run_id": "883271af737bcba86ec0216e29e8f58bf14b77816c1d7eca",
+      "status": "completed",
+      "model_calls": 4,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部4条原始提议（seq 7,10,14,24）及工具参数，结合执行证据。取消绝对上限且正确选 further，执行所选版本减面到 3000，实际低于初始 4500；没有用请求参数代替最终实测。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 4,
+      "recorded_prompt_tokens": 29671,
+      "recorded_completion_tokens": 1590
+    },
+    {
+      "file": "conversation-optional-v4-inherit_limits-1.json",
+      "suite": "conversation-optional-v4",
+      "case": "inherit_limits",
+      "repeat": 1,
+      "run_id": "cd93407876a318c05ae4ea9e491198a3bcfe2dad3fcd6984",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 7,10,14,17,25）及工具参数，结合执行证据。两项使用 inherit，保留历史 5000 面/10 MiB 及用途风格；再生成而非改旧几何，最终准确解释约束来自沿用及实测数据。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 40137,
+      "recorded_completion_tokens": 1679
+    },
+    {
+      "file": "conversation-optional-v4-inherit_limits-2.json",
+      "suite": "conversation-optional-v4",
+      "case": "inherit_limits",
+      "repeat": 2,
+      "run_id": "cfaa8e6597e5cc6a098375098d852dbe191b328189bbf137",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 7,10,14,17,25）及工具参数，结合执行证据。通过 inherit 保留历史两项上限而不是重新发明默认，用途风格沿用；4500 为生产目标，最终实测及上限来源表述准确。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 41525,
+      "recorded_completion_tokens": 2460
+    },
+    {
+      "file": "conversation-optional-v4-inherit_limits-3.json",
+      "suite": "conversation-optional-v4",
+      "case": "inherit_limits",
+      "repeat": 3,
+      "run_id": "44192bd936a827c426700ed3b27de99615db136ddd33f948",
+      "status": "completed",
+      "model_calls": 5,
+      "actual_provider_submissions": 1,
+      "automated_passed": true,
+      "dimensions": {
+        "intent": true,
+        "strategy": true,
+        "explanation": true
+      },
+      "critical_errors": [],
+      "reason": "已审核全部5条原始提议（seq 7,10,14,17,25）及工具参数，结合执行证据。正确绑定历史茶壶并选择 regenerate，继承 5000 面/10 MiB，解释明确沿用来源和新文本生成，未声称直接编辑旧几何。",
+      "length_terminated_responses": [],
+      "recorded_response_count": 5,
+      "recorded_prompt_tokens": 46549,
+      "recorded_completion_tokens": 3839
+    }
+  ],
+  "evaluation_rubric": "technical-only-v1",
+  "evaluation_profile": "optional-v4"
+}

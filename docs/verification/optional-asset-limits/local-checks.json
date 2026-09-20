@@ -1,0 +1,60 @@
+{
+  "recorded_at": "2026-09-16T16:35:19.868383+00:00",
+  "scope": "local controlled regression; no real LLM or Tripo calls",
+  "baseline_commit": "80dd8dca18b37b9d77fe92733179660abedb9efd",
+  "worktree_uncommitted": true,
+  "go": "go version go1.26.1 darwin/arm64",
+  "node": "v22.22.1",
+  "go_environment": {
+    "GOPROXY": "off",
+    "GOSUMDB": "off",
+    "GOCACHE": "/private/tmp/tripo-agent-go-cache"
+  },
+  "checks": [
+    {
+      "command": "go test ./... -count=1",
+      "status": "passed",
+      "evidence": "go-test.log"
+    },
+    {
+      "command": "go test -race ./... -count=1",
+      "status": "passed",
+      "evidence": "race.log"
+    },
+    {
+      "command": "go vet ./...",
+      "status": "passed",
+      "evidence": "vet.log"
+    },
+    {
+      "command": "node --test internal/web/tests/workspace.test.mjs",
+      "status": "passed",
+      "evidence": "web-unit.log"
+    },
+    {
+      "command": "python3 scripts/test-summarize-conversation-evaluation.py",
+      "status": "passed",
+      "evidence": "summary-tests.log"
+    },
+    {
+      "command": "node internal/web/tests/workspace.browser.mjs",
+      "status": "passed",
+      "evidence": "browser-contract.json"
+    },
+    {
+      "command": "node internal/web/tests/workspace.go-browser.mjs",
+      "status": "passed",
+      "evidence": "browser-integration.json"
+    },
+    {
+      "command": "openspec validate make-asset-limits-optional --strict",
+      "status": "passed",
+      "evidence": "spec-validation.log"
+    }
+  ],
+  "pending": [
+    "real LLM 84 + 18 runs and per-proposal semantic review",
+    "real Tripo one generation plus one relative decimation"
+  ],
+  "browser_harness": "temporary controlled service at 127.0.0.1:48090 stopped after browser checks; original user service untouched"
+}

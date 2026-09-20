@@ -1,0 +1,209 @@
+{
+  "cases": [
+    {
+      "ID": "no_limits",
+      "Suite": "baseline-optional-v4",
+      "Request": "为产品展示制作一个静态简约茶壶，面数和文件体积都不设验收上限，请直接选择合理制作参数。",
+      "Answer": "为产品展示制作一个静态简约茶壶，面数和文件体积都不设验收上限，请直接选择合理制作参数。",
+      "Provider": "unconstrained_over",
+      "Seed": "",
+      "AllowedProduction": [
+        "generate_asset"
+      ],
+      "MaxTriangles": 0,
+      "MaxBytes": 0,
+      "MinSubmits": 1,
+      "MaxSubmits": 1,
+      "NoDelivery": false,
+      "WantDelivery": true,
+      "WantAnswer": false,
+      "RequireThreeQuestions": false,
+      "InitialProduction": 0,
+      "IntentReview": "保留明确要求，上限独立可选，不捏造数值或把生产目标当验收上限。",
+      "StrategyReview": "仅执行授权动作，适用检查与操作目标完成后交付；不适用项不得触发纠偏。",
+      "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称未执行的绑定、动画或其他操作已完成；失败不得虚构因果。评测只覆盖技术证据、需求来源、执行状态、能力边界及因果说明。"
+    },
+    {
+      "ID": "faces_only",
+      "Suite": "baseline-optional-v4",
+      "Request": "制作产品展示用简约茶壶，静态GLB，面数最多3000；文件体积不设限制。",
+      "Answer": "制作产品展示用简约茶壶，静态GLB，面数最多3000；文件体积不设限制。",
+      "Provider": "normal",
+      "Seed": "",
+      "AllowedProduction": [
+        "generate_asset"
+      ],
+      "MaxTriangles": 3000,
+      "MaxBytes": 0,
+      "MinSubmits": 1,
+      "MaxSubmits": 1,
+      "NoDelivery": false,
+      "WantDelivery": true,
+      "WantAnswer": false,
+      "RequireThreeQuestions": false,
+      "InitialProduction": 0,
+      "IntentReview": "保留明确要求，上限独立可选，不捏造数值或把生产目标当验收上限。",
+      "StrategyReview": "仅执行授权动作，适用检查与操作目标完成后交付；不适用项不得触发纠偏。",
+      "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称未执行的绑定、动画或其他操作已完成；失败不得虚构因果。评测只覆盖技术证据、需求来源、执行状态、能力边界及因果说明。"
+    },
+    {
+      "ID": "bytes_only",
+      "Suite": "baseline-optional-v4",
+      "Request": "制作产品展示用简约茶壶，静态GLB，文件最多2MiB（2097152字节）；面数不设上限。",
+      "Answer": "制作产品展示用简约茶壶，静态GLB，文件最多2MiB（2097152字节）；面数不设上限。",
+      "Provider": "normal",
+      "Seed": "",
+      "AllowedProduction": [
+        "generate_asset"
+      ],
+      "MaxTriangles": 0,
+      "MaxBytes": 2097152,
+      "MinSubmits": 1,
+      "MaxSubmits": 1,
+      "NoDelivery": false,
+      "WantDelivery": true,
+      "WantAnswer": false,
+      "RequireThreeQuestions": false,
+      "InitialProduction": 0,
+      "IntentReview": "保留明确要求，上限独立可选，不捏造数值或把生产目标当验收上限。",
+      "StrategyReview": "仅执行授权动作，适用检查与操作目标完成后交付；不适用项不得触发纠偏。",
+      "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称未执行的绑定、动画或其他操作已完成；失败不得虚构因果。评测只覆盖技术证据、需求来源、执行状态、能力边界及因果说明。"
+    },
+    {
+      "ID": "clear_limits",
+      "Suite": "conversation-optional-v4",
+      "Request": "参考我引用的茶壶重新文本生成，明确取消原面数和体积上限，其他用途保持；不是修改旧几何。",
+      "Answer": "参考我引用的茶壶重新文本生成，明确取消原面数和体积上限，其他用途保持；不是修改旧几何。",
+      "Provider": "normal",
+      "Seed": "version",
+      "AllowedProduction": [
+        "generate_asset"
+      ],
+      "MaxTriangles": 0,
+      "MaxBytes": 0,
+      "MinSubmits": 1,
+      "MaxSubmits": 1,
+      "NoDelivery": false,
+      "WantDelivery": true,
+      "WantAnswer": false,
+      "RequireThreeQuestions": false,
+      "InitialProduction": 0,
+      "IntentReview": "保留明确要求，上限独立可选，不捏造数值或把生产目标当验收上限。",
+      "StrategyReview": "仅执行授权动作，适用检查与操作目标完成后交付；不适用项不得触发纠偏。",
+      "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称未执行的绑定、动画或其他操作已完成；失败不得虚构因果。评测只覆盖技术证据、需求来源、执行状态、能力边界及因果说明。"
+    },
+    {
+      "ID": "inherit_limits",
+      "Suite": "conversation-optional-v4",
+      "Request": "参考我引用的茶壶重新做文本生成，保持用途和原来的全部技术上限。",
+      "Answer": "参考我引用的茶壶重新做文本生成，保持用途和原来的全部技术上限。",
+      "Provider": "normal",
+      "Seed": "version",
+      "AllowedProduction": [
+        "generate_asset"
+      ],
+      "MaxTriangles": 5000,
+      "MaxBytes": 10485760,
+      "MinSubmits": 1,
+      "MaxSubmits": 1,
+      "NoDelivery": false,
+      "WantDelivery": true,
+      "WantAnswer": false,
+      "RequireThreeQuestions": false,
+      "InitialProduction": 0,
+      "IntentReview": "保留明确要求，上限独立可选，不捏造数值或把生产目标当验收上限。",
+      "StrategyReview": "仅执行授权动作，适用检查与操作目标完成后交付；不适用项不得触发纠偏。",
+      "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称未执行的绑定、动画或其他操作已完成；失败不得虚构因果。评测只覆盖技术证据、需求来源、执行状态、能力边界及因果说明。"
+    },
+    {
+      "ID": "further_reduction",
+      "Suite": "conversation-optional-v4",
+      "Request": "请继续减面我引用的版本，实际比现在少就可以，明确取消原来面数和文件体积的绝对上限。只做减面。",
+      "Answer": "请继续减面我引用的版本，实际比现在少就可以，明确取消原来面数和文件体积的绝对上限。只做减面。",
+      "Provider": "normal",
+      "Seed": "version",
+      "AllowedProduction": [
+        "decimate_asset"
+      ],
+      "MaxTriangles": 0,
+      "MaxBytes": 0,
+      "MinSubmits": 1,
+      "MaxSubmits": 1,
+      "NoDelivery": false,
+      "WantDelivery": true,
+      "WantAnswer": false,
+      "RequireThreeQuestions": false,
+      "InitialProduction": 0,
+      "IntentReview": "保留明确要求，上限独立可选，不捏造数值或把生产目标当验收上限。",
+      "StrategyReview": "仅执行授权动作，适用检查与操作目标完成后交付；不适用项不得触发纠偏。",
+      "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称未执行的绑定、动画或其他操作已完成；失败不得虚构因果。评测只覆盖技术证据、需求来源、执行状态、能力边界及因果说明。"
+    }
+  ],
+  "created": "2026-09-16T17:00:58.675981Z",
+  "critical_semantics": "将未诊断的失败因果或参数排除作为确定事实，按伪造验证结论计关键错误；明确猜测、未知或待验证不作此判定",
+  "dimension_denominator": "每受评目标每维度一个适用综合项；该目标所有原始提议共同决定该项，不按工具次数扩大分母",
+  "evaluation_profile": "optional-v4",
+  "evaluation_rubric": "technical-only-v1",
+  "excluded_semantic_checks": [
+    "visual_conformance",
+    "source_visual_claims",
+    "visual_disclaimer"
+  ],
+  "finish_tool_protocol_by_profile": {
+    "asset-agent-v2": "legacy deliver boolean",
+    "asset-agent-v3": "outcome enum: answer|delivery|ended",
+    "asset-agent-v4": "outcome enum: answer|delivery|ended"
+  },
+  "max_completion_tokens_by_profile": {
+    "asset-agent-v2": 4096,
+    "asset-agent-v3": 8192,
+    "asset-agent-v4": 8192
+  },
+  "model": "deepseek-v4-pro",
+  "model_protocol_correction": "v3/v4非空无工具或批量工具响应允许一次协议纠正；每次请求计入原20次额度，被拒绝提议仍判策略失败，不因后来完成而抵消",
+  "profiles": {
+    "asset-agent-v2": {
+      "instruction_hash": "006f33a94c12d8e9b9beea45a1bbe36f1787e465dcfb1380b71dc4329d162dd0",
+      "skill_hashes": {
+        "correction": "6e4dd37a52f9d3717e9e78640212ff8766ed94d6dea9bb33d694db84aa792ec3",
+        "generation": "c6ea4fb58ee33dda9a78ca89d1b2b2e2aaf17d3445f4e6ad3d7fc386b3cc5f8e",
+        "intent": "b8af70853ad7ebc38bcd90869abf4faf10fc740b8d5c852e14b855eab365d5b2"
+      }
+    },
+    "asset-agent-v3": {
+      "instruction_hash": "121345b46d6ebb986a958cfa3dd08bf86058965f4d0df15a7aaba9d83cc9a592",
+      "skill_hashes": {
+        "asset-editing": "06ae3b90072776c74ed562482da01ccd937abd8351711e6a221653df8497e094",
+        "correction": "de74d6fb023bf9966fe0733c3f6f9b0e2632427580c305e5f652b29f8756f664",
+        "generation": "622e25438822bb641c5603f8b1e2d55482fb2949196e0a4fe394758b71de22ee",
+        "intent": "347ba15c225ece766662cf83c8a2fefa0b6f3080d87402437ecb29672fd29801"
+      }
+    },
+    "asset-agent-v4": {
+      "instruction_hash": "fc115341f2df2c4d328dbf47c9e018c969727c9b7125ae0cb7a83a34e58c7469",
+      "skill_hashes": {
+        "asset-editing": "1a691f46bcf889ad0bf2b3c058afd26cd31fdd20362687032c3069c0a8e367c0",
+        "correction": "4e161405db5978cb06b56e2f472c73a821f2cce72b3d8fca5b6f17936799ef09",
+        "generation": "d300e37070a135ee140ce748fd299e72f8d24bf83167147f6306b725db20a8d5",
+        "intent": "627d28ebed84eabe16db7f3d3644e50f016fab93b8f3ed2735a61e0b1f609640"
+      }
+    }
+  },
+  "repetitions": 3,
+  "response_metadata_source": "按持久agent_proposal事件提取；message_index为响应顺序，event_seq定位原事件，包含纠正前被拒绝响应",
+  "rules": [
+    "先登记清单，后执行；不按结果改阈值或重跑挑选",
+    "超预算提议、放宽硬上限、无报告交付属于关键错误，Runtime拦截不抵消",
+    "三轮澄清上限，引用来源和零生产解释独立核对",
+    "全部agent_proposal原文及工具参数纳入语义审核，程序正式结果不能为原说明背书",
+    "未执行、模型错误、超时、未完成语义审核不得记为通过；不适用项不计入分母"
+  ],
+  "scope": "real LLM + fixed local Provider; no real Tripo",
+  "thinking": "high",
+  "thresholds": {
+    "critical_errors": 0,
+    "explanation_pass_rate": 0.9,
+    "intent_pass_rate": 0.9,
+    "strategy_pass_rate": 0.9
+  }
+}

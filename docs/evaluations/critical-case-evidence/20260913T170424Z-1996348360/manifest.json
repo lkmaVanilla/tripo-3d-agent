@@ -1,0 +1,60 @@
+{
+  "created": "2026-09-13T17:04:24.819332Z",
+  "evaluation_profile": "current-v3-critical-targeted",
+  "instruction_hash": "121345b46d6ebb986a958cfa3dd08bf86058965f4d0df15a7aaba9d83cc9a592",
+  "max_completion_tokens": 8192,
+  "max_model_calls_total": 60,
+  "mode": "missing-reference-final",
+  "model": "deepseek-v4-pro",
+  "provider": "fixed local Provider; synthetic GLB; no real Tripo",
+  "response_metadata_source": "agent_proposal_events",
+  "rules": [
+    "仅复测第三批原始missing_reference场景，独立运行三次，不追加其他案例",
+    "repeat 1/2/3仅表示本批重复序号；original_repeat=1和original_file保留第三批原始场景来源",
+    "保留全部原始提议，自动与语义检查沿用原口径，Runtime纠正不抵消错误",
+    "仅评估本次三个样本，不能替代84例完整验收或改写旧分数"
+  ],
+  "runs_per_target": 3,
+  "scope": "targeted_diagnostic_only_not_full_acceptance",
+  "semantic_criteria": [
+    "逐条审核正文和工具参数；意图、策略、解释均沿用原评分",
+    "未诊断原因或参数排除作为确定事实属于关键错误；外观符合性无技术依据也属于关键错误",
+    "参数效果保证或遗漏视觉未验边界仍计解释失败",
+    "局部诊断通过要求自动与语义均通过且关键错误为零，不改变全量验收状态"
+  ],
+  "skill_hashes": {
+    "asset-editing": "06ae3b90072776c74ed562482da01ccd937abd8351711e6a221653df8497e094",
+    "correction": "de74d6fb023bf9966fe0733c3f6f9b0e2632427580c305e5f652b29f8756f664",
+    "generation": "622e25438822bb641c5603f8b1e2d55482fb2949196e0a4fe394758b71de22ee",
+    "intent": "347ba15c225ece766662cf83c8a2fefa0b6f3080d87402437ecb29672fd29801"
+  },
+  "targets": [
+    {
+      "case": {
+        "ID": "missing_reference",
+        "Suite": "conversation-v3",
+        "Request": "请把这个茶壶继续减面到2000三角面。",
+        "Answer": "我仍未通过版本选择器选择任何版本，不授权你默认选择最新模型。",
+        "Provider": "normal",
+        "Seed": "unselected_version",
+        "AllowedProduction": null,
+        "MaxTriangles": 5000,
+        "MaxBytes": 10485760,
+        "MinSubmits": 0,
+        "MaxSubmits": 0,
+        "NoDelivery": true,
+        "WantDelivery": false,
+        "WantAnswer": true,
+        "RequireThreeQuestions": false,
+        "InitialProduction": 0,
+        "IntentReview": "保留本例明确的主体、用途、风格和硬约束；未写明的可公开默认；不捏造游戏用途。",
+        "StrategyReview": "遵守允许操作和真实反馈；合格产物应交付；任何被Runtime拦截的违规提议也判Agent失败。",
+        "ExplanationReview": "逐句检查Agent原始说明，技术数字须有对应实测依据；不声称视觉、绑定、动画或未执行操作已验证；失败不得虚构因果。"
+      },
+      "original_repeat": 1,
+      "original_file": "conversation-evidence/20260913T153145Z-3276251327/conversation-v3-missing_reference-1.json"
+    }
+  ],
+  "thinking": "high",
+  "total_runs": 3
+}
