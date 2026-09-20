@@ -1,128 +1,89 @@
 # Tripo Agent
 
-面向 3D 创作者及行业从业者的资产创作 Agent，通过网页提供资产制作服务。优先承担资产制作助手的角色：围绕用户目标组织制作过程，交付可使用或继续加工的资产；长期逐步覆盖资产生成、处理、骨骼绑定和动画。
+面向 3D 创作者及行业从业者的资产创作 Agent。用户通过网页描述制作目标，由单个 Agent 理解需求、规划步骤、调用 Tripo API，并根据产物的技术检查结果调整后续动作，交付模型与结果说明。
 
-资产生产与加工长期限定在 Tripo API 实际开放的能力内，不接入其他 3D 生产工具补齐能力缺口。每项能力需经过项目接入与验证后才向用户提供；Agent 的模型服务、应用调度与技术检查仍由现有组件承担。
+项目关注的是 **Agent 如何完成一项可追踪、可验证、可继续创作的资产制作任务**。当前已实现文本生成静态模型、同会话版本减面与技术结果解释；长期逐步扩展到更多资产处理、骨骼绑定和动画能力。
 
-当前聊天工作台支持在同一会话围绕同一资产顺序提出多个目标：生成、明确引用本会话版本减面、解释技术结果。每个目标对应独立 Run，具有独立预算、检查点和结局；旧版本和旧报告保留。当前变更已按非视觉范围完成验收，见下方验证状态。
+## 当前能力
 
-**当前生产能力仍限定为文本生成和静态资产减面。** 当前实现由一个 Agent 澄清、规划、调用 Tripo，并依据实际 GLB 的技术检查结果决定交付、减面、重新生成或停止。图片输入、已有资产导入、骨骼绑定和动画是后续方向，尚未实现。木箱是首条端到端演示案例，阶段验收仍须满足独立的系统回归与 Agent 评测要求。
+- **对话式创作**：支持匿名多会话。Agent 可针对关键需求进行最多三轮澄清；同一会话围绕一个资产主题，顺序完成多个制作目标。
+- **生成与加工**：通过 Tripo 从文本生成静态 GLB 模型，也可根据新目标重新生成，或明确引用本会话的一个历史版本进行减面。
+- **资产版本**：生成和加工结果保留为独立版本，记录来源与父版本，旧模型和技术报告不会被新结果覆盖。不能引用其他会话的资产。
+- **技术检查**：检查 GLB 文件有效性、三角面数和文件大小。面数与文件大小上限由用户选择是否设置；未设置时仍提供实测数据，不做视觉质量评判。
+- **网页工作台**：聊天、思考与执行状态反馈、实时进度、3D 预览、GLB 下载，以及执行记录导出。
+- **持续执行与追踪**：不同会话可并发运行；保存执行状态、事件与检查点，支持断线重连和服务重启后的恢复。已知远端任务继续查询，提交结果未知时停止，不自动重复提交。
 
-静态资产 MVP 是基础阶段，聊天持续创作是当前阶段，两者均不等于最终能力上限；长期目标与阶段划分见 [PROJECT_BRIEF.md](PROJECT_BRIEF.md)。
+例如，先提出“制作一个用于产品展示的低模木箱”，生成后明确引用该版本，再提出“将面数减半”或询问模型的技术数据。每个新目标有独立的执行记录，纯解释不会触发资产生产。
 
-Go + CloudWeGo Eino ADK + DeepSeek V4 Pro + Tripo API。支持匿名多会话、并发生产、WebSocket 时间线、模型预览和执行记录导出。
+图片输入、用户模型导入、骨骼绑定和动画**尚未接入**。资产生产与加工长期以 Tripo API 为唯一来源，具体能力须完成接入与验证后才向用户提供。
 
-**历史连续创作阶段验证状态：变更验收完成，47/47。** 按用户授权，以[非视觉范围 `technical-only-v1`](docs/evaluations/2026-09-14-technical-only-evaluation-scope.md)重新审核第五批全部 84 例、344 条原始提议：基线解释 55/58（94.83%），连续创作解释 22/24（91.67%），两组意图和策略均超过 90%，关键错误均为 0，见[新审核报告](docs/evaluations/2026-09-14-technical-only-reassessment-results.md)。仍保留 6 项非关键失败，没有宣称全部案例零错误。本次没有新增模型或 Tripo 调用；结合[系统回归 8/8](docs/verification/input-binding-acceptance/system-checks.md)、浏览器、恢复与真实加工证据，完成 `10.6`、`11.2`，详见[阶段验证](docs/verification/conversation-workspace.md)。旧成绩完整保留，6 个能力规格已同步并完成归档，尚未部署。
+## Agent 如何工作
 
-历史[两例局部复测](docs/evaluations/2026-09-14-critical-cases-retest.md)保留 `product/1` 通过、`missing_output/3` 未通过的原始结果。此后完成[缺文件反馈证据修复](docs/verification/2026-09-14-failure-evidence-fix.md)与[输入版本绑定修复](docs/verification/2026-09-14-input-binding-fix.md)，分别运行第四、第五批完整评测；修复和局部通过均不代替整批验收。
+一次制作目标的主要过程是：
 
-2026-09-08 的首条真实木箱链路是独立历史证据：2,645 个三角面、910,572 字节，5 次模型调用和 1 次生产提交。保留原[验证记录](docs/demo-verification.md)与产物：
+1. **理解目标**：整理用途、风格与可选技术约束，必要时向用户澄清。
+2. **规划并执行**：结合会话上下文和已引用版本，选择生成、减面或直接回答。
+3. **检查与调整**：跟踪 Tripo 异步任务，下载真实产物并生成技术报告；Agent 据此决定交付、继续减面、重新生成或停止。
+4. **解释与交付**：说明实际完成了什么、检查结果和剩余限制，提供模型与可追溯的执行记录。
 
-[下载真实 GLB](docs/demo/live-crate.glb) · [技术报告](docs/demo/live-technical-report.json) · [完整执行记录](docs/demo/live-trace.json)
+**Agent 负责选择，Runtime 负责可靠执行。** Eino 管理模型与工具调用循环；Skills 提供意图理解、生成、加工和纠偏指引。Go Runtime 负责会话隔离、预算约束、排队调度、任务轮询、文件检查及状态恢复。模型提议、实际工具执行与检查结果分别记录，结果说明必须有执行证据支持。
 
-![真实生成模型的浏览器预览](docs/demo/live-model-preview.png)
+## 系统架构
 
-## 本地启动
+**Go · CloudWeGo Eino ADK · DeepSeek V4 Pro · Tripo API · SQLite · 原生 HTML/CSS/JavaScript + model-viewer**
 
-准备 Go 1.26.1 或兼容更新版本、Node.js 22 与 npm。首次安装前端查看器并构建：
+```mermaid
+flowchart LR
+    Web[网页聊天与 3D 工作台] <-->|HTTP 请求 / WebSocket 事件| Runtime[Go Runtime]
+    Runtime <--> Agent[Eino 单 Agent]
+    Agent <--> LLM[DeepSeek]
+    Agent --- Skills[Skills]
+    Runtime <-->|提交 / 查询 / 下载| Tripo[Tripo API]
+    Runtime --> Check[GLB 技术检查]
+    Runtime <--> Store[SQLite / 本地模型文件]
+```
+
+- **会话与上下文**：一个会话承载多个顺序执行的目标（Run）。每个 Run 有独立预算、检查点和结局，资产版本连接前后目标。
+- **执行与恢复**：SQLite 保存会话、版本元数据、事件和 Eino 检查点，本地目录保存模型文件；WebSocket 推送进度并支持事件补读。用户主动停止的目标不支持恢复，也不保证远端任务取消。
+- **部署结构**：单个 Go 服务同时提供 API、WebSocket 和静态网页。前端资源嵌入可执行文件，运行时不需要 Node.js；同一数据目录由一个服务进程管理。
+
+主要代码位于 [internal/app](internal/app/)（Agent 与应用运行时）、[internal/tripo](internal/tripo/)（供应商适配）、[internal/asset](internal/asset/)（技术检查）和 [internal/web](internal/web/)（网页工作台）。
+
+## 本地运行
+
+准备 Go 1.26.1 或兼容更新版本，以及 Node.js 与 npm（建议 Node.js 22，用于构建前端资源）。在仓库根目录执行：
 
 ```sh
 npm ci --ignore-scripts
 npm run build
 ```
 
-首次使用时将 `.env.example` 复制为 `.env`，填写 `DEEPSEEK_API_KEY` 和 `TRIPO_API_KEY`。已有 `.env` 时保留原文件。密钥只写本地配置，不提交到 Git；进程环境变量优先于 `.env`。
+首次运行，将 [.env.example](.env.example) 复制为 `.env`，填入 `DEEPSEEK_API_KEY` 和 **Tripo 国内站**的 `TRIPO_API_KEY`。默认使用 `https://openapi.tripo3d.com/v3`。已有 `.env` 时保留原配置，密钥不要提交到 Git。
 
 ```sh
 go run ./cmd/server
 ```
 
-打开 <http://127.0.0.1:8080>。没有密钥也可启动并查看配置提示，此时不会创建生产请求。配置密钥后重启服务，再从首页发送首条制作请求。
+打开 [http://127.0.0.1:8080](http://127.0.0.1:8080)，即可发送制作请求。服务默认读取当前目录的 `.env`，将数据保存在 `./data`；重启时沿用该目录。监听地址等配置见 [.env.example](.env.example)。
 
-需要独立可执行文件时，先完成上述查看器构建，再运行：
+## 开发与验证
+
+本地回归测试：
 
 ```sh
-go build -o bin/tripo-agent ./cmd/server
-./bin/tripo-agent
+go test ./...
 ```
 
-查看器会嵌入 Go 可执行文件，运行时不依赖 Node.js 或公共 CDN；未构建查看器时服务会提示具体补救步骤。服务默认读取当前工作目录中的 `.env`，使用 `./data` 保存状态。
+默认测试不调用真实供应商。验证分为系统回归、Agent 决策评测和真实 Tripo 链路：分别检查执行机制、意图与策略及结果解释、实际生成与加工是否成立。接口调用成功不等于 Agent 决策正确。
 
-| 配置 | 默认值 / 说明 |
+已有 [Agent 评测报告](docs/evaluations/2026-09-17-optional-v4-evaluation-results.md)和[真实生成与减面记录](docs/verification/optional-asset-limits/tripo-live.md)，详细结果与已知限制保留在各自报告中。
+
+## 项目文档
+
+| 文档 | 内容 |
 | --- | --- |
-| `DEEPSEEK_API_KEY` | DeepSeek API 密钥，模型固定为 `deepseek-v4-pro` |
-| `TRIPO_API_KEY` | 与所选站点匹配的 Tripo API 密钥，生成模型固定为 `v3.1-20260211` |
-| `TRIPO_BASE_URL` | `https://openapi.tripo3d.com/v3`，国内站 V3；仅接受官方 V3 HTTPS 地址，不自动回退 |
-| `LISTEN_ADDR` | `127.0.0.1:8080` |
-| `DATA_DIR` | `./data`，包含 SQLite 和模型文件，重启时继续使用同一目录 |
-| `COOKIE_SECURE` | `false`，HTTPS 部署时设置为 `true` |
-
-请仅运行一个服务进程管理同一数据目录。当前调度器的执行互斥属于单进程，SQLite 不承担多实例任务认领。
-
-生产前可运行 `go run ./cmd/check-tripo` 做只读余额鉴权预检；它复用服务配置，不创建 Run 或付费任务。API V3、生成模型 H3.1、减面算法 `v2.0` 是不同层次的版本。配置、诊断字段和本次 ECS 切换步骤见[国内站发布说明](docs/tripo-china-deployment.md)，实施证据见[验证记录](docs/verification/tripo-china-access/verification.md)。
-
-## 演示步骤
-
-1. 提交“给我的俯视角游戏原型做一个低模木箱。”
-2. 若 Agent 发起澄清，按需要补充用途和风格；最多澄清三轮。可明确要求最多 5,000 个三角面、10 MiB，也可不设置这两个上限。
-3. 查看确认意图、默认假设、计划、实际工具提交与异步进度。Agent 依据检查报告选择纠偏或结束，首次通过就直接交付。
-4. 查看最终候选的三类技术报告，旋转/缩放预览，下载 GLB，导出执行记录。可以切换查看此前未通过的候选。
-5. 在版本列表中明确引用 v1，发送“将这个模型减面至最多 3,000 个三角面”，得到新版本；再次引用 v1 提出另一目标时，父版本仍是 v1。预览其他模型不会改变引用。
-6. 可以询问已保存版本的技术数据，纯回答不创建新版本。运行期间可保留下一目标草稿，完成或停止退出后再发送；停止只结束本地后续执行，不保证远端取消，也不支持恢复已停止目标。
-
-技术检查覆盖静态、自包含、非压缩三角面 GLB 的基础容器、缓冲区、几何与场景引用，以及所有网格合计面数和实际文件字节数。它不是完整 glTF 规范认证，不检查类别、风格或视觉质量。下载保护上限为 150 MiB，网格展开检查上限为 256 MiB，超出时明确报告无法验证。
-
-## 执行边界
-
-- 一个会话围绕一个资产主题，可顺序执行多个目标；同会话一次只执行一个 Run。引用限定为本会话的单个版本，其他独立资产应新建会话。
-- 每个请求累计最多 20 次模型调用、3 次生产提交（首次生成 + 最多两次纠偏）；提交失败和结果未知也消耗额度。
-- 从首次生产提交起最多执行 30 分钟，重启和断线不重置预算或时间。已知任务 ID 恢复查询，提交结果未知时停止，不自动重发。
-- 同时最多 3 个生产阶段请求，另有 10 个 FIFO 等待位置；排队不扣生产额度，也不启动生产计时。
-- 匿名 Cookie 连续 30 天未访问失效；生产前 24 小时无用户操作结束；最后一个 Run 结束后整段会话保留 7 天。到期前正式发送新目标保护全部历史文件，结束后重新计算期限；浏览、下载和草稿不续期。更换浏览器或清除 Cookie 后不提供旧会话找回。
-
-这些初值集中在 `internal/app/types.go` 的 `DefaultConfig`；已开始的请求使用持久化预算。并发数限制本地生产阶段请求，不能保证停止后的远端任务不再占用供应商配额。
-
-## 代码组织
-
-| 路径 | 职责 |
-| --- | --- |
-| `cmd/server` | 配置、启动和退出 |
-| `internal/app/agent.go` | Eino Runner、模型调用计数、工具约束和检查点中断/恢复 |
-| `internal/app/skills` | 按协议版本冻结的只读 Skill；v3 增加资产加工指引，v4 支持可选技术上限 |
-| `internal/app/service.go` | FIFO 调度、生产状态、轮询、纠偏结果和停止/恢复 |
-| `internal/app/store.go`、`conversation_store.go`、`conversation_projection.go` | SQLite 会话/Run/版本、幂等消息、公开事件投影和 Eino 检查点 |
-| `internal/tripo` | Tripo 生成、内部 GLB 上传、减面、任务查询及下载适配 |
-| `internal/asset` | 根据真实文件生成技术报告 |
-| `internal/app/http.go`、`conversation_http.go`、`internal/web` | 兼容单次入口、聊天接口、WebSocket、导出和资产工作台 |
-
-Agent 负责依赖当前证据的选择；Go 执行确定性步骤与约束。Eino 负责模型/工具循环和恢复，应用状态是预算、归属和产物事实来源。模型提议、Runtime 放行/拦截、工具结果分别记录，禁止将提议当成执行成功。
-
-## 验证
-
-```sh
-go test ./... -count=1
-go test -race ./... -count=1
-go vet ./...
-```
-
-默认测试不需要真实密钥，不调用外部供应商；真实供应商与模型评测通过专用环境变量显式启用。包括实际 Eino Runner + 脚本模型、真实 DeepSeek SDK + 本地协议响应、Tripo HTTP 协议、GLB 实测、并发、会话隔离、停止、预算和持久恢复。
-
-可选的受控浏览器演示：
-
-```sh
-TRIPO_BROWSER_TEST=1 go test ./internal/app -run '^TestBrowserHarness$' -v -count=1 -timeout=6m
-```
-
-打开 <http://127.0.0.1:48089>，5 分钟后自动退出。页面明确标注受控测试；其中的立方体由测试夹具构造，不能作为真实木箱演示成果。正式服务没有这个测试模式开关。
-
-页面的单次规则核验只判断当前运行的可核验证据，不能替代 Agent 决策质量评测。当前阶段以 `technical-only-v1` 保留 **20 个基线场景 × 3 次 + 8 个连续创作场景 × 3 次** 的非视觉覆盖，不再评分外观、材质配色、产物实际风格、部件、旧模型具体外形或未视觉检查声明。五批实测与原始评分作为历史保留；第五批完整轨迹已另行重新审核并达到新范围门槛，未新增模型调用。技术事实与执行决策仍需独立评测，Runtime 成功拦截违规提议不能抵消 Agent 的错误。
-
-浏览器契约、真实 Go/Eino 配合固定 Provider 的操作记录及截图见[浏览器验证](docs/verification/conversation-browser/README.md)；真实供应商链路见[Tripo 验证](docs/verification/conversation-tripo/README.md)。升级前遵循[停写备份与回退说明](docs/conversation-upgrade.md)，数据库与模型目录须一起处理。
-
-项目范围以 [PROJECT_BRIEF.md](PROJECT_BRIEF.md)、[CONTEXT.md](CONTEXT.md) 和 [ADR](docs/adr/) 为准。现行行为见 [主规格](openspec/specs/)，本次规格与任务见 [add-conversational-asset-workspace 归档](openspec/changes/archive/2026-09-14-add-conversational-asset-workspace/)。历史 [first-asset-demo](openspec/changes/first-asset-demo/) 保持原验收记录，不随本变更自动归档。
-
-## 可选技术约束变更
-
-新版聊天目标不再强制补全 5,000 面、10 MiB；仅验收用户明确或继承的上限。没有上限仍会检查文件并展示实测值，下载与解析保护保持。旧执行和旧单请求 API 保留原协议。实施及验证进度见 [任务清单](openspec/changes/make-asset-limits-optional/tasks.md)，不能以历史 84 次评测代替新版结果。
-
-2026-09-17 已完成新版 **84 次主评测 + 18 次补充评测**及全部 **423 条原始提议**的非视觉审核，四组分别达到原定门槛，关键错误均为 0；仍保留 1 次响应截断导致的失败，详见[本次结果](docs/evaluations/2026-09-17-optional-v4-evaluation-results.md)。随后完成[真实 Tripo 无上限生成与相对减面](docs/verification/optional-asset-limits/tripo-live.md)，实测 **11,344→6,544 面**，旧版本与父关系验证通过。当前进度 **24/24**，变更验收完成，尚未提交、归档或部署。
+| [PROJECT_BRIEF.md](PROJECT_BRIEF.md) · [CONTEXT.md](CONTEXT.md) | 产品定位、阶段目标、能力边界与运行约束 |
+| [架构决策](docs/adr/) | 关键设计及其取舍 |
+| [现行规格](openspec/specs/) | 各项能力的行为要求与验收场景 |
+| [国内站接入与诊断](docs/tripo-china-deployment.md) | Tripo 配置、鉴权预检与错误排查 |
+| [升级与备份](docs/conversation-upgrade.md) | 数据兼容、备份和回退步骤 |
